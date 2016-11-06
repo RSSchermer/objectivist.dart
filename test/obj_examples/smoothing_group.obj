@@ -1,0 +1,18 @@
+# Two adjoining squares that share a common edge. The squares are placed in a
+# smoothing group to indicate that their common edge should be smoothed.
+#
+# Example taken from the OBJ 3.0 specification.
+
+v 0.000000 2.000000 0.000000
+v 0.000000 0.000000 0.000000
+v 2.000000 0.000000 0.000000
+v 2.000000 2.000000 0.000000
+v 4.000000 0.000000 -1.255298
+v 4.000000 2.000000 -1.255298
+# 6 vertices
+
+g all
+s 1
+f 1 2 3 4
+f 4 3 5 6
+# 2 elements

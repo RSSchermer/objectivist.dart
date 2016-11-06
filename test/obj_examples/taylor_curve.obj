@@ -1,0 +1,18 @@
+# Single-segment Taylor polynomial curve of the form:
+#
+#     x =  3.00 +  2.30 * t + 7.98 * t^2 +  8.30 * t^3 + 6.34 * t^4
+#  	  y =  1.00 - 10.10 * t + 5.40 * t^2 -  4.70 * t^3 + 2.03 * t^4
+#     z = -2.50 +  0.50 * t - 7.00 * t^2 + 18.10 * t^3 + 0.08 * t^4
+#
+# Example taken from the OBJ 3.0 specification.
+
+v       3.000    1.000   -2.500
+v       2.300  -10.100    0.500
+v       7.980    5.400   -7.000
+v       8.300   -4.700   18.100
+v       6.340    2.030    0.080
+cstype taylor
+deg 4
+curv 0.500 1.600 1 2 3 4 5
+parm u 0.000 2.000
+end
