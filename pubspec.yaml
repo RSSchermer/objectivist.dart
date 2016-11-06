@@ -1,5 +1,5 @@
 name: objectivist
-description: Reader and writer for Wavefront .obj files in Dart.
+description: OBJ and MTL reading and writing tools in Dart.
 version: 0.0.1
 author: R.S. Schermer <roland0507@gmail.com>
 homepage: https://github.com/rsschermer/objectivist.dart
