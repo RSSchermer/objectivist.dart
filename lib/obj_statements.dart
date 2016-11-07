@@ -293,7 +293,7 @@ class CstypeStatement implements ObjStatement {
   final int lineNumber;
 
   /// Instantiates a new [CstypeStatement].
-  CstypeStatement(this.type, {this.isRational, this.lineNumber});
+  CstypeStatement(this.type, {this.isRational: false, this.lineNumber});
 
   void acceptVisit(ObjStatementVisitor visitor) {
     visitor.visitCstypeStatement(this);
@@ -1460,7 +1460,7 @@ class SurfaceConstantParametricSubdivisionB
   final double resolution;
 
   /// Creates a new [SurfaceConstantParametricSubdivisionB] instance.
-  SurfaceConstantParametricSubdivisionB(this.resolutionU, this.resolutionV);
+  SurfaceConstantParametricSubdivisionB(this.resolution);
 
   String toSource() => 'cparmb $resolution';
 }
