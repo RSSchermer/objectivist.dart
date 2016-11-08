@@ -142,7 +142,7 @@ class VStatement implements ObjStatement {
   /// Weight required for rational curves and surfaces.
   ///
   /// Is not required for non-rational curves and surfaces. If you do not
-  /// specify a value for w, the default is 1.0.
+  /// specify a value for w, then the default should be `1.0`.
   final double w;
 
   final int lineNumber;
@@ -270,7 +270,17 @@ class VpStatement implements ObjStatement {
     visitor.visitVpStatement(this);
   }
 
-  String toSource() => 'vp $u $v $w';
+  String toSource() {
+    if (v != null) {
+      if (w != null) {
+        return 'vp $u $v $w';
+      } else {
+        return 'vp $u $v';
+      }
+    } else {
+      return 'vp $u';
+    }
+  }
 }
 
 const _csTypeStringMapping = const {
@@ -496,7 +506,7 @@ class VertexNumPair {
   final int vtNum;
 
   /// Instantiates a new [VertexNumPair].
-  VertexNumPair(this.vNum, this.vtNum);
+  VertexNumPair(this.vNum, [this.vtNum]);
 
   /// A source code representation of the number pair.
   String toSource() {
@@ -526,7 +536,7 @@ class FStatement implements ObjStatement {
 
   String toSource() => vertexNumTriples
       .map((n) => n.toSource())
-      .fold('l', (res, s) => '$res $s');
+      .fold('f', (res, s) => '$res $s');
 }
 
 /// A triple of numbers or which [vNum] is the reference number for a geometric
@@ -543,12 +553,16 @@ class VertexNumTriple {
   final int vnNum;
 
   /// Instantiates a new [VertexNumTriple].
-  VertexNumTriple(this.vNum, this.vtNum, this.vnNum);
+  VertexNumTriple(this.vNum, [this.vtNum, this.vnNum]);
 
   /// A source code representation of the number pair.
   String toSource() {
-    if (vnNum != null) {
+    if (vtNum != null && vnNum != null) {
       return '$vNum/$vtNum/$vnNum';
+    } else if (vtNum != null) {
+      return '$vNum/$vtNum';
+    } else if (vnNum != null) {
+      return '$vNum//$vnNum';
     } else {
       return vNum.toString();
     }
