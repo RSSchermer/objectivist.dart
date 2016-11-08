@@ -9,6 +9,7 @@ enum ObjTokenType {
   slash,
   backslash,
   newline,
+  endOfText,
   invalid
 }
 
@@ -72,25 +73,21 @@ class ObjLexer {
   /// with a [charCode] of `3` ("end of text") to ensure that the lexer finishes
   /// the final token.
   void process(int charCode) {
-    if (_tokenType == ObjTokenType.comment) {
-      if (charCode == 10 /* Newline, ends comment */) {
-        _finishCurrentToken();
-        _tokens.add(new ObjToken(ObjTokenType.newline));
-      } else {
-        _tokenStringBuilder.writeCharCode(charCode);
-      }
+    if (charCode == 10 /* newline */) {
+      _finishCurrentToken();
+      _tokens.add(new ObjToken(ObjTokenType.newline));
+    } else if (charCode == 3 /* end of text */) {
+      _finishCurrentToken();
+      _tokens.add(new ObjToken(ObjTokenType.endOfText));
+    } else if (_tokenType == ObjTokenType.comment) {
+      _tokenStringBuilder.writeCharCode(charCode);
     } else {
       if (charCode == 35 /* # (comment start) */) {
         _finishCurrentToken();
 
         _tokenStringBuilder.writeCharCode(35);
         _tokenType = ObjTokenType.comment;
-      } else if (charCode == 10 /* newline */) {
-        _finishCurrentToken();
-        _tokens.add(new ObjToken(ObjTokenType.newline));
-      } else if (charCode == 32 /* space */ ||
-          charCode == 9 /* tab */ ||
-          charCode == 3 /* end of text */) {
+      } else if (charCode == 32 /* space */ || charCode == 9 /* tab */) {
         _finishCurrentToken();
       } else if (charCode >= 97 && charCode <= 122 /* a-z */ ||
           charCode >= 65 && charCode <= 90 /* A-Z */ ||

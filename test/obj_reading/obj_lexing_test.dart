@@ -26,7 +26,8 @@ void main() {
           new ObjToken(ObjTokenType.newline),
           new ObjToken(ObjTokenType.comment, '# abc'),
           new ObjToken(ObjTokenType.newline),
-          new ObjToken(ObjTokenType.invalid, '%fg')
+          new ObjToken(ObjTokenType.invalid, '%fg'),
+          new ObjToken(ObjTokenType.endOfText)
         ]));
       });
 
@@ -52,7 +53,8 @@ void main() {
 
         expect(tokens, equals([
           new ObjToken(ObjTokenType.string, 'a'),
-          new ObjToken(ObjTokenType.string, 'abcd')
+          new ObjToken(ObjTokenType.string, 'abcd'),
+          new ObjToken(ObjTokenType.endOfText)
         ]));
       });
 
@@ -151,6 +153,7 @@ void main() {
           new ObjToken(ObjTokenType.int, '7'),
           new ObjToken(ObjTokenType.int, '3'),
           new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.endOfText)
         ]));
       });
     });
@@ -178,7 +181,8 @@ void main() {
 
         expect(tokens, equals([
           new ObjToken(ObjTokenType.string, 'a'),
-          new ObjToken(ObjTokenType.string, 'cd')
+          new ObjToken(ObjTokenType.string, 'cd'),
+          new ObjToken(ObjTokenType.endOfText)
         ]));
       });
     });
