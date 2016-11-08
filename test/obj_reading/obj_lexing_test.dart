@@ -6,7 +6,7 @@ void main() {
   group('ObjLexer', () {
     group('flush', () {
       test('all token types', () {
-        final sourceString = 'a_0-.b 1/1.0 \\ \n# abc\n %fg';
+        final sourceString = 'a_0-.b 1/1.0 \\ -1 -2.0\n# abc\n %fg';
         final lexer = new ObjLexer();
 
         for (var i = 0; i < sourceString.length; i++) {
@@ -21,6 +21,8 @@ void main() {
           new ObjToken(ObjTokenType.slash),
           new ObjToken(ObjTokenType.double, '1.0'),
           new ObjToken(ObjTokenType.backslash),
+          new ObjToken(ObjTokenType.int, '-1'),
+          new ObjToken(ObjTokenType.double, '-2.0'),
           new ObjToken(ObjTokenType.newline),
           new ObjToken(ObjTokenType.comment, '# abc'),
           new ObjToken(ObjTokenType.newline),

@@ -94,7 +94,6 @@ class ObjLexer {
         _finishCurrentToken();
       } else if (charCode >= 97 && charCode <= 122 /* a-z */ ||
           charCode >= 65 && charCode <= 90 /* A-Z */ ||
-          charCode == 45 /* - */ ||
           charCode == 95 /* _ */) {
         if (_tokenType == ObjTokenType.int ||
             _tokenType == ObjTokenType.double ||
@@ -106,6 +105,15 @@ class ObjLexer {
       } else if (charCode >= 48 && charCode <= 57 /* 0-9 */) {
         if (_tokenStringBuilder.isEmpty) {
           _tokenType = ObjTokenType.int;
+        }
+
+        _tokenStringBuilder.writeCharCode(charCode);
+      } else if (charCode == 45 /* - */) {
+        if (_tokenStringBuilder.isEmpty) {
+          _tokenType = ObjTokenType.int;
+        } else if (_tokenType == ObjTokenType.int ||
+            _tokenType == ObjTokenType.double) {
+          _tokenType = ObjTokenType.string;
         }
 
         _tokenStringBuilder.writeCharCode(charCode);
