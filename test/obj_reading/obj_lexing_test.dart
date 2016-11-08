@@ -15,19 +15,17 @@ void main() {
 
         lexer.process(3); // Signal "end of text"
 
-        expect(
-            lexer.flush(),
-            equals([
-              new ObjToken(ObjTokenType.string, 'a_0-.b'),
-              new ObjToken(ObjTokenType.int, '1'),
-              new ObjToken(ObjTokenType.slash),
-              new ObjToken(ObjTokenType.double, '1.0'),
-              new ObjToken(ObjTokenType.escape),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.comment, '# abc'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.invalid, '%fg')
-            ]));
+        expect(lexer.flush(), equals([
+          new ObjToken(ObjTokenType.string, 'a_0-.b'),
+          new ObjToken(ObjTokenType.int, '1'),
+          new ObjToken(ObjTokenType.slash),
+          new ObjToken(ObjTokenType.double, '1.0'),
+          new ObjToken(ObjTokenType.backslash),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.comment, '# abc'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.invalid, '%fg')
+        ]));
       });
 
       test('in between two strings that split a token includes the whole token as one in the second flush call', () {
@@ -50,12 +48,10 @@ void main() {
         lexer.process(3); // Signal "end of text"
         tokens.addAll(lexer.flush());
 
-        expect(
-            tokens,
-            equals([
-              new ObjToken(ObjTokenType.string, 'a'),
-              new ObjToken(ObjTokenType.string, 'abcd')
-            ]));
+        expect(tokens, equals([
+          new ObjToken(ObjTokenType.string, 'a'),
+          new ObjToken(ObjTokenType.string, 'abcd')
+        ]));
       });
 
       test('with .obj file results in the correct tokens', () async {
@@ -69,93 +65,91 @@ void main() {
 
         lexer.process(3); // Signal "end of text"
 
-        expect(
-            lexer.flush(),
-            equals([
-              new ObjToken(ObjTokenType.comment, '# Polygonal cube'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.comment, '#'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.comment, '# Example taken from OBJ 3.0 specification.'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'v'),
-              new ObjToken(ObjTokenType.double, '0.000000'),
-              new ObjToken(ObjTokenType.double, '2.000000'),
-              new ObjToken(ObjTokenType.double, '2.000000'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'v'),
-              new ObjToken(ObjTokenType.double, '0.000000'),
-              new ObjToken(ObjTokenType.double, '0.000000'),
-              new ObjToken(ObjTokenType.double, '2.000000'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'v'),
-              new ObjToken(ObjTokenType.double, '2.000000'),
-              new ObjToken(ObjTokenType.double, '0.000000'),
-              new ObjToken(ObjTokenType.double, '2.000000'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'v'),
-              new ObjToken(ObjTokenType.double, '2.000000'),
-              new ObjToken(ObjTokenType.double, '2.000000'),
-              new ObjToken(ObjTokenType.double, '2.000000'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'v'),
-              new ObjToken(ObjTokenType.double, '0.000000'),
-              new ObjToken(ObjTokenType.double, '2.000000'),
-              new ObjToken(ObjTokenType.double, '0.000000'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'v'),
-              new ObjToken(ObjTokenType.double, '0.000000'),
-              new ObjToken(ObjTokenType.double, '0.000000'),
-              new ObjToken(ObjTokenType.double, '0.000000'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'v'),
-              new ObjToken(ObjTokenType.double, '2.000000'),
-              new ObjToken(ObjTokenType.double, '0.000000'),
-              new ObjToken(ObjTokenType.double, '0.000000'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'v'),
-              new ObjToken(ObjTokenType.double, '2.000000'),
-              new ObjToken(ObjTokenType.double, '2.000000'),
-              new ObjToken(ObjTokenType.double, '0.000000'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'f'),
-              new ObjToken(ObjTokenType.int, '1'),
-              new ObjToken(ObjTokenType.int, '2'),
-              new ObjToken(ObjTokenType.int, '3'),
-              new ObjToken(ObjTokenType.int, '4'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'f'),
-              new ObjToken(ObjTokenType.int, '8'),
-              new ObjToken(ObjTokenType.int, '7'),
-              new ObjToken(ObjTokenType.int, '6'),
-              new ObjToken(ObjTokenType.int, '5'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'f'),
-              new ObjToken(ObjTokenType.int, '4'),
-              new ObjToken(ObjTokenType.int, '3'),
-              new ObjToken(ObjTokenType.int, '7'),
-              new ObjToken(ObjTokenType.int, '8'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'f'),
-              new ObjToken(ObjTokenType.int, '5'),
-              new ObjToken(ObjTokenType.int, '1'),
-              new ObjToken(ObjTokenType.int, '4'),
-              new ObjToken(ObjTokenType.int, '8'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'f'),
-              new ObjToken(ObjTokenType.int, '5'),
-              new ObjToken(ObjTokenType.int, '6'),
-              new ObjToken(ObjTokenType.int, '2'),
-              new ObjToken(ObjTokenType.int, '1'),
-              new ObjToken(ObjTokenType.newline),
-              new ObjToken(ObjTokenType.string, 'f'),
-              new ObjToken(ObjTokenType.int, '2'),
-              new ObjToken(ObjTokenType.int, '6'),
-              new ObjToken(ObjTokenType.int, '7'),
-              new ObjToken(ObjTokenType.int, '3'),
-              new ObjToken(ObjTokenType.newline),
-            ]));
+        expect(lexer.flush(), equals([
+          new ObjToken(ObjTokenType.comment, '# Polygonal cube'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.comment, '#'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.comment, '# Example taken from OBJ 3.0 specification.'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'v'),
+          new ObjToken(ObjTokenType.double, '0.000000'),
+          new ObjToken(ObjTokenType.double, '2.000000'),
+          new ObjToken(ObjTokenType.double, '2.000000'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'v'),
+          new ObjToken(ObjTokenType.double, '0.000000'),
+          new ObjToken(ObjTokenType.double, '0.000000'),
+          new ObjToken(ObjTokenType.double, '2.000000'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'v'),
+          new ObjToken(ObjTokenType.double, '2.000000'),
+          new ObjToken(ObjTokenType.double, '0.000000'),
+          new ObjToken(ObjTokenType.double, '2.000000'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'v'),
+          new ObjToken(ObjTokenType.double, '2.000000'),
+          new ObjToken(ObjTokenType.double, '2.000000'),
+          new ObjToken(ObjTokenType.double, '2.000000'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'v'),
+          new ObjToken(ObjTokenType.double, '0.000000'),
+          new ObjToken(ObjTokenType.double, '2.000000'),
+          new ObjToken(ObjTokenType.double, '0.000000'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'v'),
+          new ObjToken(ObjTokenType.double, '0.000000'),
+          new ObjToken(ObjTokenType.double, '0.000000'),
+          new ObjToken(ObjTokenType.double, '0.000000'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'v'),
+          new ObjToken(ObjTokenType.double, '2.000000'),
+          new ObjToken(ObjTokenType.double, '0.000000'),
+          new ObjToken(ObjTokenType.double, '0.000000'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'v'),
+          new ObjToken(ObjTokenType.double, '2.000000'),
+          new ObjToken(ObjTokenType.double, '2.000000'),
+          new ObjToken(ObjTokenType.double, '0.000000'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'f'),
+          new ObjToken(ObjTokenType.int, '1'),
+          new ObjToken(ObjTokenType.int, '2'),
+          new ObjToken(ObjTokenType.int, '3'),
+          new ObjToken(ObjTokenType.int, '4'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'f'),
+          new ObjToken(ObjTokenType.int, '8'),
+          new ObjToken(ObjTokenType.int, '7'),
+          new ObjToken(ObjTokenType.int, '6'),
+          new ObjToken(ObjTokenType.int, '5'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'f'),
+          new ObjToken(ObjTokenType.int, '4'),
+          new ObjToken(ObjTokenType.int, '3'),
+          new ObjToken(ObjTokenType.int, '7'),
+          new ObjToken(ObjTokenType.int, '8'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'f'),
+          new ObjToken(ObjTokenType.int, '5'),
+          new ObjToken(ObjTokenType.int, '1'),
+          new ObjToken(ObjTokenType.int, '4'),
+          new ObjToken(ObjTokenType.int, '8'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'f'),
+          new ObjToken(ObjTokenType.int, '5'),
+          new ObjToken(ObjTokenType.int, '6'),
+          new ObjToken(ObjTokenType.int, '2'),
+          new ObjToken(ObjTokenType.int, '1'),
+          new ObjToken(ObjTokenType.newline),
+          new ObjToken(ObjTokenType.string, 'f'),
+          new ObjToken(ObjTokenType.int, '2'),
+          new ObjToken(ObjTokenType.int, '6'),
+          new ObjToken(ObjTokenType.int, '7'),
+          new ObjToken(ObjTokenType.int, '3'),
+          new ObjToken(ObjTokenType.newline),
+        ]));
       });
     });
 
@@ -180,12 +174,10 @@ void main() {
         lexer.process(3); // Signal "end of text"
         tokens.addAll(lexer.clean());
 
-        expect(
-            tokens,
-            equals([
-              new ObjToken(ObjTokenType.string, 'a'),
-              new ObjToken(ObjTokenType.string, 'cd')
-            ]));
+        expect(tokens, equals([
+          new ObjToken(ObjTokenType.string, 'a'),
+          new ObjToken(ObjTokenType.string, 'cd')
+        ]));
       });
     });
   });

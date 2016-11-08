@@ -7,7 +7,7 @@ enum ObjTokenType {
   double,
   comment,
   slash,
-  escape,
+  backslash,
   newline,
   invalid
 }
@@ -17,7 +17,10 @@ class ObjToken {
   /// This [OjbToken]'s type.
   final ObjTokenType type;
 
+  /// This [ObjToken]'s value.
   ///
+  /// Is `null` for tokens that do cannot have differing values (`slash`,
+  /// `backslash`, `newline`).
   final String value;
 
   /// Instantiates a new [ObjToken].
@@ -119,7 +122,7 @@ class ObjLexer {
         _tokens.add(new ObjToken(ObjTokenType.slash));
       } else if (charCode == 92 /* \ */) {
         _finishCurrentToken();
-        _tokens.add(new ObjToken(ObjTokenType.escape));
+        _tokens.add(new ObjToken(ObjTokenType.backslash));
       } else {
         _tokenStringBuilder.writeCharCode(charCode);
         _tokenType = ObjTokenType.invalid;
