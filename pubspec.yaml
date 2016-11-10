@@ -8,6 +8,7 @@ environment:
   sdk: '>=1.0.0 <2.0.0'
 
 dependencies:
+  quiver: '>=0.24.0 <0.25.0'
   resource: '>=2.0.2 <2.1.0'
   rl_matrix: '>=0.6.2 <0.7.0'
 

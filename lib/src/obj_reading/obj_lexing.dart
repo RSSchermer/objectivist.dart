@@ -4,9 +4,10 @@ part of obj_reading;
 enum ObjTokenType {
   string,
   int,
+  intPair,
+  intTriple,
   double,
   comment,
-  slash,
   backslash,
   newline,
   endOfText,
