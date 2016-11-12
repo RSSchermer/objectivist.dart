@@ -6,7 +6,9 @@ void main() {
   group('ObjLexer', () {
     group('flush', () {
       test('all token types', () {
-        final sourceString = 'a_0-.b 1/1.0 \\ -1 -2.0\n# abc\n %fg';
+        final sourceString =
+            'a_0-.b 1 1/2 1/2/3 1//3 1.0 1.1e12 1.1E12 \\ -1 -1/-2 -1/-2/-3 '
+            '-1//-3 -1.0 1.1e-12 1.1E-12\n# abc\n %fg';
         final lexer = new ObjLexer();
 
         for (var i = 0; i < sourceString.length; i++) {
@@ -18,11 +20,20 @@ void main() {
         expect(lexer.flush(), equals([
           new ObjToken(ObjTokenType.string, 'a_0-.b'),
           new ObjToken(ObjTokenType.int, '1'),
-          new ObjToken(ObjTokenType.slash),
+          new ObjToken(ObjTokenType.intPair, '1/2'),
+          new ObjToken(ObjTokenType.intTriple, '1/2/3'),
+          new ObjToken(ObjTokenType.intTriple, '1//3'),
           new ObjToken(ObjTokenType.double, '1.0'),
+          new ObjToken(ObjTokenType.double, '1.1e12'),
+          new ObjToken(ObjTokenType.double, '1.1E12'),
           new ObjToken(ObjTokenType.backslash),
           new ObjToken(ObjTokenType.int, '-1'),
-          new ObjToken(ObjTokenType.double, '-2.0'),
+          new ObjToken(ObjTokenType.intPair, '-1/-2'),
+          new ObjToken(ObjTokenType.intTriple, '-1/-2/-3'),
+          new ObjToken(ObjTokenType.intTriple, '-1//-3'),
+          new ObjToken(ObjTokenType.double, '-1.0'),
+          new ObjToken(ObjTokenType.double, '1.1e-12'),
+          new ObjToken(ObjTokenType.double, '1.1E-12'),
           new ObjToken(ObjTokenType.newline),
           new ObjToken(ObjTokenType.comment, '# abc'),
           new ObjToken(ObjTokenType.newline),

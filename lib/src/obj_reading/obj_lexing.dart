@@ -65,6 +65,10 @@ class ObjLexer {
   /// The currently buffered tokens.
   List<ObjToken> _tokens = [];
 
+  int _lastCharCode = 0;
+
+  bool _hasExponent = false;
+
   /// Processes the next character.
   ///
   /// Tokens will be buffered. See [flush] and [clean] for retrieving the
@@ -90,6 +94,14 @@ class ObjLexer {
         _tokenType = ObjTokenType.comment;
       } else if (charCode == 32 /* space */ || charCode == 9 /* tab */) {
         _finishCurrentToken();
+      } else if (charCode == 101 || charCode == 69) {
+        if (_tokenType == ObjTokenType.double && !_hasExponent) {
+          _hasExponent = true;
+        } else {
+          _tokenType == ObjTokenType.string;
+        }
+
+        _tokenStringBuilder.writeCharCode(charCode);
       } else if (charCode >= 97 && charCode <= 122 /* a-z */ ||
           charCode >= 65 && charCode <= 90 /* A-Z */ ||
           charCode == 95 /* _ */) {
@@ -109,8 +121,20 @@ class ObjLexer {
       } else if (charCode == 45 /* - */) {
         if (_tokenStringBuilder.isEmpty) {
           _tokenType = ObjTokenType.int;
-        } else if (_tokenType == ObjTokenType.int ||
-            _tokenType == ObjTokenType.double) {
+        } else if (_tokenType == ObjTokenType.int &&
+                !(_lastCharCode == 101 /* e */ ||
+                    _lastCharCode == 69 /* E */) ||
+            _tokenType == ObjTokenType.double &&
+                !(_lastCharCode == 101 /* e */ ||
+                    _lastCharCode == 69 /* E */) ||
+            _tokenType == ObjTokenType.intPair &&
+                !(_lastCharCode == 101 /* e */ ||
+                    _lastCharCode == 69 /* E */ ||
+                    _lastCharCode == 47 /* / */) ||
+            _tokenType == ObjTokenType.intTriple &&
+                !(_lastCharCode == 101 /* e */ ||
+                    _lastCharCode == 69 /* E */ ||
+                    _lastCharCode == 47 /* / */)) {
           _tokenType = ObjTokenType.string;
         }
 
@@ -124,16 +148,30 @@ class ObjLexer {
 
         _tokenStringBuilder.writeCharCode(46);
       } else if (charCode == 47 /* / */) {
-        _finishCurrentToken();
-        _tokens.add(new ObjToken(ObjTokenType.slash));
+        if (_tokenType == ObjTokenType.int) {
+          _tokenType = ObjTokenType.intPair;
+        } else if (_tokenType == ObjTokenType.intPair) {
+          _tokenType = ObjTokenType.intTriple;
+        } else if (_tokenStringBuilder.isEmpty ||
+            _tokenType == ObjTokenType.double) {
+          _tokenType = ObjTokenType.string;
+        }
+
+        _tokenStringBuilder.writeCharCode(47);
       } else if (charCode == 92 /* \ */) {
-        _finishCurrentToken();
-        _tokens.add(new ObjToken(ObjTokenType.backslash));
+        if (_tokenStringBuilder.isEmpty) {
+          _tokens.add(new ObjToken(ObjTokenType.backslash));
+        } else {
+          _tokenType = ObjTokenType.string;
+          _tokenStringBuilder.writeCharCode(92);
+        }
       } else {
         _tokenStringBuilder.writeCharCode(charCode);
         _tokenType = ObjTokenType.invalid;
       }
     }
+
+    _lastCharCode = charCode;
   }
 
   /// Returns all buffered tokens and empties the token buffer, but leaves any
@@ -168,6 +206,8 @@ class ObjLexer {
     _tokens = [];
     _tokenStringBuilder.clear();
     _tokenType = ObjTokenType.invalid;
+    _lastCharCode = 0;
+    _hasExponent = false;
 
     return tokens;
   }
@@ -177,6 +217,8 @@ class ObjLexer {
       _tokens.add(new ObjToken(_tokenType, _tokenStringBuilder.toString()));
       _tokenStringBuilder.clear();
       _tokenType = ObjTokenType.invalid;
+      _lastCharCode = 0;
+      _hasExponent = false;
     }
   }
 }
