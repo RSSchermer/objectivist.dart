@@ -1,24 +1,19 @@
 part of obj_reading;
 
-class VnStatementBuilder implements ObjStatementBuilder {
-  final int lineNumber;
+class OStatementBuilder implements ObjStatementBuilder {
+  String _objectName;
 
   int _argumentCount = 0;
 
-  double _i;
-
-  double _j;
-
-  double _k;
+  final int lineNumber;
 
   List<ObjError> _errors;
 
-  VnStatementBuilder(this.lineNumber);
+  OStatementBuilder(this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'String', ['double']));
+      _objectName = argument;
     }
 
     _argumentCount++;
@@ -27,7 +22,7 @@ class VnStatementBuilder implements ObjStatementBuilder {
   void addIntArgument(int argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'int', ['double']));
+          lineNumber, 'o', _argumentCount, 'int', ['String']));
     }
 
     _argumentCount++;
@@ -36,7 +31,7 @@ class VnStatementBuilder implements ObjStatementBuilder {
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'IntPair', ['double']));
+          lineNumber, 'o', _argumentCount, 'IntPair', ['String']));
     }
 
     _argumentCount++;
@@ -45,7 +40,7 @@ class VnStatementBuilder implements ObjStatementBuilder {
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'IntTriple', ['double']));
+          lineNumber, 'o', _argumentCount, 'IntTriple', ['String']));
     }
 
     _argumentCount++;
@@ -53,13 +48,8 @@ class VnStatementBuilder implements ObjStatementBuilder {
 
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
-      if (_argumentCount == 0) {
-        _i = argument;
-      } else if (_argumentCount == 1) {
-        _j = argument;
-      } else if (_argumentCount == 2) {
-        _k = argument;
-      }
+      _errors.add(new ArgumentTypeError(
+          lineNumber, 'o', _argumentCount, 'double', ['String']));
     }
 
     _argumentCount++;
@@ -68,21 +58,21 @@ class VnStatementBuilder implements ObjStatementBuilder {
   ObjStatementResult build() {
     if (_argumentCount < 1) {
       _errors.add(
-          new ObjError(lineNumber, 'A `vn` statement requires 3 arguments.'));
+          new ObjError(lineNumber, 'An `o` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
       return new ObjStatementResult.success(
-          new VnStatement(_i, _j, _k, lineNumber: lineNumber));
+          new OStatement(_objectName, lineNumber: lineNumber));
     } else {
       return new ObjStatementResult.failure(_errors);
     }
   }
 
   bool _enforceMaxArgumentCount() {
-    if (_argumentCount >= 3) {
-      _errors.add(new ObjError(
-          lineNumber, 'A `vn` statement does not take more than 3 arguments.'));
+    if (_argumentCount >= 1) {
+      _errors.add(
+          new ObjError(lineNumber, 'An `o` statement only takes 1 argument.'));
 
       return false;
     } else {

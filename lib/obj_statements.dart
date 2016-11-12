@@ -917,7 +917,7 @@ class SStatement implements ObjStatement {
   /// The smoothing group set by this [SStatement].
   ///
   /// A value of `0` indicates that smoothing groups are turned of for the
-  /// elements that follow this statement.
+  /// elements that follow this [SStatement].
   ///
   /// For free-form surfaces, smoothing groups are either turned on or off;
   /// there is no difference between values greater than `0`.
@@ -928,12 +928,20 @@ class SStatement implements ObjStatement {
   /// Instantiates a new [SStatement].
   SStatement(this.smoothingGroup, {this.lineNumber});
 
+  /// Whether or not smoothing groups are turned on for elements that follow
+  /// this [SStatement].
+  bool get isOn => smoothingGroup > 0;
+
+  /// Whether or not smoothing groups are turned off for elements that follow
+  /// this [SStatement].
+  bool get isOff => smoothingGroup <= 0;
+
   void acceptVisit(ObjStatementVisitor visitor) {
     visitor.visitSStatement(this);
   }
 
   String toSource() {
-    if (smoothingGroup == 0) {
+    if (isOff) {
       return 's off';
     } else {
       return 's $smoothingGroup';
@@ -956,7 +964,7 @@ class MgStatement implements ObjStatement {
   /// The merging group set by this [MgStatement].
   ///
   /// A value of `0` indicates that merging groups are turned of for the
-  /// elements that follow this statement.
+  /// elements that follow this [MgStatement].
   final int mergingGroup;
 
   /// The maximum distance between two surfaces that will be merged together.
@@ -971,12 +979,20 @@ class MgStatement implements ObjStatement {
   /// Instantiates a new [MgStatement].
   MgStatement(this.mergingGroup, this.resolution, {this.lineNumber});
 
+  /// Whether or not smoothing groups are turned on for elements that follow
+  /// this [MgStatement].
+  bool get isOn => mergingGroup > 0;
+
+  /// Whether or not smoothing groups are turned off for elements that follow
+  /// this [MgStatement].
+  bool get isOff => mergingGroup <= 0;
+
   void acceptVisit(ObjStatementVisitor visitor) {
     visitor.visitMgStatement(this);
   }
 
   String toSource() {
-    if (mergingGroup == 0) {
+    if (isOff) {
       return 'mg off';
     } else {
       return 'mg $mergingGroup $resolution';

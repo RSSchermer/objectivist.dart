@@ -295,8 +295,8 @@ class ArgumentTypeError implements ObjError {
       }
     }
 
-    return 'The $positionString argument of a `$statementType` must be a '
-        '$expectedString; $actualType given.';
+    return 'The $positionString argument of a(n) `$statementType` statement '
+        'must be a(n) $expectedString; $actualType given.';
   }
 
   String toString() => 'Error on line $lineNumber: $description';
@@ -329,52 +329,6 @@ abstract class ObjStatementBuilder {
 
   ObjStatementResult build();
 }
-
-class ParmStatementBuilder implements ObjStatementBuilder {}
-
-class TrimStatementBuilder implements ObjStatementBuilder {}
-
-class HoleStatementBuilder implements ObjStatementBuilder {}
-
-class ScrvStatementBuilder implements ObjStatementBuilder {}
-
-class SpStatementBuilder implements ObjStatementBuilder {}
-
-class EndStatementBuilder implements ObjStatementBuilder {}
-
-class ConStatementBuilder implements ObjStatementBuilder {}
-
-class GStatementBuilder implements ObjStatementBuilder {}
-
-class SStatementBuilder implements ObjStatementBuilder {}
-
-class MgStatementBuilder implements ObjStatementBuilder {}
-
-class OStatementBuilder implements ObjStatementBuilder {}
-
-class BevelStatementBuilder implements ObjStatementBuilder {}
-
-class CInterpStatementBuilder implements ObjStatementBuilder {}
-
-class DInterpStatementBuilder implements ObjStatementBuilder {}
-
-class LodStatementBuilder implements ObjStatementBuilder {}
-
-class MaplibStatementBuilder implements ObjStatementBuilder {}
-
-class UsemapStatementBuilder implements ObjStatementBuilder {}
-
-class UsemtlStatementBuilder implements ObjStatementBuilder {}
-
-class MtllibStatementBuilder implements ObjStatementBuilder {}
-
-class ShadowObjStatementBuilder implements ObjStatementBuilder {}
-
-class TraceObjStatementBuilder implements ObjStatementBuilder {}
-
-class CtechStatementBuilder implements ObjStatementBuilder {}
-
-class StechStatementBuilder implements ObjStatementBuilder {}
 
 String _positionToString(int position) {
   final adjusted = position + 1;

@@ -1,24 +1,26 @@
 part of obj_reading;
 
-class VnStatementBuilder implements ObjStatementBuilder {
-  final int lineNumber;
+class SStatementBuilder implements ObjStatementBuilder {
+  int _smoothingGroup;
 
   int _argumentCount = 0;
 
-  double _i;
-
-  double _j;
-
-  double _k;
+  final int lineNumber;
 
   List<ObjError> _errors;
 
-  VnStatementBuilder(this.lineNumber);
+  SStatementBuilder(this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'String', ['double']));
+      if (argument == 'off') {
+        _smoothingGroup = 0;
+      } else {
+        _errors.add(new ObjError(
+            lineNumber,
+            'The argument of an `s` must be either an `int` or the value '
+            '`off`.'));
+      }
     }
 
     _argumentCount++;
@@ -26,8 +28,7 @@ class VnStatementBuilder implements ObjStatementBuilder {
 
   void addIntArgument(int argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'int', ['double']));
+      _smoothingGroup = argument;
     }
 
     _argumentCount++;
@@ -36,7 +37,7 @@ class VnStatementBuilder implements ObjStatementBuilder {
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'IntPair', ['double']));
+          lineNumber, 's', _argumentCount, 'IntPair', ['int', 'String']));
     }
 
     _argumentCount++;
@@ -45,7 +46,7 @@ class VnStatementBuilder implements ObjStatementBuilder {
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'IntTriple', ['double']));
+          lineNumber, 's', _argumentCount, 'IntTriple', ['int', 'String']));
     }
 
     _argumentCount++;
@@ -53,13 +54,8 @@ class VnStatementBuilder implements ObjStatementBuilder {
 
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
-      if (_argumentCount == 0) {
-        _i = argument;
-      } else if (_argumentCount == 1) {
-        _j = argument;
-      } else if (_argumentCount == 2) {
-        _k = argument;
-      }
+      _errors.add(new ArgumentTypeError(
+          lineNumber, 's', _argumentCount, 'double', ['int', 'String']));
     }
 
     _argumentCount++;
@@ -68,21 +64,21 @@ class VnStatementBuilder implements ObjStatementBuilder {
   ObjStatementResult build() {
     if (_argumentCount < 1) {
       _errors.add(
-          new ObjError(lineNumber, 'A `vn` statement requires 3 arguments.'));
+          new ObjError(lineNumber, 'An `s` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
       return new ObjStatementResult.success(
-          new VnStatement(_i, _j, _k, lineNumber: lineNumber));
+          new SStatement(_smoothingGroup, lineNumber: lineNumber));
     } else {
       return new ObjStatementResult.failure(_errors);
     }
   }
 
   bool _enforceMaxArgumentCount() {
-    if (_argumentCount >= 3) {
-      _errors.add(new ObjError(
-          lineNumber, 'A `vn` statement does not take more than 3 arguments.'));
+    if (_argumentCount >= 1) {
+      _errors.add(
+          new ObjError(lineNumber, 'An `s` statement only takes 1 argument.'));
 
       return false;
     } else {

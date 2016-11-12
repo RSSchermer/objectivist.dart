@@ -1,26 +1,28 @@
 part of obj_reading;
 
-class VStatementBuilder implements ObjStatementBuilder {
-  final int lineNumber;
+class BevelStatementBuilder implements ObjStatementBuilder {
+  bool _bevelEnabled;
 
   int _argumentCount = 0;
 
-  double _x;
-
-  double _y;
-
-  double _z;
-
-  double _w;
+  final int lineNumber;
 
   List<ObjError> _errors;
 
-  VStatementBuilder(this.lineNumber);
+  BevelStatementBuilder(this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'v', _argumentCount, 'String', ['double']));
+      if (argument == 'on') {
+        _bevelEnabled = true;
+      } else if (argument == 'off') {
+        _bevelEnabled = false;
+      } else {
+        _errors.add(new ObjError(
+            lineNumber,
+            'The argument supplied to a `bevel` statement must be `on` or '
+            '`off`.'));
+      }
     }
 
     _argumentCount++;
@@ -29,7 +31,7 @@ class VStatementBuilder implements ObjStatementBuilder {
   void addIntArgument(int argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'v', _argumentCount, 'int', ['double']));
+          lineNumber, 'bevel', _argumentCount, 'int', ['String']));
     }
 
     _argumentCount++;
@@ -38,7 +40,7 @@ class VStatementBuilder implements ObjStatementBuilder {
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'v', _argumentCount, 'IntPair', ['double']));
+          lineNumber, 'bevel', _argumentCount, 'IntPair', ['String']));
     }
 
     _argumentCount++;
@@ -47,7 +49,7 @@ class VStatementBuilder implements ObjStatementBuilder {
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'v', _argumentCount, 'IntTriple', ['double']));
+          lineNumber, 'bevel', _argumentCount, 'IntTriple', ['String']));
     }
 
     _argumentCount++;
@@ -55,38 +57,31 @@ class VStatementBuilder implements ObjStatementBuilder {
 
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
-      if (_argumentCount == 0) {
-        _x = argument;
-      } else if (_argumentCount == 1) {
-        _y = argument;
-      } else if (_argumentCount == 2) {
-        _z = argument;
-      } else if (_argumentCount == 3) {
-        _w = argument;
-      }
+      _errors.add(new ArgumentTypeError(
+          lineNumber, 'bevel', _argumentCount, 'double', ['String']));
     }
 
     _argumentCount++;
   }
 
   ObjStatementResult build() {
-    if (_argumentCount < 3) {
-      _errors.add(new ObjError(
-          lineNumber, 'A `v` statement requires at least 3 arguments.'));
+    if (_argumentCount < 1) {
+      _errors.add(
+          new ObjError(lineNumber, 'A `bevel` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
       return new ObjStatementResult.success(
-          new VStatement(_x, _y, _z, _w, lineNumber: lineNumber));
+          new BevelStatement(_bevelEnabled, lineNumber: lineNumber));
     } else {
       return new ObjStatementResult.failure(_errors);
     }
   }
 
   bool _enforceMaxArgumentCount() {
-    if (_argumentCount >= 4) {
+    if (_argumentCount >= 1) {
       _errors.add(new ObjError(
-          lineNumber, 'A `v` statement does not take more than 4 arguments.'));
+          lineNumber, 'A `bevel` statement only takes 1 argument.'));
 
       return false;
     } else {

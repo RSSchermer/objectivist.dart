@@ -132,7 +132,7 @@ class CstypeStatementBuilder implements ObjStatementBuilder {
   }
 
   bool _enforceMaxArgumentCount() {
-    if (_argumentCount > 2) {
+    if (_argumentCount >= 2) {
       _errors.add(new ObjError(lineNumber,
           'A `cstype` statement does not take more than 2 arguments.'));
 

@@ -80,7 +80,7 @@ class VtStatementBuilder implements ObjStatementBuilder {
   }
 
   bool _enforceMaxArgumentCount() {
-    if (_argumentCount > 3) {
+    if (_argumentCount >= 3) {
       _errors.add(new ObjError(
           lineNumber, 'A `vt` statement does not take more than 3 arguments.'));
 
