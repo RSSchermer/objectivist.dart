@@ -1,5 +1,7 @@
 library obj_statements;
 
+import 'package:quiver/collection.dart';
+
 /// Enumerates the parameter directions.
 enum ParameterDirection { u, v }
 
@@ -164,6 +166,17 @@ class VStatement implements ObjStatement {
       return 'v $x $y $z';
     }
   }
+
+  String toString() => 'VStatement($x, $y, $z, $w, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is VStatement &&
+          other.x == x &&
+          other.y == y &&
+          other.z == z &&
+          other.w == w &&
+          other.lineNumber == lineNumber;
 }
 
 /// Specifies a texture vertex and its coordinates.
@@ -205,6 +218,16 @@ class VtStatement implements ObjStatement {
       return 'vt $u';
     }
   }
+
+  String toString() => 'VtStatement($u, $v, $w, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is VtStatement &&
+          other.u == u &&
+          other.v == v &&
+          other.w == w &&
+          other.lineNumber == lineNumber;
 }
 
 /// Specifies a normal vector with components [i], [j], and [k].
@@ -235,6 +258,16 @@ class VnStatement implements ObjStatement {
   }
 
   String toSource() => 'vn $i $j $k';
+
+  String toString() => 'VnStatement($i, $j, $k, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is VnStatement &&
+          other.i == i &&
+          other.j == j &&
+          other.k == k &&
+          other.lineNumber == lineNumber;
 }
 
 /// Specifies a point in the parameter space of a curve or surface.
@@ -281,6 +314,16 @@ class VpStatement implements ObjStatement {
       return 'vp $u';
     }
   }
+
+  String toString() => 'VpStatement($u, $v, $w, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is VpStatement &&
+          other.u == u &&
+          other.v == v &&
+          other.w == w &&
+          other.lineNumber == lineNumber;
 }
 
 const _csTypeStringMapping = const {
@@ -318,6 +361,16 @@ class CstypeStatement implements ObjStatement {
       return 'cstype $typeString';
     }
   }
+
+  String toString() => 'CSTypeStatement($type, isRational: $isRational, '
+      'lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is CstypeStatement &&
+          other.type == type &&
+          other.isRational == isRational &&
+          other.lineNumber == lineNumber;
 }
 
 /// State settings statement that specifies the polynomial degrees of the curves
@@ -358,6 +411,16 @@ class DegStatement implements ObjStatement {
       return 'deg $degreeU';
     }
   }
+
+  String toString() =>
+      'DegStatement($degreeU, $degreeV, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is DegStatement &&
+          other.degreeU == degreeU &&
+          other.degreeV == degreeV &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statements that specifies a basis matrix for curves and
@@ -403,6 +466,16 @@ class BmatStatement implements ObjStatement {
       return 'bmat u $valuesString';
     }
   }
+
+  String toString() =>
+      'BmatStatement($direction, $values, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is BmatStatement &&
+          other.direction == direction &&
+          listsEqual(other.values.toList(), values.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statement that sets the step size for the basis matrix curves
@@ -452,6 +525,15 @@ class StepStatement implements ObjStatement {
       return 'step $stepU';
     }
   }
+
+  String toString() => 'StepStatement($stepU, $stepV, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is StepStatement &&
+          other.stepU == stepU &&
+          other.stepV == stepV &&
+          other.lineNumber == lineNumber;
 }
 
 /// Specifies point elements by referencing their vertices.
@@ -474,6 +556,14 @@ class PStatement implements ObjStatement {
 
   String toSource() =>
       vNums.map((n) => n.toString()).fold('p', (res, s) => '$res $s');
+
+  String toString() => 'PStatement($vNums, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is PStatement &&
+          listsEqual(other.vNums.toList(), vNums.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// Specifies a line element by its [VertexNumPair]s.
@@ -494,6 +584,14 @@ class LStatement implements ObjStatement {
 
   String toSource() =>
       vertexNumPairs.map((n) => n.toSource()).fold('l', (res, s) => '$res $s');
+
+  String toString() => 'LStatement($vertexNumPairs, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is LStatement &&
+          listsEqual(other.vertexNumPairs.toList(), vertexNumPairs.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// A pair of numbers or which [vNum] is the reference number for a geometric
@@ -516,6 +614,12 @@ class VertexNumPair {
       return vNum.toString();
     }
   }
+
+  String toString() => '($vNum, $vtNum)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is VertexNumPair && other.vNum == vNum && other.vtNum == vtNum;
 }
 
 /// Specifies a face element by its [VertexNumTriple]s.
@@ -537,6 +641,15 @@ class FStatement implements ObjStatement {
   String toSource() => vertexNumTriples
       .map((n) => n.toSource())
       .fold('f', (res, s) => '$res $s');
+
+  String toString() => 'FStatement($vertexNumTriples, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is FStatement &&
+          listsEqual(
+              other.vertexNumTriples.toList(), vertexNumTriples.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// A triple of numbers or which [vNum] is the reference number for a geometric
@@ -567,6 +680,15 @@ class VertexNumTriple {
       return vNum.toString();
     }
   }
+
+  String toString() => '($vNum, $vtNum, $vnNum)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is VertexNumTriple &&
+          other.vNum == vNum &&
+          other.vtNum == vtNum &&
+          other.vnNum == vnNum;
 }
 
 /// Specifies a curve, its parameter range, and its control vertices.
@@ -599,6 +721,18 @@ class CurvStatement implements ObjStatement {
   String toSource() => controlPointNums
       .map((n) => n.toString())
       .fold('curv $start $end', (res, s) => '$res $s');
+
+  String toString() =>
+      'CurvStatement($start, $end, $controlPointNums, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is CurvStatement &&
+          other.start == start &&
+          other.end == end &&
+          listsEqual(
+              other.controlPointNums.toList(), controlPointNums.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// Specifies a 2D curve on a surface and its control points.
@@ -624,6 +758,16 @@ class Curv2Statement implements ObjStatement {
   String toSource() => controlPointNums
       .map((n) => n.toString())
       .fold('curv2', (res, s) => '$res $s');
+
+  String toString() =>
+      'Curv2Statement($controlPointNums, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is Curv2Statement &&
+          listsEqual(
+              other.controlPointNums.toList(), controlPointNums.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// Instance of a 2D curve defined on the parameter range from [start] to [end].
@@ -641,6 +785,15 @@ class Curve2Instance {
   Curve2Instance(this.start, this.end, this.curve2Num);
 
   String toSource() => '$start $end $curve2Num';
+
+  String toString() => 'Curve2Instance($start, $end, $curve2Num)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is Curve2Instance &&
+          other.start == start &&
+          other.end == end &&
+          other.curve2Num == curve2Num;
 }
 
 /// Specifies a surface, its parameter range, and its control vertices.
@@ -686,6 +839,21 @@ class SurfStatement implements ObjStatement {
   String toSource() => controlPointTriples
       .map((n) => n.toSource())
       .fold('surf $startU $endU $startV $endV', (res, s) => '$res $s');
+
+  String toString() =>
+      'SurfStatement($startU, $endU, $startV, $endV, $controlPointTriples, '
+      'lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is SurfStatement &&
+          other.startU == startU &&
+          other.endU == endU &&
+          other.startV == startV &&
+          other.endV == endV &&
+          listsEqual(other.controlPointTriples.toList(),
+              controlPointTriples.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// Body statement for free-form geometry (curves and surfaces) that specifies
@@ -728,6 +896,17 @@ class ParmStatement implements ObjStatement {
       return 'parm u $parmString';
     }
   }
+
+  String toString() =>
+      'ParmStatement($direction, $parameterValues, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is ParmStatement &&
+          other.direction == direction &&
+          listsEqual(
+              other.parameterValues.toList(), parameterValues.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// Body statement for a surface that specifies a sequence of curves that build
@@ -752,6 +931,14 @@ class TrimStatement implements ObjStatement {
 
   String toSource() =>
       curves.map((n) => n.toSource()).fold('trim', (res, s) => '$res $s');
+
+  String toString() => 'TrimStatement($curves, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is TrimStatement &&
+          listsEqual(other.curves.toList(), curves.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// Body statement for a surface that specifies a sequence of curves to build a
@@ -776,6 +963,14 @@ class HoleStatement implements ObjStatement {
 
   String toSource() =>
       curves.map((n) => n.toSource()).fold('hole', (res, s) => '$res $s');
+
+  String toString() => 'HoleStatement($curves, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is HoleStatement &&
+          listsEqual(other.curves.toList(), curves.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// Body statement for a surface that specifies a sequence of curves which lie
@@ -800,6 +995,14 @@ class ScrvStatement implements ObjStatement {
 
   String toSource() =>
       curves.map((n) => n.toSource()).fold('scrv', (res, s) => '$res $s');
+
+  String toString() => 'ScrvStatement($curves, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is ScrvStatement &&
+          listsEqual(other.curves.toList(), curves.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// Body statement for free-form geometry (curves and surfaces) that specifies
@@ -824,6 +1027,14 @@ class SpStatement implements ObjStatement {
 
   String toSource() =>
       vpNums.map((n) => n.toString()).fold('sp', (res, s) => '$res $s');
+
+  String toString() => 'SpStatement($vpNums, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is SpStatement &&
+          listsEqual(other.vpNums.toList(), vpNums.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// Specifies the end of a body statement block for free-form geometry (curves
@@ -839,6 +1050,12 @@ class EndStatement implements ObjStatement {
   }
 
   String toSource() => 'end';
+
+  String toString() => 'EndStatement(lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is EndStatement && other.lineNumber == lineNumber;
 }
 
 /// Specifies connectivity between two surfaces.
@@ -876,6 +1093,19 @@ class ConStatement implements ObjStatement {
 
   String toSource() =>
       'con $surfANum ${curveA.toSource()} $surfBNum ${curveB.toSource()}';
+
+  String toString() =>
+      'ConStatement($surfANum, $curveA, $surfBNum, $curveB, lineNumber: '
+      '$lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is ConStatement &&
+          other.surfANum == surfANum &&
+          other.curveA == curveA &&
+          other.surfBNum == surfBNum &&
+          other.curveB == curveB &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statement that specifies the group name(s) for the elements
@@ -903,6 +1133,14 @@ class GStatement implements ObjStatement {
   }
 
   String toSource() => groupNames.fold('g', (res, s) => '$res $s');
+
+  String toString() => 'GStatement($groupNames, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is GStatement &&
+          listsEqual(other.groupNames.toList(), groupNames.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statement that sets the smoothing group for the elements that
@@ -947,6 +1185,14 @@ class SStatement implements ObjStatement {
       return 's $smoothingGroup';
     }
   }
+
+  String toString() => 'SStatement($smoothingGroup, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is SStatement &&
+          other.smoothingGroup == smoothingGroup &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statement that sets the merging group and merge resolution for
@@ -998,6 +1244,16 @@ class MgStatement implements ObjStatement {
       return 'mg $mergingGroup $resolution';
     }
   }
+
+  String toString() =>
+      'MgStatement($mergingGroup, $resolution, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is MgStatement &&
+          other.mergingGroup == mergingGroup &&
+          other.resolution == resolution &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statement specifies an object name for the elements that
@@ -1016,6 +1272,14 @@ class OStatement implements ObjStatement {
   }
 
   String toSource() => 'o $objectName';
+
+  String toString() => 'OStatement($objectName, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is OStatement &&
+          other.objectName == objectName &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statement that turns bevel interpolation on or off.
@@ -1046,6 +1310,14 @@ class BevelStatement implements ObjStatement {
       return 'bevel off';
     }
   }
+
+  String toString() => 'BevelStatement($bevelEnabled, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is BevelStatement &&
+          other.bevelEnabled == bevelEnabled &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statement that turns color interpolation on or off.
@@ -1079,6 +1351,15 @@ class CInterpStatement implements ObjStatement {
       return 'c_interp off';
     }
   }
+
+  String toString() =>
+      'CInterpStatement($colorInterpolationEnabled, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is CInterpStatement &&
+          other.colorInterpolationEnabled == colorInterpolationEnabled &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statement that turns dissolve interpolation on or off.
@@ -1113,6 +1394,15 @@ class DInterpStatement implements ObjStatement {
       return 'd_interp off';
     }
   }
+
+  String toString() => 'DInterpStatement($dissolveInterpolationEnabled, '
+      'lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is DInterpStatement &&
+          other.dissolveInterpolationEnabled == dissolveInterpolationEnabled &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statement that sets the level of detail to be displayed.
@@ -1137,6 +1427,14 @@ class LodStatement implements ObjStatement {
   }
 
   String toSource() => 'lod $level';
+
+  String toString() => 'LodStatement($level, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is LodStatement &&
+          other.level == level &&
+          other.lineNumber == lineNumber;
 }
 
 /// A state setting statement that specifies the map library file for the
@@ -1162,6 +1460,14 @@ class MaplibStatement implements ObjStatement {
   }
 
   String toSource() => filenames.fold('maplib', (res, s) => '$res $s');
+
+  String toString() => 'MaplibStatement($filenames, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is MaplibStatement &&
+          listsEqual(other.filenames.toList(), filenames.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statement that specifies the texture map name for the elements
@@ -1191,6 +1497,14 @@ class UsemapStatement implements ObjStatement {
       return 'usemap $mapName';
     }
   }
+
+  String toString() => 'UsemapStatement($mapName, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is UsemapStatement &&
+          other.mapName == mapName &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statement that specifies the material for the elements
@@ -1212,6 +1526,15 @@ class UsemtlStatement implements ObjStatement {
   }
 
   String toSource() => 'usemtl $materialName';
+
+  String toString() =>
+      'UsemtlStatement($materialName, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is UsemtlStatement &&
+          other.materialName == materialName &&
+          other.lineNumber == lineNumber;
 }
 
 /// A state setting statement that specifies the material library file for the
@@ -1238,6 +1561,14 @@ class MtllibStatement implements ObjStatement {
   }
 
   String toSource() => filenames.fold('mtllib', (res, s) => '$res $s');
+
+  String toString() => 'MtllibStatement($filenames, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is MtllibStatement &&
+          listsEqual(other.filenames.toList(), filenames.toList()) &&
+          other.lineNumber == lineNumber;
 }
 
 /// Specifies the shadow object filename.
@@ -1270,6 +1601,14 @@ class ShadowObjStatement implements ObjStatement {
   }
 
   String toSource() => 'shadow_obj $filename';
+
+  String toString() => 'ShadowObjStatement($filename, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is ShadowObjStatement &&
+          other.filename == filename &&
+          other.lineNumber == lineNumber;
 }
 
 /// Specifies the trace object filename.
@@ -1303,6 +1642,14 @@ class TraceObjStatement implements ObjStatement {
   }
 
   String toSource() => 'trace_obj $filename';
+
+  String toString() => 'TraceObjStatement($filename, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is TraceObjStatement &&
+          other.filename == filename &&
+          other.lineNumber == lineNumber;
 }
 
 /// State setting statement that specifies a curve approximation technique.
@@ -1320,6 +1667,14 @@ class CtechStatement implements ObjStatement {
   }
 
   String toSource() => 'ctech ${technique.toSource()}';
+
+  String toString() => 'CtechStatement($technique, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is CtechStatement &&
+          other.technique == technique &&
+          other.lineNumber == lineNumber;
 }
 
 /// Base class for techniques that can be used to approximate free-form curves
@@ -1358,6 +1713,13 @@ class CurveConstantParametricSubdivision
   CurveConstantParametricSubdivision(this.resolution);
 
   String toSource() => 'cparm $resolution';
+
+  String toString() => 'CurveConstantParametricSubdivision($resolution)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is CurveConstantParametricSubdivision &&
+          other.resolution == resolution;
 }
 
 /// Curve constant spatial subdivision.
@@ -1376,6 +1738,12 @@ class CurveConstantSpatialSubdivision implements CurveApproximationTechnique {
   CurveConstantSpatialSubdivision(this.maxLength);
 
   String toSource() => 'cspace $maxLength';
+
+  String toString() => 'CurveConstantSpatialSubdivision($maxLength)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is CurveConstantSpatialSubdivision && other.maxLength == maxLength;
 }
 
 /// Curve curvature-dependent subdivision using separate resolution parameters
@@ -1405,6 +1773,15 @@ class CurveCurvatureDependentSubdivision
   CurveCurvatureDependentSubdivision(this.maxDistance, this.maxAngle);
 
   String toSource() => 'curve $maxDistance $maxAngle';
+
+  String toString() =>
+      'CurveCurvatureDependentSubdivision($maxDistance, $maxAngle)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is CurveCurvatureDependentSubdivision &&
+          other.maxDistance == maxDistance &&
+          other.maxAngle == maxAngle;
 }
 
 /// State setting statement that specifies a surface approximation technique.
@@ -1422,6 +1799,14 @@ class StechStatement implements ObjStatement {
   }
 
   String toSource() => 'stech ${technique.toSource()}';
+
+  String toString() => 'StechStatement($technique, lineNumber: $lineNumber)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is StechStatement &&
+          other.technique == technique &&
+          other.lineNumber == lineNumber;
 }
 
 /// Base class for techniques that can be used to approximate free-form surfaces
@@ -1468,6 +1853,15 @@ class SurfaceConstantParametricSubdivisionA
   SurfaceConstantParametricSubdivisionA(this.resolutionU, this.resolutionV);
 
   String toSource() => 'cparma $resolutionU $resolutionV';
+
+  String toString() =>
+      'SurfaceConstantParametricSubdivisionA($resolutionU, $resolutionV)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is SurfaceConstantParametricSubdivisionA &&
+          other.resolutionU == resolutionU &&
+          other.resolutionV == resolutionV;
 }
 
 /// Surface constant parametric subdivision using a single resolution parameter
@@ -1493,6 +1887,13 @@ class SurfaceConstantParametricSubdivisionB
   SurfaceConstantParametricSubdivisionB(this.resolution);
 
   String toSource() => 'cparmb $resolution';
+
+  String toString() => 'SurfaceConstantParametricSubdivisionB($resolution)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is SurfaceConstantParametricSubdivisionB &&
+          other.resolution == resolution;
 }
 
 /// Surface constant spatial subdivision.
@@ -1500,7 +1901,8 @@ class SurfaceConstantParametricSubdivisionB
 /// The surface is subdivided in rectangular regions until the length in real
 /// space of any rectangle edge is less than the [maxLength]. These rectangular
 /// regions are then triangulated.
-class SurfaceConstantSpatialSubdivision implements SurfaceApproximationTechnique {
+class SurfaceConstantSpatialSubdivision
+    implements SurfaceApproximationTechnique {
   final STech type = STech.constantSpatialSubdivision;
 
   /// The maximum allowed length in real space of any rectangle edge.
@@ -1512,6 +1914,13 @@ class SurfaceConstantSpatialSubdivision implements SurfaceApproximationTechnique
   SurfaceConstantSpatialSubdivision(this.maxLength);
 
   String toSource() => 'cspace $maxLength';
+
+  String toString() => 'SurfaceConstantSpatialSubdivision($maxLength)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is SurfaceConstantSpatialSubdivision &&
+          other.maxLength == maxLength;
 }
 
 /// Surface curvature-dependent subdivision using separate resolution parameters
@@ -1522,7 +1931,8 @@ class SurfaceConstantSpatialSubdivision implements SurfaceApproximationTechnique
 /// less than the [maxDistance] (approximately) and 2) the angle in degrees
 /// between surface normals at the corners of the rectangle is less than the
 /// [maxAngle]. Following subdivision, the regions are triangulated.
-class SurfaceCurvatureDependentSubdivision implements SurfaceApproximationTechnique {
+class SurfaceCurvatureDependentSubdivision
+    implements SurfaceApproximationTechnique {
   final STech type = STech.curvatureDependentSubdivision;
 
   /// The maximum allowed distance in real space between the approximating
@@ -1541,4 +1951,13 @@ class SurfaceCurvatureDependentSubdivision implements SurfaceApproximationTechni
   SurfaceCurvatureDependentSubdivision(this.maxDistance, this.maxAngle);
 
   String toSource() => 'curve $maxDistance $maxAngle';
+
+  String toString() =>
+      'SurfaceCurvatureDependentSubdivision($maxDistance, $maxAngle)';
+
+  bool operator ==(other) =>
+      identical(other, this) ||
+      other is SurfaceCurvatureDependentSubdivision &&
+          other.maxDistance == maxDistance &&
+          other.maxAngle == maxAngle;
 }

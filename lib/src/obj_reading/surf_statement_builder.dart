@@ -15,11 +15,11 @@ class SurfStatementBuilder implements ObjStatementBuilder {
 
   double _endV;
 
-  List<VertexNumTriple> _controlPointTriples;
+  List<VertexNumTriple> _controlPointTriples = [];
 
   _SurfStatementBuilderMode _mode;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   SurfStatementBuilder(this.lineNumber);
 

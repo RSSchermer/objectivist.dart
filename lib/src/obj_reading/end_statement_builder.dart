@@ -3,7 +3,7 @@ part of obj_reading;
 class EndStatementBuilder implements ObjStatementBuilder {
   final int lineNumber;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   EndStatementBuilder(this.lineNumber);
 

@@ -5,9 +5,9 @@ class SpStatementBuilder implements ObjStatementBuilder {
 
   int _argumentCount = 0;
 
-  List<int> _vNums;
+  List<int> _vNums = [];
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   SpStatementBuilder(this.lineNumber);
 

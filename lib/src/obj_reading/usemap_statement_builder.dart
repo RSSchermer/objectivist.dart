@@ -7,7 +7,7 @@ class UsemapStatementBuilder implements ObjStatementBuilder {
 
   final int lineNumber;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   UsemapStatementBuilder(this.lineNumber);
 

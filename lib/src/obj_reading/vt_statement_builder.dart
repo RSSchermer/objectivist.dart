@@ -11,7 +11,7 @@ class VtStatementBuilder implements ObjStatementBuilder {
 
   double _w;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   VtStatementBuilder(this.lineNumber);
 

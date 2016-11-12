@@ -5,9 +5,9 @@ class Curv2StatementBuilder implements ObjStatementBuilder {
 
   int _argumentCount = 0;
 
-  List<int> _vpNums;
+  List<int> _vpNums = [];
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   Curv2StatementBuilder(this.lineNumber);
 

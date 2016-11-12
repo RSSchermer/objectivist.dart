@@ -7,7 +7,7 @@ class OStatementBuilder implements ObjStatementBuilder {
 
   final int lineNumber;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   OStatementBuilder(this.lineNumber);
 

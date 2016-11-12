@@ -9,9 +9,9 @@ class CurvStatementBuilder implements ObjStatementBuilder {
 
   double _end;
 
-  List<int> _vNums;
+  List<int> _vNums = [];
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   CurvStatementBuilder(this.lineNumber);
 

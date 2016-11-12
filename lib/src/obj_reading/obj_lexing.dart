@@ -94,11 +94,11 @@ class ObjLexer {
         _tokenType = ObjTokenType.comment;
       } else if (charCode == 32 /* space */ || charCode == 9 /* tab */) {
         _finishCurrentToken();
-      } else if (charCode == 101 || charCode == 69) {
+      } else if (charCode == 101 /* e */ || charCode == 69 /* E */) {
         if (_tokenType == ObjTokenType.double && !_hasExponent) {
           _hasExponent = true;
         } else {
-          _tokenType == ObjTokenType.string;
+          _tokenType = ObjTokenType.string;
         }
 
         _tokenStringBuilder.writeCharCode(charCode);

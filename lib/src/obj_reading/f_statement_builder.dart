@@ -11,7 +11,7 @@ class FStatementBuilder implements ObjStatementBuilder {
 
   _FStatementBuilderMode _mode;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   FStatementBuilder(this.lineNumber);
 

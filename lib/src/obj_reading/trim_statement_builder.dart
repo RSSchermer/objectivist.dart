@@ -5,13 +5,13 @@ class TrimStatementBuilder implements ObjStatementBuilder {
 
   int _argumentCount = 0;
 
-  List<double> _starts;
+  List<double> _starts = [];
 
-  List<double> _ends;
+  List<double> _ends = [];
 
-  List<int> _curv2Nums;
+  List<int> _curv2Nums = [];
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   TrimStatementBuilder(this.lineNumber);
 

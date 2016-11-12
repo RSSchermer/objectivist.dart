@@ -11,7 +11,7 @@ class VpStatementBuilder implements ObjStatementBuilder {
 
   double _w;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   VpStatementBuilder(this.lineNumber);
 

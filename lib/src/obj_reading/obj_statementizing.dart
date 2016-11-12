@@ -1,15 +1,15 @@
 part of obj_reading;
 
 class ObjStatementizer {
-  int _lineNumber = 0;
+  int _lineNumber = 1;
 
   ObjStatementBuilder _statementBuilder;
 
   ObjToken _lastToken;
 
-  List<ObjStatement> _statements;
+  List<ObjStatement> _statements = [];
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   void process(ObjToken token) {
     if (token.type == ObjTokenType.newline) {
@@ -20,6 +20,7 @@ class ObjStatementizer {
       switch (token.type) {
         case ObjTokenType.comment:
         case ObjTokenType.newline:
+        case ObjTokenType.endOfText:
           break;
         case ObjTokenType.string:
           switch (token.value) {

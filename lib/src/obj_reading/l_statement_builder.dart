@@ -7,11 +7,11 @@ class LStatementBuilder implements ObjStatementBuilder {
 
   int _argumentCount = 0;
 
-  List<VertexNumPair> _vNumPairs;
+  List<VertexNumPair> _vNumPairs = [];
 
   _LStatementBuilderMode _mode;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   LStatementBuilder(this.lineNumber);
 

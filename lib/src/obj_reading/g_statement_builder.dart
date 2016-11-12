@@ -5,9 +5,9 @@ class GStatementBuilder implements ObjStatementBuilder {
 
   int _argumentCount = 0;
 
-  List<String> _groupNames;
+  List<String> _groupNames = [];
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   GStatementBuilder(this.lineNumber);
 

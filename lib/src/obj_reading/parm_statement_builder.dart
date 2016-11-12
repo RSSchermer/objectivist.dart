@@ -3,13 +3,13 @@ part of obj_reading;
 class ParmStatementBuilder implements ObjStatementBuilder {
   ParameterDirection _direction;
 
-  List<double> _values;
+  List<double> _values = [];
 
   int _argumentCount = 0;
 
   final int lineNumber;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   ParmStatementBuilder(this.lineNumber);
 
@@ -88,7 +88,7 @@ class ParmStatementBuilder implements ObjStatementBuilder {
 
     if (_errors.isEmpty) {
       return new ObjStatementResult.success(
-          new BmatStatement(_direction, _values, lineNumber: lineNumber));
+          new ParmStatement(_direction, _values, lineNumber: lineNumber));
     } else {
       return new ObjStatementResult.failure(_errors);
     }

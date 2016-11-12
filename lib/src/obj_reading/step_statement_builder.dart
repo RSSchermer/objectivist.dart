@@ -9,7 +9,7 @@ class StepStatementBuilder implements ObjStatementBuilder {
 
   final int lineNumber;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   StepStatementBuilder(this.lineNumber);
 

@@ -3,13 +3,13 @@ part of obj_reading;
 class BmatStatementBuilder implements ObjStatementBuilder {
   ParameterDirection _direction;
 
-  List<double> _values;
+  List<double> _values = [];
 
   int _argumentCount = 0;
 
   final int lineNumber;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   BmatStatementBuilder(this.lineNumber);
 

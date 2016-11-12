@@ -5,9 +5,9 @@ class MtllibStatementBuilder implements ObjStatementBuilder {
 
   int _argumentCount = 0;
 
-  List<String> _filenames;
+  List<String> _filenames = [];
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   MtllibStatementBuilder(this.lineNumber);
 

@@ -13,7 +13,7 @@ class VStatementBuilder implements ObjStatementBuilder {
 
   double _w;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   VStatementBuilder(this.lineNumber);
 

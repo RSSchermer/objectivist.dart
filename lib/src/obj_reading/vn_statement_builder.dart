@@ -11,7 +11,7 @@ class VnStatementBuilder implements ObjStatementBuilder {
 
   double _k;
 
-  List<ObjError> _errors;
+  List<ObjError> _errors = [];
 
   VnStatementBuilder(this.lineNumber);
 
