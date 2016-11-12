@@ -10,7 +10,6 @@ environment:
 dependencies:
   quiver: '>=0.24.0 <0.25.0'
   resource: '>=2.0.2 <2.1.0'
-  rl_matrix: '>=0.6.2 <0.7.0'
 
 dev_dependencies:
   test: '>=0.12.0 <0.13.0'
