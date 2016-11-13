@@ -73,7 +73,7 @@ class VpStatementBuilder implements ObjStatementBuilder {
 
     if (_errors.isEmpty) {
       return new ObjStatementResult.success(
-          new VtStatement(_u, _v, _w, lineNumber: lineNumber));
+          new VpStatement(_u, _v, _w, lineNumber: lineNumber));
     } else {
       return new ObjStatementResult.failure(_errors);
     }

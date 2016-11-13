@@ -286,18 +286,18 @@ class ArgumentTypeError implements ObjError {
     final positionString = _positionToString(argumentPosition);
     final expectedList = expectedTypes.toList();
 
-    var expectedString = expectedList[0];
+    var expectedString = '`${expectedList[0]}`';
 
     for (var i = 1; i < expectedList.length; i++) {
       if (i == expectedTypes.length - 1) {
-        expectedString += ' or ${expectedList[i]}';
+        expectedString += ' or `${expectedList[i]}`';
       } else {
-        expectedString += ', ${expectedList[i]}';
+        expectedString += ', `${expectedList[i]}`';
       }
     }
 
     return 'The $positionString argument of a(n) `$statementType` statement '
-        'must be a(n) $expectedString; $actualType given.';
+        'must be a(n) $expectedString; `$actualType` given.';
   }
 
   String toString() => 'Error on line $lineNumber: $description';

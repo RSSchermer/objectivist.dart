@@ -7,7 +7,7 @@ class FStatementBuilder implements ObjStatementBuilder {
 
   int _argumentCount = 0;
 
-  List<VertexNumTriple> _vNumTriples;
+  List<VertexNumTriple> _vNumTriples = [];
 
   _FStatementBuilderMode _mode;
 
