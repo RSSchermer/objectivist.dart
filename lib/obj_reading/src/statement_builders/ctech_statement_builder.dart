@@ -42,7 +42,7 @@ class CtechStatementBuilder implements ObjStatementBuilder {
         }
       } else {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'ctech', _argumentCount, 'String', ['double']));
+            lineNumber, 'ctech', _argumentCount, 'String', ['int', 'double']));
       }
     }
 
@@ -54,9 +54,16 @@ class CtechStatementBuilder implements ObjStatementBuilder {
       if (_argumentCount == 0) {
         _errors.add(new ArgumentTypeError(
             lineNumber, 'ctech', _argumentCount, 'int', ['String']));
-      } else {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'ctech', _argumentCount, 'int', ['double']));
+      } else if (_argumentCount == 1) {
+        if (_mode == _CtechStatementBuilderMode.cparm) {
+          _cparmResolution = argument.toDouble();
+        } else if (_mode == _CtechStatementBuilderMode.cspace) {
+          _cspaceMaxLength = argument.toDouble();
+        } else if (_mode == _CtechStatementBuilderMode.curv) {
+          _curvMaxDistance = argument.toDouble();
+        }
+      } else if (_argumentCount == 2) {
+        _curvMaxAngle = argument.toDouble();
       }
     }
 
@@ -70,7 +77,7 @@ class CtechStatementBuilder implements ObjStatementBuilder {
             lineNumber, 'ctech', _argumentCount, 'IntPair', ['String']));
       } else {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'ctech', _argumentCount, 'IntPair', ['double']));
+            lineNumber, 'ctech', _argumentCount, 'IntPair', ['int', 'double']));
       }
     }
 
@@ -84,7 +91,7 @@ class CtechStatementBuilder implements ObjStatementBuilder {
             lineNumber, 'ctech', _argumentCount, 'IntTriple', ['String']));
       } else {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'ctech', _argumentCount, 'IntTriple', ['double']));
+            lineNumber, 'ctech', _argumentCount, 'IntTriple', ['int', 'double']));
       }
     }
 

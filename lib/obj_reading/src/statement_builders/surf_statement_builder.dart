@@ -26,7 +26,7 @@ class SurfStatementBuilder implements ObjStatementBuilder {
   void addStringArgument(String argument) {
     if (_argumentCount < 4) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'surf', _argumentCount, 'String', ['double']));
+          lineNumber, 'surf', _argumentCount, 'String', ['int', 'double']));
     } else {
       _errors.add(new ArgumentTypeError(lineNumber, 'surf', _argumentCount,
           'String', ['int', 'IntPair', 'IntTriple']));
@@ -36,10 +36,18 @@ class SurfStatementBuilder implements ObjStatementBuilder {
   }
 
   void addIntArgument(int argument) {
-    if (_argumentCount == 4) {
+    if (_argumentCount == 0) {
+      _startU = argument.toDouble();
+    } else if (_argumentCount == 1) {
+      _endU = argument.toDouble();
+    } else if (_argumentCount == 2) {
+      _startV = argument.toDouble();
+    } else if (_argumentCount == 3) {
+      _endV = argument.toDouble();
+    } else if (_argumentCount == 4) {
       _controlPointTriples.add(new VertexNumTriple(argument));
       _mode = _SurfStatementBuilderMode.int;
-    } else if (_argumentCount > 4) {
+    } else {
       if (_mode == _SurfStatementBuilderMode.int) {
         _controlPointTriples.add(new VertexNumTriple(argument));
       } else {
@@ -49,9 +57,6 @@ class SurfStatementBuilder implements ObjStatementBuilder {
             '`IntTriple` control point arguments; all control point arguments '
             'must be of the same type.'));
       }
-    } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'surf', _argumentCount, 'int', ['double']));
     }
 
     _argumentCount++;
@@ -75,7 +80,7 @@ class SurfStatementBuilder implements ObjStatementBuilder {
       }
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'surf', _argumentCount, 'IntPair', ['double']));
+          lineNumber, 'surf', _argumentCount, 'IntPair', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -99,7 +104,7 @@ class SurfStatementBuilder implements ObjStatementBuilder {
       }
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'surf', _argumentCount, 'IntTriple', ['double']));
+          lineNumber, 'surf', _argumentCount, 'IntTriple', ['int', 'double']));
     }
 
     _argumentCount++;

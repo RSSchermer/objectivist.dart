@@ -70,7 +70,7 @@ void main() {
       });
 
       test('with .obj file results in the correct tokens', () async {
-        final source = new Resource('test/obj_examples/cube_polygon.obj');
+        final source = new Resource('test/functional/obj/examples/cube_polygon.obj');
         final sourceString = await source.readAsString();
         final lexer = new ObjLexer();
 

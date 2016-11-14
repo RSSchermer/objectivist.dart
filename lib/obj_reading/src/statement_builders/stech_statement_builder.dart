@@ -49,7 +49,7 @@ class StechStatementBuilder implements ObjStatementBuilder {
         }
       } else {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'stech', _argumentCount, 'String', ['double']));
+            lineNumber, 'stech', _argumentCount, 'String', ['int', 'double']));
       }
     }
 
@@ -61,9 +61,22 @@ class StechStatementBuilder implements ObjStatementBuilder {
       if (_argumentCount == 0) {
         _errors.add(new ArgumentTypeError(
             lineNumber, 'stech', _argumentCount, 'int', ['String']));
-      } else {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'stech', _argumentCount, 'int', ['double']));
+      } else if (_argumentCount == 1) {
+        if (_mode == _StechStatementBuilderMode.cparma) {
+          _cparmaResolutionU = argument.toDouble();
+        } else if (_mode == _StechStatementBuilderMode.cparmb) {
+          _cparmbResolution = argument.toDouble();
+        } else if (_mode == _StechStatementBuilderMode.cspace) {
+          _cspaceMaxLength = argument.toDouble();
+        } else if (_mode == _StechStatementBuilderMode.curv) {
+          _curvMaxDistance = argument.toDouble();
+        }
+      } else if (_argumentCount == 2) {
+        if (_mode == _StechStatementBuilderMode.cparma) {
+          _cparmaResolutionV = argument.toDouble();
+        } else if (_mode == _StechStatementBuilderMode.curv) {
+          _curvMaxAngle = argument.toDouble();
+        }
       }
     }
 
@@ -77,7 +90,7 @@ class StechStatementBuilder implements ObjStatementBuilder {
             lineNumber, 'stech', _argumentCount, 'IntPair', ['String']));
       } else {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'stech', _argumentCount, 'IntPair', ['double']));
+            lineNumber, 'stech', _argumentCount, 'IntPair', ['int', 'double']));
       }
     }
 
@@ -91,7 +104,7 @@ class StechStatementBuilder implements ObjStatementBuilder {
             lineNumber, 'stech', _argumentCount, 'IntTriple', ['String']));
       } else {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'stech', _argumentCount, 'IntTriple', ['double']));
+            lineNumber, 'stech', _argumentCount, 'IntTriple', ['int', 'double']));
       }
     }
 

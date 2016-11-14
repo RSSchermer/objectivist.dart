@@ -18,7 +18,7 @@ class VpStatementBuilder implements ObjStatementBuilder {
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'vp', _argumentCount, 'String', ['double']));
+          lineNumber, 'vp', _argumentCount, 'String', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -26,8 +26,13 @@ class VpStatementBuilder implements ObjStatementBuilder {
 
   void addIntArgument(int argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'vp', _argumentCount, 'Int', ['double']));
+      if (_argumentCount == 0) {
+        _u = argument.toDouble();
+      } else if (_argumentCount == 1) {
+        _v = argument.toDouble();
+      } else if (_argumentCount == 2) {
+        _w = argument.toDouble();
+      }
     }
 
     _argumentCount++;
@@ -36,7 +41,7 @@ class VpStatementBuilder implements ObjStatementBuilder {
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'vp', _argumentCount, 'IntPair', ['double']));
+          lineNumber, 'vp', _argumentCount, 'IntPair', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -45,7 +50,7 @@ class VpStatementBuilder implements ObjStatementBuilder {
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'vp', _argumentCount, 'IntTriple', ['double']));
+          lineNumber, 'vp', _argumentCount, 'IntTriple', ['int', 'double']));
     }
 
     _argumentCount++;

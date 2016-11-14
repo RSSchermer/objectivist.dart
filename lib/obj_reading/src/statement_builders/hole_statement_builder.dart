@@ -21,18 +21,19 @@ class HoleStatementBuilder implements ObjStatementBuilder {
           lineNumber, 'hole', _argumentCount, 'String', ['int']));
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'hole', _argumentCount, 'String', ['double']));
+          lineNumber, 'hole', _argumentCount, 'String', ['int', 'double']));
     }
 
     _argumentCount++;
   }
 
   void addIntArgument(int argument) {
-    if (_argumentCount % 3 == 2) {
-      _curv2Nums.add(argument);
+    if (_argumentCount % 3 == 0) {
+      _starts.add(argument.toDouble());
+    } else if (_argumentCount % 3 == 1) {
+      _ends.add(argument.toDouble());
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'hole', _argumentCount, 'int', ['double']));
+      _curv2Nums.add(argument);
     }
 
     _argumentCount++;
@@ -44,7 +45,7 @@ class HoleStatementBuilder implements ObjStatementBuilder {
           lineNumber, 'hole', _argumentCount, 'IntPair', ['int']));
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'hole', _argumentCount, 'IntPair', ['double']));
+          lineNumber, 'hole', _argumentCount, 'IntPair', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -56,7 +57,7 @@ class HoleStatementBuilder implements ObjStatementBuilder {
           lineNumber, 'hole', _argumentCount, 'IntTriple', ['int']));
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'hole', _argumentCount, 'IntTriple', ['double']));
+          lineNumber, 'hole', _argumentCount, 'IntTriple', ['int', 'double']));
     }
 
     _argumentCount++;

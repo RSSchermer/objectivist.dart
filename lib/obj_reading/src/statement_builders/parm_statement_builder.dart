@@ -27,7 +27,7 @@ class ParmStatementBuilder implements ObjStatementBuilder {
       }
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'parm', _argumentCount, 'String', ['double']));
+          lineNumber, 'parm', _argumentCount, 'String', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -38,8 +38,7 @@ class ParmStatementBuilder implements ObjStatementBuilder {
       _errors.add(new ArgumentTypeError(
           lineNumber, 'parm', _argumentCount, 'int', ['String']));
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'parm', _argumentCount, 'int', ['double']));
+      _values.add(argument.toDouble());
     }
 
     _argumentCount++;
@@ -51,7 +50,7 @@ class ParmStatementBuilder implements ObjStatementBuilder {
           lineNumber, 'parm', _argumentCount, 'IntPair', ['String']));
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'parm', _argumentCount, 'IntPair', ['double']));
+          lineNumber, 'parm', _argumentCount, 'IntPair', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -63,7 +62,7 @@ class ParmStatementBuilder implements ObjStatementBuilder {
           lineNumber, 'parm', _argumentCount, 'IntTriple', ['String']));
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'parm', _argumentCount, 'IntTriple', ['double']));
+          lineNumber, 'parm', _argumentCount, 'IntTriple', ['int', 'double']));
     }
 
     _argumentCount++;

@@ -18,7 +18,7 @@ class CurvStatementBuilder implements ObjStatementBuilder {
   void addStringArgument(String argument) {
     if (_argumentCount < 2) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'curv', _argumentCount, 'String', ['double']));
+          lineNumber, 'curv', _argumentCount, 'String', ['int', 'double']));
     } else {
       _errors.add(new ArgumentTypeError(
           lineNumber, 'curv', _argumentCount, 'String', ['int']));
@@ -28,11 +28,12 @@ class CurvStatementBuilder implements ObjStatementBuilder {
   }
 
   void addIntArgument(int argument) {
-    if (_argumentCount >= 2) {
-      _vNums.add(argument);
+    if (_argumentCount == 0) {
+      _start = argument.toDouble();
+    } else if (_argumentCount == 1) {
+      _end = argument.toDouble();
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'curv', _argumentCount, 'int', ['double']));
+      _vNums.add(argument);
     }
 
     _argumentCount++;
@@ -41,7 +42,7 @@ class CurvStatementBuilder implements ObjStatementBuilder {
   void addIntPairArgument(IntPair argument) {
     if (_argumentCount < 2) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'curv', _argumentCount, 'IntPair', ['double']));
+          lineNumber, 'curv', _argumentCount, 'IntPair', ['int', 'double']));
     } else {
       _errors.add(new ArgumentTypeError(
           lineNumber, 'curv', _argumentCount, 'IntPair', ['int']));
@@ -53,7 +54,7 @@ class CurvStatementBuilder implements ObjStatementBuilder {
   void addIntTripleArgument(IntTriple argument) {
     if (_argumentCount < 2) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'curv', _argumentCount, 'IntTriple', ['double']));
+          lineNumber, 'curv', _argumentCount, 'IntTriple', ['int', 'double']));
     } else {
       _errors.add(new ArgumentTypeError(
           lineNumber, 'curv', _argumentCount, 'IntTriple', ['int']));

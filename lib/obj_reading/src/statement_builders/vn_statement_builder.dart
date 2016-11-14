@@ -18,7 +18,7 @@ class VnStatementBuilder implements ObjStatementBuilder {
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'String', ['double']));
+          lineNumber, 'vn', _argumentCount, 'String', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -26,8 +26,13 @@ class VnStatementBuilder implements ObjStatementBuilder {
 
   void addIntArgument(int argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'int', ['double']));
+      if (_argumentCount == 0) {
+        _i = argument.toDouble();
+      } else if (_argumentCount == 1) {
+        _j = argument.toDouble();
+      } else if (_argumentCount == 2) {
+        _k = argument.toDouble();
+      }
     }
 
     _argumentCount++;
@@ -36,7 +41,7 @@ class VnStatementBuilder implements ObjStatementBuilder {
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'IntPair', ['double']));
+          lineNumber, 'vn', _argumentCount, 'IntPair', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -45,7 +50,7 @@ class VnStatementBuilder implements ObjStatementBuilder {
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'IntTriple', ['double']));
+          lineNumber, 'vn', _argumentCount, 'IntTriple', ['int', 'double']));
     }
 
     _argumentCount++;

@@ -35,7 +35,7 @@ class ConStatementBuilder implements ObjStatementBuilder {
             lineNumber, 'con', _argumentCount, 'String', ['int']));
       } else {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'con', _argumentCount, 'String', ['double']));
+            lineNumber, 'con', _argumentCount, 'String', ['int', 'double']));
       }
     }
 
@@ -46,15 +46,20 @@ class ConStatementBuilder implements ObjStatementBuilder {
     if (_enforceMaxArgumentCount()) {
       if (_argumentCount == 0) {
         _surfANum = argument;
+      } else if (_argumentCount == 1) {
+        _startA = argument.toDouble();
+      } else if (_argumentCount == 2) {
+        _endA = argument.toDouble();
       } else if (_argumentCount == 3) {
         _curv2ANum = argument;
       } else if (_argumentCount == 4) {
         _surfBNum = argument;
+      } else if (_argumentCount == 5) {
+        _startB = argument.toDouble();
+      } else if (_argumentCount == 6) {
+        _endB = argument.toDouble();
       } else if (_argumentCount == 7) {
         _curv2BNum = argument;
-      } else {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'con', _argumentCount, 'String', ['double']));
       }
     }
 
@@ -71,7 +76,7 @@ class ConStatementBuilder implements ObjStatementBuilder {
             lineNumber, 'con', _argumentCount, 'IntPair', ['int']));
       } else {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'con', _argumentCount, 'IntPair', ['double']));
+            lineNumber, 'con', _argumentCount, 'IntPair', ['int', 'double']));
       }
     }
 
@@ -88,7 +93,7 @@ class ConStatementBuilder implements ObjStatementBuilder {
             lineNumber, 'con', _argumentCount, 'IntTriple', ['int']));
       } else {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'con', _argumentCount, 'IntTriple', ['double']));
+            lineNumber, 'con', _argumentCount, 'IntTriple', ['int', 'double']));
       }
     }
 

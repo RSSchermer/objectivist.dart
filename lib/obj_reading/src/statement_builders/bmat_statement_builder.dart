@@ -27,7 +27,7 @@ class BmatStatementBuilder implements ObjStatementBuilder {
       }
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'bmat', _argumentCount, 'String', ['double']));
+          lineNumber, 'bmat', _argumentCount, 'String', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -38,8 +38,7 @@ class BmatStatementBuilder implements ObjStatementBuilder {
       _errors.add(new ArgumentTypeError(
           lineNumber, 'bmat', _argumentCount, 'int', ['String']));
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'bmat', _argumentCount, 'int', ['double']));
+      _values.add(argument.toDouble());
     }
 
     _argumentCount++;
@@ -51,7 +50,7 @@ class BmatStatementBuilder implements ObjStatementBuilder {
           lineNumber, 'bmat', _argumentCount, 'IntPair', ['String']));
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'bmat', _argumentCount, 'IntPair', ['double']));
+          lineNumber, 'bmat', _argumentCount, 'IntPair', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -63,7 +62,7 @@ class BmatStatementBuilder implements ObjStatementBuilder {
           lineNumber, 'bmat', _argumentCount, 'IntTriple', ['String']));
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'bmat', _argumentCount, 'IntTriple', ['double']));
+          lineNumber, 'bmat', _argumentCount, 'IntTriple', ['int', 'double']));
     }
 
     _argumentCount++;
