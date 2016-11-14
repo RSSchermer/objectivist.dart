@@ -4,8 +4,8 @@ import 'package:resource/resource.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('statementizing examples/obj/trimming_regions_with_holes.obj results in the correct statements without errors', () async {
-    final resource = new Resource('test/examples/obj/trimming_regions_with_holes.obj');
+  test('statementizing examples/trimming_regions_with_holes.obj results in the correct statements without errors', () async {
+    final resource = new Resource('test/functional/obj/examples/trimming_regions_with_holes.obj');
     final results = await statementizeResource(resource);
 
     expect(results.statements, equals([

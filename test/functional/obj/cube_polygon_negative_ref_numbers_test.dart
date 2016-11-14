@@ -4,9 +4,9 @@ import 'package:resource/resource.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('statementizing examples/obj/cube_polygon_negative_ref_numbers.obj results in the correct statements without errors', () async {
+  test('statementizing examples/cube_polygon_negative_ref_numbers.obj results in the correct statements without errors', () async {
     final resource =
-        new Resource('test/examples/obj/cube_polygon_negative_ref_numbers.obj');
+        new Resource('test/functional/obj/examples/cube_polygon_negative_ref_numbers.obj');
     final results = await statementizeResource(resource);
 
     expect(results.statements, equals([

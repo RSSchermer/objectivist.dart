@@ -4,8 +4,8 @@ import 'package:resource/resource.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('statementizing examples/obj/bezier_curve.obj results in the correct statements without errors', () async {
-    final resource = new Resource('test/examples/obj/bezier_curve.obj');
+  test('statementizing examples/bezier_curve.obj results in the correct statements without errors', () async {
+    final resource = new Resource('test/functional/obj/examples/bezier_curve.obj');
     final results = await statementizeResource(resource);
 
     expect(results.statements, equals([

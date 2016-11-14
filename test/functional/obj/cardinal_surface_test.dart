@@ -4,8 +4,8 @@ import 'package:resource/resource.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('statementizing examples/obj/cardinal_surface.obj results in the correct statements without errors', () async {
-    final resource = new Resource('test/examples/obj/cardinal_surface.obj');
+  test('statementizing examples/cardinal_surface.obj results in the correct statements without errors', () async {
+    final resource = new Resource('test/functional/obj/examples/cardinal_surface.obj');
     final results = await statementizeResource(resource);
 
     expect(results.statements, equals([

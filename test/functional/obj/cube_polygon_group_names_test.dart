@@ -4,8 +4,8 @@ import 'package:resource/resource.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('statementizing examples/obj/cube_polygon_group_names.obj results in the correct statements without errors', () async {
-    final resource = new Resource('test/examples/obj/cube_polygon_group_names.obj');
+  test('statementizing examples/cube_polygon_group_names.obj results in the correct statements without errors', () async {
+    final resource = new Resource('test/functional/obj/examples/cube_polygon_group_names.obj');
     final results = await statementizeResource(resource);
 
     expect(results.statements, equals([

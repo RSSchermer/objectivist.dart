@@ -4,8 +4,8 @@ import 'package:resource/resource.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('statementizing examples/obj/taylor_curve.obj results in the correct statements without errors', () async {
-    final resource = new Resource('test/examples/obj/taylor_curve.obj');
+  test('statementizing examples/taylor_curve.obj results in the correct statements without errors', () async {
+    final resource = new Resource('test/functional/obj/examples/taylor_curve.obj');
     final results = await statementizeResource(resource);
 
     expect(results.statements, equals([

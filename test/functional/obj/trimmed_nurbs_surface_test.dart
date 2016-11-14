@@ -4,8 +4,8 @@ import 'package:resource/resource.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('statementizing examples/obj/trimmed_nurbs_surface.obj results in the correct statements without errors', () async {
-    final resource = new Resource('test/examples/obj/trimmed_nurbs_surface.obj');
+  test('statementizing examples/trimmed_nurbs_surface.obj results in the correct statements without errors', () async {
+    final resource = new Resource('test/functional/obj/examples/trimmed_nurbs_surface.obj');
     final results = await statementizeResource(resource);
 
     expect(results.statements, equals([

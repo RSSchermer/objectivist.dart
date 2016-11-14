@@ -4,8 +4,8 @@ import 'package:resource/resource.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('statementizing examples/obj/smoothing_group.obj results in the correct statements without errors', () async {
-    final resource = new Resource('test/examples/obj/smoothing_group.obj');
+  test('statementizing examples/smoothing_group.obj results in the correct statements without errors', () async {
+    final resource = new Resource('test/functional/obj/examples/smoothing_group.obj');
     final results = await statementizeResource(resource);
 
     expect(results.statements, equals([
