@@ -2,13 +2,10 @@ library obj_reading;
 
 import 'dart:async';
 
-import 'package:quiver/collection.dart';
 import 'package:resource/resource.dart';
 
-import 'obj_statements.dart';
-
-part 'src/obj_reading/obj_lexing.dart';
-part 'src/obj_reading/obj_statementizing.dart';
+import 'obj_reading/lexing.dart';
+import 'obj_reading/statementizing.dart';
 
 StatementizerResults statementize(String source) {
   final lexer = new ObjLexer();
