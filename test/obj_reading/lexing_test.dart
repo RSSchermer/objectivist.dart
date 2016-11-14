@@ -1,4 +1,4 @@
-import 'package:objectivist/obj_reading.dart';
+import 'package:objectivist/obj_reading/lexing.dart';
 import 'package:resource/resource.dart';
 import 'package:test/test.dart';
 
