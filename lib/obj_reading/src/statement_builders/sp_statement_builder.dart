@@ -7,7 +7,7 @@ class SpStatementBuilder implements ObjStatementBuilder {
 
   List<int> _vNums = [];
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   SpStatementBuilder(this.lineNumber);
 
@@ -47,15 +47,15 @@ class SpStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'An `sp` statement requires at least 1 argument.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new SpStatement(_vNums, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 }

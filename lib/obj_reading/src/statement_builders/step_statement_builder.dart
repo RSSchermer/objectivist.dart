@@ -9,7 +9,7 @@ class StepStatementBuilder implements ObjStatementBuilder {
 
   final int lineNumber;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   StepStatementBuilder(this.lineNumber);
 
@@ -63,21 +63,21 @@ class StepStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `step` statement requires at least 1 argument.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new StepStatement(_stepU, _stepV, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 2) {
-      _errors.add(new ObjError(lineNumber,
+      _errors.add(new ObjReadingError(lineNumber,
           'A `step` statement does not take more than 2 arguments.'));
 
       return false;

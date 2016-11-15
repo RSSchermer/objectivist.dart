@@ -19,7 +19,7 @@ class SurfStatementBuilder implements ObjStatementBuilder {
 
   _SurfStatementBuilderMode _mode;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   SurfStatementBuilder(this.lineNumber);
 
@@ -51,7 +51,7 @@ class SurfStatementBuilder implements ObjStatementBuilder {
       if (_mode == _SurfStatementBuilderMode.int) {
         _controlPointTriples.add(new VertexNumTriple(argument));
       } else {
-        _errors.add(new ObjError(
+        _errors.add(new ObjReadingError(
             lineNumber,
             'One `surf` statement cannot intermix `int`, `IntPair` and '
             '`IntTriple` control point arguments; all control point arguments '
@@ -72,7 +72,7 @@ class SurfStatementBuilder implements ObjStatementBuilder {
         _controlPointTriples
             .add(new VertexNumTriple(argument.value1, argument.value2));
       } else {
-        _errors.add(new ObjError(
+        _errors.add(new ObjReadingError(
             lineNumber,
             'One `surf` statement cannot intermix `int`, `IntPair` and '
             '`IntTriple` control point arguments; all control point arguments '
@@ -96,7 +96,7 @@ class SurfStatementBuilder implements ObjStatementBuilder {
         _controlPointTriples.add(new VertexNumTriple(
             argument.value1, argument.value2, argument.value3));
       } else {
-        _errors.add(new ObjError(
+        _errors.add(new ObjReadingError(
             lineNumber,
             'One `surf` statement cannot intermix `int`, `IntPair` and '
             '`IntTriple` control point arguments; all control point arguments '
@@ -129,16 +129,16 @@ class SurfStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 6) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `surf` statement requires at least 6 arguments.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(new SurfStatement(
+      return new ObjStatementResult._success(new SurfStatement(
           _startU, _endU, _startV, _endV, _controlPointTriples,
           lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 }

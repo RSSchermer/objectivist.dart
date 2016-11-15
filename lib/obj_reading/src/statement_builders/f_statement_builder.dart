@@ -11,7 +11,7 @@ class FStatementBuilder implements ObjStatementBuilder {
 
   _FStatementBuilderMode _mode;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   FStatementBuilder(this.lineNumber);
 
@@ -30,7 +30,7 @@ class FStatementBuilder implements ObjStatementBuilder {
       if (_mode == _FStatementBuilderMode.int) {
         _vNumTriples.add(new VertexNumTriple(argument));
       } else {
-        _errors.add(new ObjError(
+        _errors.add(new ObjReadingError(
             lineNumber,
             'One `f` statement cannot intermix `int`, `IntPair` and '
             '`IntTriple` arguments; all arguments must be of the same type.'));
@@ -48,7 +48,7 @@ class FStatementBuilder implements ObjStatementBuilder {
       if (_mode == _FStatementBuilderMode.intPair) {
         _vNumTriples.add(new VertexNumTriple(argument.value1, argument.value2));
       } else {
-        _errors.add(new ObjError(
+        _errors.add(new ObjReadingError(
             lineNumber,
             'One `f` statement cannot intermix `int`, `IntPair` and '
             '`IntTriple` arguments; all arguments must be of the same type.'));
@@ -68,7 +68,7 @@ class FStatementBuilder implements ObjStatementBuilder {
         _vNumTriples.add(new VertexNumTriple(
             argument.value1, argument.value2, argument.value3));
       } else {
-        _errors.add(new ObjError(
+        _errors.add(new ObjReadingError(
             lineNumber,
             'One `f` statement cannot intermix `int`, `IntPair` and '
             '`IntTriple` arguments; all arguments must be of the same type.'));
@@ -87,15 +87,15 @@ class FStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 3) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `f` statement requires at least 3 arguments.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new FStatement(_vNumTriples, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 }

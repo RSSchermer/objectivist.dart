@@ -9,7 +9,7 @@ class MgStatementBuilder implements ObjStatementBuilder {
 
   final int lineNumber;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   MgStatementBuilder(this.lineNumber);
 
@@ -19,7 +19,7 @@ class MgStatementBuilder implements ObjStatementBuilder {
         if (argument == 'off') {
           _mergingGroup = 0;
         } else {
-          _errors.add(new ObjError(
+          _errors.add(new ObjReadingError(
               lineNumber,
               'The argument of an `mg` must be either an `int` or the value '
               '`off`.'));
@@ -89,26 +89,26 @@ class MgStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_mergingGroup > 0 && _argumentCount < 2) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber,
           'An `mg` statement does not turn off smoothing groups requires a '
           'second resolution argument.'));
     } else if (_mergingGroup <= 0 && _argumentCount < 1) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'An `mg` statement requires at least 1 argument.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new MgStatement(_mergingGroup, _resolution, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 2) {
-      _errors.add(new ObjError(lineNumber,
+      _errors.add(new ObjReadingError(lineNumber,
           'An `mg` statement does not take more than 2 arguments.'));
 
       return false;

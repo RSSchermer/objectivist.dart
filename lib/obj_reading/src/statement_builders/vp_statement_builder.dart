@@ -11,7 +11,7 @@ class VpStatementBuilder implements ObjStatementBuilder {
 
   double _w;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   VpStatementBuilder(this.lineNumber);
 
@@ -72,21 +72,21 @@ class VpStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `vp` statement requires at least 1 argument.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new VpStatement(_u, _v, _w, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 3) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `vp` statement does not take more than 3 arguments.'));
 
       return false;

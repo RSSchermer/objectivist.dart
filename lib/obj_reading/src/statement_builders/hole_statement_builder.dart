@@ -11,7 +11,7 @@ class HoleStatementBuilder implements ObjStatementBuilder {
 
   List<int> _curv2Nums = [];
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   HoleStatementBuilder(this.lineNumber);
 
@@ -78,10 +78,10 @@ class HoleStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 3) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `hole` statement requires at least 3 arguments.'));
     } else if (_argumentCount % 3 != 0) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber,
           'The number of arguments supplied to a `hole` statement must be '
           'multiple of 3.'));
@@ -95,10 +95,10 @@ class HoleStatementBuilder implements ObjStatementBuilder {
             .add(new Curve2Instance(_starts[i], _ends[i], _curv2Nums[i]));
       }
 
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new HoleStatement(curve2Instances, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 }

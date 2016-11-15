@@ -7,7 +7,7 @@ class CInterpStatementBuilder implements ObjStatementBuilder {
 
   final int lineNumber;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   CInterpStatementBuilder(this.lineNumber);
 
@@ -18,7 +18,7 @@ class CInterpStatementBuilder implements ObjStatementBuilder {
       } else if (argument == 'off') {
         _colorInterpolationEnabled = false;
       } else {
-        _errors.add(new ObjError(
+        _errors.add(new ObjReadingError(
             lineNumber,
             'The argument supplied to a `c_interp` statement must be `on` or '
             '`off`.'));
@@ -66,22 +66,22 @@ class CInterpStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `c_interp` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(new CInterpStatement(
+      return new ObjStatementResult._success(new CInterpStatement(
           _colorInterpolationEnabled,
           lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 1) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `c_interp` statement only takes 1 argument.'));
 
       return false;

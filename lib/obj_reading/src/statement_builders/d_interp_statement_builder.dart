@@ -7,7 +7,7 @@ class DInterpStatementBuilder implements ObjStatementBuilder {
 
   final int lineNumber;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   DInterpStatementBuilder(this.lineNumber);
 
@@ -18,7 +18,7 @@ class DInterpStatementBuilder implements ObjStatementBuilder {
       } else if (argument == 'off') {
         _dissolveInterpolationEnabled = false;
       } else {
-        _errors.add(new ObjError(
+        _errors.add(new ObjReadingError(
             lineNumber,
             'The argument supplied to a `d_interp` statement must be `on` or '
             '`off`.'));
@@ -66,22 +66,22 @@ class DInterpStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `d_interp` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(new DInterpStatement(
+      return new ObjStatementResult._success(new DInterpStatement(
           _dissolveInterpolationEnabled,
           lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 1) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `d_interp` statement only takes 1 argument.'));
 
       return false;

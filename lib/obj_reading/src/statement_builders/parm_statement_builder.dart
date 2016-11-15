@@ -9,7 +9,7 @@ class ParmStatementBuilder implements ObjStatementBuilder {
 
   final int lineNumber;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   ParmStatementBuilder(this.lineNumber);
 
@@ -20,7 +20,7 @@ class ParmStatementBuilder implements ObjStatementBuilder {
       } else if (argument == 'v') {
         _direction = ParameterDirection.v;
       } else {
-        _errors.add(new ObjError(
+        _errors.add(new ObjReadingError(
             lineNumber,
             'The first argument to a `parm` statement must be either `u` or '
             '`v`.'));
@@ -81,15 +81,15 @@ class ParmStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 3) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `parm` statement requires at least 3 arguments.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new ParmStatement(_direction, _values, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 }

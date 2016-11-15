@@ -11,7 +11,7 @@ class CurvStatementBuilder implements ObjStatementBuilder {
 
   List<int> _vNums = [];
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   CurvStatementBuilder(this.lineNumber);
 
@@ -78,15 +78,15 @@ class CurvStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 4) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `curv` statement requires at least 4 arguments.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new CurvStatement(_start, _end, _vNums, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 }

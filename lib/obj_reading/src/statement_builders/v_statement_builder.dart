@@ -13,7 +13,7 @@ class VStatementBuilder implements ObjStatementBuilder {
 
   double _w;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   VStatementBuilder(this.lineNumber);
 
@@ -78,21 +78,21 @@ class VStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 3) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `v` statement requires at least 3 arguments.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new VStatement(_x, _y, _z, _w, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 4) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `v` statement does not take more than 4 arguments.'));
 
       return false;

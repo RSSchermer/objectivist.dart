@@ -21,7 +21,7 @@ class ConStatementBuilder implements ObjStatementBuilder {
 
   final int lineNumber;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   ConStatementBuilder(this.lineNumber);
 
@@ -121,25 +121,25 @@ class ConStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 8) {
-      _errors.add(
-          new ObjError(lineNumber, 'A `con` statement requires 8 arguments.'));
+      _errors.add(new ObjReadingError(
+          lineNumber, 'A `con` statement requires 8 arguments.'));
     }
 
     if (_errors.isEmpty) {
       final curve2AInstance = new Curve2Instance(_startA, _endA, _curv2ANum);
       final curve2BInstance = new Curve2Instance(_startB, _endB, _curv2BNum);
 
-      return new ObjStatementResult.success(new ConStatement(
+      return new ObjStatementResult._success(new ConStatement(
           _surfANum, curve2AInstance, _surfBNum, curve2BInstance,
           lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 8) {
-      _errors.add(new ObjError(lineNumber,
+      _errors.add(new ObjReadingError(lineNumber,
           'A `con` statement does not take more than 8 arguments.'));
 
       return false;

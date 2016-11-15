@@ -9,7 +9,7 @@ class CstypeStatementBuilder implements ObjStatementBuilder {
 
   final int lineNumber;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   CstypeStatementBuilder(this.lineNumber);
 
@@ -36,7 +36,7 @@ class CstypeStatementBuilder implements ObjStatementBuilder {
             _type = CSType.taylor;
             break;
           default:
-            _errors.add(new ObjError(
+            _errors.add(new ObjReadingError(
                 lineNumber,
                 'The first argument to a `cstype` statement must be either '
                 '`rat`, `bmatrix`, `bezier`, `bspline`, `cardinal` or '
@@ -61,13 +61,13 @@ class CstypeStatementBuilder implements ObjStatementBuilder {
               _type = CSType.taylor;
               break;
             default:
-              _errors.add(new ObjError(
+              _errors.add(new ObjReadingError(
                   lineNumber,
                   'The second argument to a `cstype` statement must be either '
                   '`bmatrix`, `bezier`, `bspline`, `cardinal` or `taylor`.'));
           }
         } else {
-          _errors.add(new ObjError(
+          _errors.add(new ObjReadingError(
               lineNumber,
               'A `cstype` statement only takes a second argument if the first '
               'argument was `rat`.'));
@@ -116,24 +116,24 @@ class CstypeStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_isRational && _argumentCount < 2) {
-      _errors.add(new ObjError(lineNumber,
+      _errors.add(new ObjReadingError(lineNumber,
           'A `cstype` statement declared as `rat` requires a second argument.'));
     } else if (!_isRational && _argumentCount < 1) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `cstype` statement requires at least 1 argument.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(new CstypeStatement(_type,
+      return new ObjStatementResult._success(new CstypeStatement(_type,
           isRational: _isRational, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 2) {
-      _errors.add(new ObjError(lineNumber,
+      _errors.add(new ObjReadingError(lineNumber,
           'A `cstype` statement does not take more than 2 arguments.'));
 
       return false;

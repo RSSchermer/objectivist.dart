@@ -9,6 +9,11 @@ import 'errors.dart';
 import 'lexing.dart';
 import 'statement_builders.dart';
 
+/// Buffering OBJ token sequence statementizer.
+///
+/// Turns a sequence of [ObjToken]s into a sequence of [ObjStatement]s.
+/// Statements will be buffered. See [flush] or [clean] for retrieving the
+/// contents of the statement buffer.
 class ObjStatementizer {
   int _lineNumber = 1;
 
@@ -18,8 +23,13 @@ class ObjStatementizer {
 
   List<ObjStatement> _statements = [];
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
+  /// Processes the next token.
+  ///
+  /// Turns a sequence of [ObjToken]s into a sequence of [ObjStatement]s.
+  /// Statements will be buffered. See [flush] or [clean] for retrieving the
+  /// contents of the statement buffer.
   void process(ObjToken token) {
     if (token.type == ObjTokenType.newline) {
       _lineNumber++;
@@ -148,7 +158,7 @@ class ObjStatementizer {
 
           break;
         default:
-          _errors.add(new ObjError(_lineNumber,
+          _errors.add(new ObjReadingError(_lineNumber,
               '${token.value} is not a valid way to start a new statement.'));
       }
     } else {
@@ -191,32 +201,73 @@ class ObjStatementizer {
     _lastToken = token;
   }
 
+  /// Returns all buffered statements and empties the statement buffer, but
+  /// leaves any currently unfinished token intact.
+  ///
+  /// If this [ObjStatementizer] currently has a partial unfinished statement,
+  /// then that statement will be preserved. If any other tokens get processed
+  /// subsequently, then these will be used to complete this statement and it
+  /// will be the first statement when the statement buffer is flushed again at
+  /// a later time.
+  ///
+  /// Returns a [StatementizerResults] instance which acts as a collection of
+  /// statements. Note that statements that contained errors may have been
+  /// omitted from the [StatementizerResults]. Call `errors` on the
+  /// [StatementizerResults] instance to retrieve the errors encountered while
+  /// statementizing.
+  ///
+  /// See also [clean].
   StatementizerResults flush() =>
-      new StatementizerResults(_statements, _errors);
+      new StatementizerResults._internal(_statements, _errors);
 
+  /// Returns all buffered statements, empties the statement buffer and discards
+  /// any currently unfinished statement.
+  ///
+  /// If this [ObjStatementizer] currently has a partial unfinished statement,
+  /// then that statement will be discarded. Essentially resets this
+  /// [ObjStatementizer] to its empty state.
+  ///
+  /// Returns a [StatementizerResults] instance which acts as a collection of
+  /// statements. Note that statements that contained errors may have been
+  /// omitted from the [StatementizerResults]. Call `errors` on the
+  /// [StatementizerResults] instance to retrieve the errors encountered while
+  /// statementizing.
+  ///
+  /// See also [flush].
   StatementizerResults clean() {
     _statementBuilder = null;
     _lastToken = null;
     _lineNumber = 0;
 
-    return new StatementizerResults(_statements, _errors);
+    return new StatementizerResults._internal(_statements, _errors);
   }
 }
 
+/// Encapsulated the results of an [ObjStatementizer].
+///
+/// Acts as a collection of statements. Note that an [ObjStatementizer] may have
+/// omitted statements that contained errors. Call [errors] to retrieve the
+/// errors encountered by the [ObjStatementizer] while statementizing.
 class StatementizerResults extends DelegatingIterable<ObjStatement> {
   final Iterable<ObjStatement> delegate;
 
-  final Iterable<ObjError> errors;
+  /// The errors encountered while statementizing.
+  final Iterable<ObjReadingError> errors;
 
+  /// The collection of statements that resulted from statementizing.
   Iterable<ObjStatement> get statements => delegate;
 
-  StatementizerResults(this.delegate, this.errors);
+  /// Creates a new [StatementizerResults] instance.
+  StatementizerResults._internal(this.delegate, this.errors);
 }
 
+/// Transforms an [ObjToken] stream into an [ObjStatement] stream.
 class ObjStatementizerTransformer
     implements StreamTransformer<Iterable<ObjToken>, StatementizerResults> {
+  /// The [ObjStatementizer] used to statementize an [ObjToken] stream.
   final ObjStatementizer statementizer;
 
+  /// Instantiates a new [ObjStatementizerTransformer].
   ObjStatementizerTransformer(this.statementizer);
 
   Stream<StatementizerResults> bind(Stream<Iterable<ObjToken>> stream) {

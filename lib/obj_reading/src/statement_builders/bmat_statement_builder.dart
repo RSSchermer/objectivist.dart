@@ -9,7 +9,7 @@ class BmatStatementBuilder implements ObjStatementBuilder {
 
   final int lineNumber;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   BmatStatementBuilder(this.lineNumber);
 
@@ -20,7 +20,7 @@ class BmatStatementBuilder implements ObjStatementBuilder {
       } else if (argument == 'v') {
         _direction = ParameterDirection.v;
       } else {
-        _errors.add(new ObjError(
+        _errors.add(new ObjReadingError(
             lineNumber,
             'The first argument to a `bmat` statement must be either `u` or '
             '`v`.'));
@@ -81,15 +81,15 @@ class BmatStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 2) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `bmat` statement requires at least 2 arguments.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new BmatStatement(_direction, _values, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 }

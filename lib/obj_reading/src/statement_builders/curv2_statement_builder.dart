@@ -7,7 +7,7 @@ class Curv2StatementBuilder implements ObjStatementBuilder {
 
   List<int> _vpNums = [];
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   Curv2StatementBuilder(this.lineNumber);
 
@@ -47,15 +47,15 @@ class Curv2StatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 2) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `curv2` statement requires at least 2 arguments.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new Curv2Statement(_vpNums, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 }

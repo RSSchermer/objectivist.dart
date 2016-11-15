@@ -194,7 +194,7 @@ class ObjLexer {
     return tokens;
   }
 
-  /// Returns all buffered tokens and empties the token buffer and discards any
+  /// Returns all buffered tokens, empties the token buffer and discards any
   /// currently unfinished token.
   ///
   /// If this [ObjLexer] currently has a partial unfinished token, then that

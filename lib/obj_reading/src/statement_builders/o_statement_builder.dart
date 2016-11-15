@@ -7,7 +7,7 @@ class OStatementBuilder implements ObjStatementBuilder {
 
   final int lineNumber;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   OStatementBuilder(this.lineNumber);
 
@@ -57,22 +57,22 @@ class OStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(
-          new ObjError(lineNumber, 'An `o` statement requires 1 argument.'));
+      _errors.add(new ObjReadingError(
+          lineNumber, 'An `o` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new OStatement(_objectName, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 1) {
-      _errors.add(
-          new ObjError(lineNumber, 'An `o` statement only takes 1 argument.'));
+      _errors.add(new ObjReadingError(
+          lineNumber, 'An `o` statement only takes 1 argument.'));
 
       return false;
     } else {

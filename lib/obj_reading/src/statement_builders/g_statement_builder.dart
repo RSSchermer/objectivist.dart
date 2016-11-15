@@ -7,7 +7,7 @@ class GStatementBuilder implements ObjStatementBuilder {
 
   List<String> _groupNames = [];
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   GStatementBuilder(this.lineNumber);
 
@@ -47,15 +47,15 @@ class GStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `g` statement requires at least 1 argument.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new GStatement(_groupNames, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 }

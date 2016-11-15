@@ -3,7 +3,7 @@ part of obj_reading.statement_builders;
 class EndStatementBuilder implements ObjStatementBuilder {
   final int lineNumber;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   EndStatementBuilder(this.lineNumber);
 
@@ -29,15 +29,15 @@ class EndStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new EndStatement(lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 
   void _addNoArgumentsError() {
-    _errors.add(new ObjError(
+    _errors.add(new ObjReadingError(
         lineNumber, 'An `end` statement does not take any arguments.'));
   }
 }

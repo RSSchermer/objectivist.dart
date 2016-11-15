@@ -11,7 +11,7 @@ class LStatementBuilder implements ObjStatementBuilder {
 
   _LStatementBuilderMode _mode;
 
-  List<ObjError> _errors = [];
+  List<ObjReadingError> _errors = [];
 
   LStatementBuilder(this.lineNumber);
 
@@ -30,7 +30,7 @@ class LStatementBuilder implements ObjStatementBuilder {
       if (_mode == _LStatementBuilderMode.int) {
         _vNumPairs.add(new VertexNumPair(argument));
       } else {
-        _errors.add(new ObjError(
+        _errors.add(new ObjReadingError(
             lineNumber,
             'One `l` statement cannot intermix `int` and `IntPair` arguments; '
             'all arguments must be of the same type.'));
@@ -48,7 +48,7 @@ class LStatementBuilder implements ObjStatementBuilder {
       if (_mode == _LStatementBuilderMode.intPair) {
         _vNumPairs.add(new VertexNumPair(argument.value1, argument.value2));
       } else {
-        _errors.add(new ObjError(
+        _errors.add(new ObjReadingError(
             lineNumber,
             'One `l` statement cannot intermix `int` and `IntPair` arguments; '
             'all arguments must be of the same type.'));
@@ -74,15 +74,15 @@ class LStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 2) {
-      _errors.add(new ObjError(
+      _errors.add(new ObjReadingError(
           lineNumber, 'A `l` statement requires at least 2 arguments.'));
     }
 
     if (_errors.isEmpty) {
-      return new ObjStatementResult.success(
+      return new ObjStatementResult._success(
           new LStatement(_vNumPairs, lineNumber: lineNumber));
     } else {
-      return new ObjStatementResult.failure(_errors);
+      return new ObjStatementResult._failure(_errors);
     }
   }
 }
