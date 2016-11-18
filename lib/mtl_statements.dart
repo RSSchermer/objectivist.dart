@@ -8,6 +8,8 @@ part 'src/mtl_statements/illum_statement.dart';
 part 'src/mtl_statements/ka_statement.dart';
 part 'src/mtl_statements/kd_statement.dart';
 part 'src/mtl_statements/ks_statement.dart';
+part 'src/mtl_statements/map_aat_statement.dart';
+part 'src/mtl_statements/map_d_statement.dart';
 part 'src/mtl_statements/map_ka_statement.dart';
 part 'src/mtl_statements/map_kd_statement.dart';
 part 'src/mtl_statements/map_ks_statement.dart';
@@ -35,7 +37,15 @@ abstract class MtlStatement {
 }
 
 abstract class MtlStatementVisitor {
-  void visitNewmtlStatement(NewmtlStatement statement);
+  void visitBumpStatement(BumpStatement statement);
+
+  void visitDStatement(DStatement statement);
+
+  void visitDecalStatement(DecalStatement statement);
+
+  void visitDispStatement(DispStatement statement);
+
+  void visitIllumStatement(IllumStatement statement);
 
   void visitKaStatement(KaStatement statement);
 
@@ -43,17 +53,9 @@ abstract class MtlStatementVisitor {
 
   void visitKsStatement(KsStatement statement);
 
-  void visitTfStatement(TfStatement statement);
+  void visitMapAatStatement(MapAatStatement statement);
 
-  void visitIllumStatement(IllumStatement statement);
-
-  void visitDStatement(DStatement statement);
-
-  void visitNsStatement(NsStatement statement);
-
-  void visitSharpnessStatement(SharpnessStatement statement);
-
-  void visitNiStatement(NiStatement statement);
+  void visitMapDStatement(MapDStatement statement);
 
   void visitMapKaStatement(MapKaStatement statement);
 
@@ -63,13 +65,17 @@ abstract class MtlStatementVisitor {
 
   void visitMapNsStatement(MapNsStatement statement);
 
-  void visitDecalStatement(DecalStatement statement);
+  void visitNewmtlStatement(NewmtlStatement statement);
 
-  void visitDispStatement(DispStatement statement);
+  void visitNiStatement(NiStatement statement);
 
-  void visitBumpStatement(BumpStatement statement);
+  void visitNsStatement(NsStatement statement);
 
   void visitReflStatement(ReflStatement statement);
+
+  void visitSharpnessStatement(SharpnessStatement statement);
+
+  void visitTfStatement(TfStatement statement);
 }
 
 /// Enumerates the types of color composition information sources supported by
