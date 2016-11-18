@@ -180,11 +180,11 @@ class CIEXYZ implements ColorSource {
 
   String toSource() {
     if (y == null) {
-      return x.toString();
+      return 'xyz $x';
     } else if (z == null) {
-      return '$x $y';
+      return 'xyz $x $y';
     } else {
-      return '$x $y $z';
+      return 'xyz $x $y $z';
     }
   }
 

@@ -2,7 +2,7 @@ part of mtl_statements;
 
 /// Enumerates the available reflection map types.
 enum ReflectionMapType {
-  spherical,
+  sphere,
   cubeTop,
   cubeBottom,
   cubeFront,
@@ -14,7 +14,7 @@ enum ReflectionMapType {
 /// Specifies an infinitely large sphere or cube that casts reflections onto the
 /// material.
 ///
-/// When a [type] of [ReflectionMapType.spherical] is specified, one texture
+/// When a [type] of [ReflectionMapType.sphere] is specified, one texture
 /// file is used for a sphere. Otherwise separate texture files should be
 /// specified for each side of a cube with multiple separate [ReflStatement]s.
 class ReflStatement implements MtlStatement {
@@ -120,7 +120,7 @@ class ReflStatement implements MtlStatement {
   }
 
   String toSource() {
-    var res = 'map_Ka -type ${_reflectionMapTypeStringMap[type]}';
+    var res = 'refl -type ${_reflectionMapTypeStringMap[type]}';
 
     if (blendU != true) {
       res += ' -blendu off';
@@ -186,7 +186,7 @@ class ReflStatement implements MtlStatement {
 }
 
 const _reflectionMapTypeStringMap = const {
-  ReflectionMapType.spherical: 'sphere',
+  ReflectionMapType.sphere: 'sphere',
   ReflectionMapType.cubeTop: 'cube_top',
   ReflectionMapType.cubeBottom: 'cube_bottom',
   ReflectionMapType.cubeFront: 'cube_front',

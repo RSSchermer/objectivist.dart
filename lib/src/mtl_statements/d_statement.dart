@@ -22,13 +22,19 @@ class DStatement implements MtlStatement {
   final int lineNumber;
 
   /// Instantiates a new [DStatement].
-  DStatement(this.factor, {this.halo, this.lineNumber});
+  DStatement(this.factor, {this.halo: false, this.lineNumber});
 
   void acceptVisit(MtlStatementVisitor visitor) {
     visitor.visitDStatement(this);
   }
 
-  String toSource() => 'd $factor';
+  String toSource() {
+    if (halo) {
+      return 'd -halo $factor';
+    } else {
+      return 'd $factor';
+    }
+  }
 
   String toString() => 'DStatement($factor, lineNumber: $lineNumber)';
 

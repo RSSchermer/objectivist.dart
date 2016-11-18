@@ -194,15 +194,15 @@ class IllumStatement implements MtlStatement {
 }
 
 const _illuminationModelStringMap = const {
-  IlluminationModel.illum0: 'illum_0',
-  IlluminationModel.illum1: 'illum_1',
-  IlluminationModel.illum2: 'illum_2',
-  IlluminationModel.illum3: 'illum_3',
-  IlluminationModel.illum4: 'illum_4',
-  IlluminationModel.illum5: 'illum_5',
-  IlluminationModel.illum6: 'illum_6',
-  IlluminationModel.illum7: 'illum_7',
-  IlluminationModel.illum8: 'illum_8',
-  IlluminationModel.illum9: 'illum_9',
-  IlluminationModel.illum10: 'illum_10',
+  IlluminationModel.illum0: '0',
+  IlluminationModel.illum1: '1',
+  IlluminationModel.illum2: '2',
+  IlluminationModel.illum3: '3',
+  IlluminationModel.illum4: '4',
+  IlluminationModel.illum5: '5',
+  IlluminationModel.illum6: '6',
+  IlluminationModel.illum7: '7',
+  IlluminationModel.illum8: '8',
+  IlluminationModel.illum9: '9',
+  IlluminationModel.illum10: '10',
 };
