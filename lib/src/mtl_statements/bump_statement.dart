@@ -94,7 +94,7 @@ class BumpStatement implements MtlStatement {
       {this.multiplier: 1.0,
       this.blendU: true,
       this.blendV: true,
-      this.channel: Channel.m,
+      this.channel: Channel.l,
       this.clamp: false,
       this.rangeBase: 0.0,
       this.rangeGain: 1.0,
