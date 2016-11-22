@@ -1,0 +1,9 @@
+# A flat green, partially dissolved material.
+#
+# Example taken from the MTL specification.
+
+newmtl diss_green
+Ka 0.0000 1.0000 0.0000
+Kd 0.0000 1.0000 0.0000
+d 0.8000
+illum 1

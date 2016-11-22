@@ -1,0 +1,12 @@
+# A material that exhibits an effect known as Fresnel reflection. When applied
+# to an object, white fringes may appear where the object's surface is viewed at
+# a glancing angle.
+#
+# Example taken from the MTL specification.
+
+newmtl fresnel_blu
+Ka 0.0000 0.0000 0.0000
+Kd 0.0000 0.0000 0.0000
+Ks 0.6180 0.8760 0.1430
+Ns 200
+illum 5

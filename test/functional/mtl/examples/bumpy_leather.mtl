@@ -1,0 +1,22 @@
+# A material that includes a texture map of a leather pattern. The material
+# color is set to "ident" to preserve the texture's true color. When applied to
+# an object, it affects both the color of the object's surface and its apparent
+# bumpiness.
+#
+# The color information for the texture is stored in a separate .mpc file that
+# is referred to in the material by its name, "brown.mpc". The bump information
+# is stored in a separate .mpb file that is referred to in the material by its
+# name, "leath.mpb". The -bm option is used to raise the apparent height of the
+# leather bumps.
+#
+# Example taken from the MTL specification.
+
+newmtl bumpy_leath
+Ka spectral ident.rfl 1
+Kd spectral ident.rfl 1
+Ks spectral ident.rfl 1
+illum 2
+map_Ka brown.mpc
+map_Kd brown.mpc
+map_Ks brown.mpc
+bump -bm 2.000 leath.mpb

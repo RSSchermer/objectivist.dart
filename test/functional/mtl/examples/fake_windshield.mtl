@@ -1,0 +1,13 @@
+# A material that approximates a glass surface. Is it almost completely
+# transparent, but it shows reflections of other objects in the scene. It will
+# not distort the image of objects seen through the material.
+#
+# Example taken from the MTL specification.
+
+newmtl fake_windsh
+Ka 0.0000 0.0000 0.0000
+Kd 0.0000 0.0000 0.0000
+Ks 0.9000 0.9000 0.9000
+d 0.1000
+Ns 200
+illum 4

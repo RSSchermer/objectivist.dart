@@ -1,0 +1,18 @@
+# A material that includes a texture map which illustrates how a texture's
+# origin may be shifted left/right (the "u" direction) or up/down (the "v"
+# direction). The material color is set to "ident" to preserve the texture's
+# true color.
+#
+# In this example, the original image of the logo is off-center to the left. To
+# compensate, the texture's origin is shifted back to the right (the positive
+# "u" direction) using the "-o" option to modify the origin.
+#
+# Example taken from the MTL specification.
+
+Ka spectral ident.rfl 1
+Kd spectral ident.rfl 1
+Ks spectral ident.rfl 1
+illum 2
+map_Ka -o 0.200 0.000 0.000 logo.mpc
+map_Kd -o 0.200 0.000 0.000 logo.mpc
+map_Ks -o 0.200 0.000 0.000 logo.mpc

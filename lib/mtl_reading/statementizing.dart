@@ -55,7 +55,7 @@ class MtlStatementizer {
             case 'disp':
               _statementBuilder = new DispStatementBuilder(_lineNumber);
               break;
-            case 'illlum':
+            case 'illum':
               _statementBuilder = new IllumStatementBuilder(_lineNumber);
               break;
             case 'Ka':

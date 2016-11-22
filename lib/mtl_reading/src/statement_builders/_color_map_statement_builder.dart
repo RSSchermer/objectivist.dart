@@ -5,7 +5,7 @@ abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
 
   String get statementName;
 
-  List<dynamic> _arguments;
+  List<dynamic> _arguments = [];
 
   List<MtlReadingError> _errors = [];
 

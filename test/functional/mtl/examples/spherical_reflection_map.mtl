@@ -1,0 +1,14 @@
+# A material that illustrates a common use for local reflection maps (defined in
+# a material).
+#
+# This material is highly reflective with no diffuse or ambient contribution.
+# Its reflection map is an image with silver streaks that yields a chrome
+# appearance when viewed as a reflection.
+#
+# Example taken from the MTL specification.
+
+Ka 0 0 0
+Kd 0 0 0
+Ks .7 .7 .7
+illum 1
+refl -type sphere chrome.rla

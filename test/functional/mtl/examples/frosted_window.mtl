@@ -1,0 +1,20 @@
+# A material that includes a texture map used to alter the opacity of an
+# object's surface. The material color is set to "ident" to preserve the
+# texture's true color. When applied to an object, the object becomes
+# transparent in certain areas and opaque in others.
+#
+# The variation between opaque and transparent regions is controlled by scalar
+# information stored in a separate .mps file that is referred to in the material
+# by its name, "window.mps". The "-mm" option is used to shift and compress the
+# range of opacity.
+#
+# Example taken from the MTL specification.
+
+newmtl frost_wind
+Ka 0.2 0.2 0.2
+Kd 0.6 0.6 0.6
+Ks 0.1 0.1 0.1
+d 1
+Ns 200
+illum 2
+map_d -mm 0.200 0.800 window.mps

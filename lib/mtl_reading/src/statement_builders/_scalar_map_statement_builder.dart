@@ -7,7 +7,7 @@ abstract class _ScalarMapStatementBuilder implements MtlStatementBuilder {
 
   Channel get defaultChannel;
 
-  List<dynamic> _arguments;
+  List<dynamic> _arguments = [];
 
   List<MtlReadingError> _errors = [];
 

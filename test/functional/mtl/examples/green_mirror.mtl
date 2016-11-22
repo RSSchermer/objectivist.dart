@@ -1,0 +1,11 @@
+# A reflective green material. When applied to an object, it reflects other
+# objects in the same scene.
+#
+# Example taken from the MTL specification.
+
+newmtl green_mirror
+Ka 0.0000 1.0000 0.0000
+Kd 0.0000 1.0000 0.0000
+Ks 0.0000 1.0000 0.0000
+Ns 200.0000
+illum 3

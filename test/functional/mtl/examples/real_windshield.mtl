@@ -1,0 +1,17 @@
+# A material that accurately represents a glass surface. It filters of colorizes
+# objects that are seen through it. Filtering is done according to the
+# transmission color of the material. The material also distorts the image of
+# objects according to its optical density. Note that the material is not
+# dissolved and that its ambient, diffuse, and specular reflective colors have
+# been set to black. Only the transmission color is non-black.
+#
+# Example taken from the MTL specification.
+
+newmtl real_windsh
+Ka 0.0000 0.0000 0.0000
+Kd 0.0000 0.0000 0.0000
+Ks 0.0000 0.0000 0.0000
+Tf 1.0000 1.0000 1.0000
+Ns 200
+Ni 1.2000
+illum 6

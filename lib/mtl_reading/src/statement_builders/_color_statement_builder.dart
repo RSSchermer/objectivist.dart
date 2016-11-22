@@ -121,10 +121,10 @@ abstract class _ColorStatementBuilder implements MtlStatementBuilder {
       var color;
 
       if (_mode == _ColorStatementBuilderMode.RGB) {
-        color = new RGB(_RGBr, _RGBb ?? _RGBr, _RGBg ?? _RGBr);
+        color = new RGB(_RGBr, _RGBg ?? _RGBr, _RGBb ?? _RGBr);
       } else if (_mode == _ColorStatementBuilderMode.CIEXYZ) {
         color =
-            new CIEXYZ(_CIEXYZx, _CIEXYZy ?? _CIEXYZx, _CIEXYZz ?? _CIEXYZz);
+            new CIEXYZ(_CIEXYZx, _CIEXYZy ?? _CIEXYZx, _CIEXYZz ?? _CIEXYZx);
       } else {
         color = new SpectralCurve(_spectralFilename, _spectralFactor ?? 1.0);
       }

@@ -1,0 +1,8 @@
+# A bright green material. When applied to an object, it will remain bright
+# green regardless of any lighting in the scene.
+#
+# Example taken from the MTL specification.
+
+newmtl neon_green
+Kd 0.0000 1.0000 0.0000
+illum 0

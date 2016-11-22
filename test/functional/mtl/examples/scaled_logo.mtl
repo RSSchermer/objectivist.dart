@@ -1,0 +1,18 @@
+# A material that includes a texture map showing how a texture may be scaled
+# left or right (in the "u" direction) or up and down (in the "v" direction).
+# The material color is set to "ident" to preserve the texture's true color.
+#
+# In this example, the original image of the logo is too small. To compensate,
+# the texture is scaled slightly to the right (in the positive "u" direction)
+# and up (in the positive "v" direction) using the "-s" option to modify the
+# scale.
+#
+# Example taken from the MTL specification.
+
+Ka spectral ident.rfl 1
+Kd spectral ident.rfl 1
+Ks spectral ident.rfl 1
+illum 2
+map_Ka -s 1.200 1.200 0.000 logo.mpc
+map_Kd -s 1.200 1.200 0.000 logo.mpc
+map_Ks -s 1.200 1.200 0.000 logo.mpc

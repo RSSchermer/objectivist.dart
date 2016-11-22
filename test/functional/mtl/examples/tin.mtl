@@ -1,0 +1,13 @@
+# A material that is based on spectral reflectance samples taken from an actual
+# piece of tin. These samples are stored in a separate .rfl file that is
+# referred to by name in the material. Spectral sample files (.rfl) can be used
+# in any type of material as an alternative to RGB values.
+#
+# Example taken from the MTL specification.
+
+newmtl tin
+Ka spectral tin.rfl
+Kd spectral tin.rfl
+Ks spectral tin.rfl
+Ns 200
+illum 3

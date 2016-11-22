@@ -1,0 +1,17 @@
+# A material that includes a texture map of a pine pattern. The material color
+# is set to "ident" to preserve the texture's true color. When applied to an
+# object, this texture map will affect only the ambient and diffuse regions of
+# that object's surface.
+#
+# The color information for the texture is stored in a separate .mpc file that
+# is referred to in the material by its name, "pine.mpc". If you use different
+# .mpc files for ambient and diffuse, you will get unrealistic results.
+#
+# Example taken from the MTL specification.
+
+newmtl pine_wood
+Ka spectral ident.rfl 1
+Kd spectral ident.rfl 1
+illum 1
+map_Ka pine.mpc
+map_Kd pine.mpc

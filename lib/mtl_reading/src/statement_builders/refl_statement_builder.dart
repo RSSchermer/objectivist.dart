@@ -3,7 +3,7 @@ part of mtl_reading.statement_builders;
 class ReflStatementBuilder implements MtlStatementBuilder {
   final int lineNumber;
 
-  List<dynamic> _arguments;
+  List<dynamic> _arguments = [];
 
   List<MtlReadingError> _errors = [];
 
