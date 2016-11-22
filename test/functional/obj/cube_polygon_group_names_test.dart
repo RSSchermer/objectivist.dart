@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   test('statementizing examples/cube_polygon_group_names.obj results in the correct statements without errors', () async {
     final resource = new Resource('test/functional/obj/examples/cube_polygon_group_names.obj');
-    final results = await statementizeResource(resource);
+    final results = await statementizeObjResource(resource);
 
     expect(results.statements, equals([
       new VStatement(0.0, 2.0, 2.0, null, lineNumber: 6),

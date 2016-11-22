@@ -7,7 +7,7 @@ void main() {
   test('statementizing examples/cube_polygon_negative_ref_numbers.obj results in the correct statements without errors', () async {
     final resource =
         new Resource('test/functional/obj/examples/cube_polygon_negative_ref_numbers.obj');
-    final results = await statementizeResource(resource);
+    final results = await statementizeObjResource(resource);
 
     expect(results.statements, equals([
       new VStatement(0.0, 2.0, 2.0, null, lineNumber: 5),

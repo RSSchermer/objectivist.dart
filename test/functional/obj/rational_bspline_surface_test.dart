@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   test('statementizing examples/rational_bspline_surface.obj results in the correct statements without errors', () async {
     final resource = new Resource('test/functional/obj/examples/rational_bspline_surface.obj');
-    final results = await statementizeResource(resource);
+    final results = await statementizeObjResource(resource);
 
     expect(results.statements, equals([
       new VStatement(-1.3, -1.0, 0.0, null, lineNumber: 7),

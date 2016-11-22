@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   test('statementizing examples/surface_connectivity.obj results in the correct statements without errors', () async {
     final resource = new Resource('test/functional/obj/examples/surface_connectivity.obj');
-    final results = await statementizeResource(resource);
+    final results = await statementizeObjResource(resource);
 
     expect(results.statements, equals([
       new CstypeStatement(CSType.bezier, lineNumber: 5),

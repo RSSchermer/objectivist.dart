@@ -7,7 +7,7 @@ import 'package:resource/resource.dart';
 import 'obj_reading/lexing.dart';
 import 'obj_reading/statementizing.dart';
 
-ObjStatementizerResults statementize(String source) {
+ObjStatementizerResults statementizeObj(String source) {
   final lexer = new ObjLexer();
   final statementizer = new ObjStatementizer();
 
@@ -24,11 +24,12 @@ ObjStatementizerResults statementize(String source) {
   return statementizer.flush();
 }
 
-Future<ObjStatementizerResults> statementizeResource(Resource resource) {
-  return resource.readAsString().then((source) => statementize(source));
+Future<ObjStatementizerResults> statementizeObjResource(Resource resource) {
+  return resource.readAsString().then((source) => statementizeObj(source));
 }
 
-Stream<ObjStatementizerResults> statementizeResourceStreamed(Resource resource) {
+Stream<ObjStatementizerResults> statementizeObjResourceStreamed(
+    Resource resource) {
   final lexer = new ObjLexer();
   final statementizer = new ObjStatementizer();
   final outStreamController = new StreamController<ObjStatementizerResults>();

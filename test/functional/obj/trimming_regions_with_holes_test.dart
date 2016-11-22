@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   test('statementizing examples/trimming_regions_with_holes.obj results in the correct statements without errors', () async {
     final resource = new Resource('test/functional/obj/examples/trimming_regions_with_holes.obj');
-    final results = await statementizeResource(resource);
+    final results = await statementizeObjResource(resource);
 
     expect(results.statements, equals([
       new DegStatement(1, null, lineNumber: 6),

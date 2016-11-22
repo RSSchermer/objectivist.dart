@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   test('statementizing examples/merging_group.obj results in the correct statements without errors', () async {
     final resource = new Resource('test/functional/obj/examples/merging_group.obj');
-    final results = await statementizeResource(resource);
+    final results = await statementizeObjResource(resource);
 
     expect(results.statements, equals([
       new VStatement(-4.949854, -5.0, 0.0, null, lineNumber: 7),

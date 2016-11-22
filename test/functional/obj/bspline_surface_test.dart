@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   test('statementizing examples/bspline_surface.obj results in the correct statements without errors', () async {
     final resource = new Resource('test/functional/obj/examples/bspline_surface.obj');
-    final results = await statementizeResource(resource);
+    final results = await statementizeObjResource(resource);
 
     expect(results.statements, equals([
       new GStatement(['bspatch'], lineNumber: 5),

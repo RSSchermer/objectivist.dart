@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   test('statementizing examples/trimmed_surface_with_special_curve.obj results in the correct statements without errors', () async {
     final resource = new Resource('test/functional/obj/examples/trimmed_surface_with_special_curve.obj');
-    final results = await statementizeResource(resource);
+    final results = await statementizeObjResource(resource);
 
     expect(results.statements, equals([
       new VpStatement(-0.675, 1.85, 3.0, lineNumber: 8),
