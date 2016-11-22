@@ -13,6 +13,12 @@ class BumpStatement implements MtlStatement {
   /// by this value before they are applied to the surface.
   final double multiplier;
 
+  /// Whether or not blending in the `u` direction is turned on.
+  final bool blendU;
+
+  /// Whether or not blending in the `v` direction is turned on.
+  final bool blendV;
+
   /// The texture channel that stores the scalar values.
   final Channel channel;
 
@@ -86,6 +92,8 @@ class BumpStatement implements MtlStatement {
   /// Instantiates a new [BumpStatement].
   BumpStatement(this.filename,
       {this.multiplier: 1.0,
+      this.blendU: true,
+      this.blendV: true,
       this.channel: Channel.m,
       this.clamp: false,
       this.rangeBase: 0.0,
@@ -105,6 +113,14 @@ class BumpStatement implements MtlStatement {
 
     if (multiplier != 1.0) {
       res += ' -bm $multiplier';
+    }
+
+    if (blendU != true) {
+      res += ' -blendu off';
+    }
+
+    if (blendV != true) {
+      res += ' -blendv off';
     }
 
     if (channel != Channel.m) {
@@ -139,16 +155,18 @@ class BumpStatement implements MtlStatement {
   }
 
   String toString() => 'BumpStatement($filename, multiplier: $multiplier, '
-      'channel: $channel, clamp: $clamp, rangeBase: $rangeBase, rangeGain: '
-      '$rangeGain, originOffset: $originOffset, scale: $scale, turbulence: '
-      '$turbulence, textureResolution: $textureResolution, lineNumber: '
-      '$lineNumber)';
+      'blendU: $blendU, blendV: $blendV, channel: $channel, clamp: $clamp, '
+      'rangeBase: $rangeBase, rangeGain: $rangeGain, originOffset: '
+      '$originOffset, scale: $scale, turbulence: $turbulence, '
+      'textureResolution: $textureResolution, lineNumber: $lineNumber)';
 
   bool operator ==(other) =>
       identical(other, this) ||
       other is BumpStatement &&
           other.filename == filename &&
           other.multiplier == multiplier &&
+          other.blendU == blendU &&
+          other.blendV == blendV &&
           other.channel == channel &&
           other.clamp == clamp &&
           other.rangeBase == rangeBase &&

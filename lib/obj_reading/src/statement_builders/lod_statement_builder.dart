@@ -14,7 +14,7 @@ class LodStatementBuilder implements ObjStatementBuilder {
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'deg', _argumentCount, 'String', ['int']));
+          lineNumber, 'lod', _argumentCount, 'String', ['int']));
     }
 
     _argumentCount++;

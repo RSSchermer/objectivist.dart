@@ -7,7 +7,7 @@ import 'package:resource/resource.dart';
 import 'obj_reading/lexing.dart';
 import 'obj_reading/statementizing.dart';
 
-StatementizerResults statementize(String source) {
+ObjStatementizerResults statementize(String source) {
   final lexer = new ObjLexer();
   final statementizer = new ObjStatementizer();
 
@@ -24,14 +24,14 @@ StatementizerResults statementize(String source) {
   return statementizer.flush();
 }
 
-Future<StatementizerResults> statementizeResource(Resource resource) {
+Future<ObjStatementizerResults> statementizeResource(Resource resource) {
   return resource.readAsString().then((source) => statementize(source));
 }
 
-Stream<StatementizerResults> statementizeResourceStreamed(Resource resource) {
+Stream<ObjStatementizerResults> statementizeResourceStreamed(Resource resource) {
   final lexer = new ObjLexer();
   final statementizer = new ObjStatementizer();
-  final outStreamController = new StreamController<StatementizerResults>();
+  final outStreamController = new StreamController<ObjStatementizerResults>();
 
   resource.openRead().forEach((chunk) {
     for (var i = 0; i < chunk.length; i++) {

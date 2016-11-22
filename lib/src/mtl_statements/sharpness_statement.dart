@@ -12,7 +12,7 @@ class SharpnessStatement implements MtlStatement {
   /// The sharpness value specified by this [SharpnessStatement].
   ///
   /// Can be a number from 0 to 1000.
-  final int sharpness;
+  final num sharpness;
 
   final int lineNumber;
 

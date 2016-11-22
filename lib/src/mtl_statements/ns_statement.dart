@@ -9,7 +9,7 @@ class NsStatement implements MtlStatement {
   ///
   /// A high exponent results in a tight, concentrated highlight. Ns values
   /// normally range from `0` to `1000`.
-  final int exponent;
+  final num exponent;
 
   final int lineNumber;
 

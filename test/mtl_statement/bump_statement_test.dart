@@ -16,6 +16,18 @@ void main() {
         expect(statement.toSource(), equals('bump -bm 2.0 my_texture.png'));
       });
 
+      test('returns the correct value with blendU set to false', () {
+        final statement = new BumpStatement('my_texture.png', blendU: false);
+
+        expect(statement.toSource(), equals('bump -blendu off my_texture.png'));
+      });
+
+      test('returns the correct value with blendV set to false', () {
+        final statement = new BumpStatement('my_texture.png', blendV: false);
+
+        expect(statement.toSource(), equals('bump -blendv off my_texture.png'));
+      });
+
       test('returns the correct value with the channel set to r', () {
         final statement = new BumpStatement('my_texture.png', channel: Channel.r);
 

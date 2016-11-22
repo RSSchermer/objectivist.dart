@@ -210,15 +210,15 @@ class ObjStatementizer {
   /// will be the first statement when the statement buffer is flushed again at
   /// a later time.
   ///
-  /// Returns a [StatementizerResults] instance which acts as a collection of
+  /// Returns a [ObjStatementizerResults] instance which acts as a collection of
   /// statements. Note that statements that contained errors may have been
-  /// omitted from the [StatementizerResults]. Call `errors` on the
-  /// [StatementizerResults] instance to retrieve the errors encountered while
-  /// statementizing.
+  /// omitted from the [ObjStatementizerResults]. Call `errors` on the
+  /// [ObjStatementizerResults] instance to retrieve the errors encountered
+  /// while statementizing.
   ///
   /// See also [clean].
-  StatementizerResults flush() =>
-      new StatementizerResults._internal(_statements, _errors);
+  ObjStatementizerResults flush() =>
+      new ObjStatementizerResults._internal(_statements, _errors);
 
   /// Returns all buffered statements, empties the statement buffer and discards
   /// any currently unfinished statement.
@@ -227,28 +227,28 @@ class ObjStatementizer {
   /// then that statement will be discarded. Essentially resets this
   /// [ObjStatementizer] to its empty state.
   ///
-  /// Returns a [StatementizerResults] instance which acts as a collection of
+  /// Returns a [ObjStatementizerResults] instance which acts as a collection of
   /// statements. Note that statements that contained errors may have been
-  /// omitted from the [StatementizerResults]. Call `errors` on the
-  /// [StatementizerResults] instance to retrieve the errors encountered while
-  /// statementizing.
+  /// omitted from the [ObjStatementizerResults]. Call `errors` on the
+  /// [ObjStatementizerResults] instance to retrieve the errors encountered
+  /// while statementizing.
   ///
   /// See also [flush].
-  StatementizerResults clean() {
+  ObjStatementizerResults clean() {
     _statementBuilder = null;
     _lastToken = null;
     _lineNumber = 0;
 
-    return new StatementizerResults._internal(_statements, _errors);
+    return new ObjStatementizerResults._internal(_statements, _errors);
   }
 }
 
-/// Encapsulated the results of an [ObjStatementizer].
+/// Encapsulated results produced by an [ObjStatementizer].
 ///
 /// Acts as a collection of statements. Note that an [ObjStatementizer] may have
 /// omitted statements that contained errors. Call [errors] to retrieve the
 /// errors encountered by the [ObjStatementizer] while statementizing.
-class StatementizerResults extends DelegatingIterable<ObjStatement> {
+class ObjStatementizerResults extends DelegatingIterable<ObjStatement> {
   final Iterable<ObjStatement> delegate;
 
   /// The errors encountered while statementizing.
@@ -257,21 +257,21 @@ class StatementizerResults extends DelegatingIterable<ObjStatement> {
   /// The collection of statements that resulted from statementizing.
   Iterable<ObjStatement> get statements => delegate;
 
-  /// Creates a new [StatementizerResults] instance.
-  StatementizerResults._internal(this.delegate, this.errors);
+  /// Creates a new [ObjStatementizerResults] instance.
+  ObjStatementizerResults._internal(this.delegate, this.errors);
 }
 
 /// Transforms an [ObjToken] stream into an [ObjStatement] stream.
 class ObjStatementizerTransformer
-    implements StreamTransformer<Iterable<ObjToken>, StatementizerResults> {
+    implements StreamTransformer<Iterable<ObjToken>, ObjStatementizerResults> {
   /// The [ObjStatementizer] used to statementize an [ObjToken] stream.
   final ObjStatementizer statementizer;
 
   /// Instantiates a new [ObjStatementizerTransformer].
   ObjStatementizerTransformer(this.statementizer);
 
-  Stream<StatementizerResults> bind(Stream<Iterable<ObjToken>> stream) {
-    final outStreamController = new StreamController<StatementizerResults>();
+  Stream<ObjStatementizerResults> bind(Stream<Iterable<ObjToken>> stream) {
+    final outStreamController = new StreamController<ObjStatementizerResults>();
 
     stream.listen((tokens) {
       for (var token in tokens) {

@@ -43,7 +43,7 @@ part 'src/statement_builders/stech_statement_builder.dart';
 
 /// Defines the interface for [ObjStatement] builders.
 ///
-/// [ObjStatement] builders build [ObjStatements] by adding arguments one by
+/// [ObjStatement] builders build [ObjStatement]s by adding arguments one by
 /// one. Once all arguments have been added, call [build] to retrieve the
 /// [ObjStatementResult].
 abstract class ObjStatementBuilder {
@@ -76,7 +76,7 @@ abstract class ObjStatementBuilder {
 /// Either an [ObjStatement] or a collection of errors if an [ObjStatement]
 /// could not be constructed.
 class ObjStatementResult {
-  /// The [ObjStatement] of this [ObjStatementResult] was successful or `null`
+  /// The [ObjStatement] if this [ObjStatementResult] was successful or `null`
   /// if it failed.
   final ObjStatement statement;
 
