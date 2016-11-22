@@ -123,7 +123,7 @@ class BumpStatement implements MtlStatement {
       res += ' -blendv off';
     }
 
-    if (channel != Channel.m) {
+    if (channel != Channel.l) {
       res += ' -imfchan ${_channelStringMap[channel]}';
     }
 
