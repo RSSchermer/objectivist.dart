@@ -78,7 +78,9 @@ class MtlLexer {
   /// with a [charCode] of `3` ("end of text") to ensure that the lexer finishes
   /// the final token.
   void process(int charCode) {
-    if (charCode == 10 /* newline */) {
+    if (charCode == 13 /* carriage return */) {
+      // Ignore carriage returns
+    } else if (charCode == 10 /* newline */) {
       _finishCurrentToken();
       _tokens.add(new MtlToken(MtlTokenType.newline));
     } else if (charCode == 3 /* end of text */) {
