@@ -1,6 +1,7 @@
 library obj_statements;
 
 import 'package:quiver/collection.dart';
+import 'package:quiver/core.dart';
 
 part 'src/obj_statements/v_statement.dart';
 part 'src/obj_statements/vt_statement.dart';
@@ -161,6 +162,8 @@ class VertexNumPair {
   bool operator ==(other) =>
       identical(other, this) ||
       other is VertexNumPair && other.vNum == vNum && other.vtNum == vtNum;
+
+  int get hashCode => hash2(vNum, vtNum);
 }
 
 /// A triple of numbers or which [vNum] is the reference number for a geometric
@@ -200,6 +203,8 @@ class VertexNumTriple {
           other.vNum == vNum &&
           other.vtNum == vtNum &&
           other.vnNum == vnNum;
+
+  int get hashCode => hash3(vNum, vtNum, vnNum);
 }
 
 /// Instance of a 2D curve defined on the parameter range from [start] to [end].
