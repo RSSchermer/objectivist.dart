@@ -217,8 +217,14 @@ class ObjStatementizer {
   /// while statementizing.
   ///
   /// See also [clean].
-  ObjStatementizerResults flush() =>
-      new ObjStatementizerResults._internal(_statements, _errors);
+  ObjStatementizerResults flush() {
+    final results = new ObjStatementizerResults._internal(_statements, _errors);
+
+    _statements = [];
+    _errors = [];
+
+    return results;
+  }
 
   /// Returns all buffered statements, empties the statement buffer and discards
   /// any currently unfinished statement.
@@ -239,7 +245,12 @@ class ObjStatementizer {
     _lastToken = null;
     _lineNumber = 0;
 
-    return new ObjStatementizerResults._internal(_statements, _errors);
+    final results = new ObjStatementizerResults._internal(_statements, _errors);
+
+    _statements = [];
+    _errors = [];
+
+    return results;
   }
 }
 

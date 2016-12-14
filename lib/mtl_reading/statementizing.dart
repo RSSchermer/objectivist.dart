@@ -159,9 +159,14 @@ class MtlStatementizer {
   /// while statementizing.
   ///
   /// See also [clean].
-  MtlStatementizerResults flush() =>
-      new MtlStatementizerResults._internal(_statements, _errors);
+  MtlStatementizerResults flush() {
+    final results = new MtlStatementizerResults._internal(_statements, _errors);
 
+    _statements = [];
+    _errors = [];
+
+    return results;
+  }
   /// Returns all buffered statements, empties the statement buffer and discards
   /// any currently unfinished statement.
   ///
@@ -181,7 +186,12 @@ class MtlStatementizer {
     _lastToken = null;
     _lineNumber = 0;
 
-    return new MtlStatementizerResults._internal(_statements, _errors);
+    final results = new MtlStatementizerResults._internal(_statements, _errors);
+
+    _statements = [];
+    _errors = [];
+
+    return results;
   }
 }
 
