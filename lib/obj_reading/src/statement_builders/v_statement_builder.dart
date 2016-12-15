@@ -1,6 +1,8 @@
 part of obj_reading.statement_builders;
 
 class VStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   int _argumentCount = 0;
@@ -15,12 +17,12 @@ class VStatementBuilder implements ObjStatementBuilder {
 
   List<ObjReadingError> _errors = [];
 
-  VStatementBuilder(this.lineNumber);
+  VStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'v', _argumentCount, 'String', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'v',
+          _argumentCount, 'String', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -44,8 +46,8 @@ class VStatementBuilder implements ObjStatementBuilder {
 
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'v', _argumentCount, 'IntPair', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'v',
+          _argumentCount, 'IntPair', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -53,8 +55,8 @@ class VStatementBuilder implements ObjStatementBuilder {
 
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'v', _argumentCount, 'IntTriple', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'v',
+          _argumentCount, 'IntTriple', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -78,8 +80,8 @@ class VStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 3) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `v` statement requires at least 3 arguments.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `v` statement requires at least 3 arguments.'));
     }
 
     if (_errors.isEmpty) {
@@ -92,8 +94,8 @@ class VStatementBuilder implements ObjStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 4) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `v` statement does not take more than 4 arguments.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `v` statement does not take more than 4 arguments.'));
 
       return false;
     } else {

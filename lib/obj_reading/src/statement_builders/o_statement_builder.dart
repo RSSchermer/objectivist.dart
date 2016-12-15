@@ -1,15 +1,17 @@
 part of obj_reading.statement_builders;
 
 class OStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
+  final int lineNumber;
+
   String _objectName;
 
   int _argumentCount = 0;
 
-  final int lineNumber;
-
   List<ObjReadingError> _errors = [];
 
-  OStatementBuilder(this.lineNumber);
+  OStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
@@ -22,7 +24,7 @@ class OStatementBuilder implements ObjStatementBuilder {
   void addIntArgument(int argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'o', _argumentCount, 'int', ['String']));
+          sourceUri, lineNumber, 'o', _argumentCount, 'int', ['String']));
     }
 
     _argumentCount++;
@@ -31,7 +33,7 @@ class OStatementBuilder implements ObjStatementBuilder {
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'o', _argumentCount, 'IntPair', ['String']));
+          sourceUri, lineNumber, 'o', _argumentCount, 'IntPair', ['String']));
     }
 
     _argumentCount++;
@@ -40,7 +42,7 @@ class OStatementBuilder implements ObjStatementBuilder {
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'o', _argumentCount, 'IntTriple', ['String']));
+          sourceUri, lineNumber, 'o', _argumentCount, 'IntTriple', ['String']));
     }
 
     _argumentCount++;
@@ -49,7 +51,7 @@ class OStatementBuilder implements ObjStatementBuilder {
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'o', _argumentCount, 'double', ['String']));
+          sourceUri, lineNumber, 'o', _argumentCount, 'double', ['String']));
     }
 
     _argumentCount++;
@@ -58,7 +60,7 @@ class OStatementBuilder implements ObjStatementBuilder {
   ObjStatementResult build() {
     if (_argumentCount < 1) {
       _errors.add(new ObjReadingError(
-          lineNumber, 'An `o` statement requires 1 argument.'));
+          sourceUri, lineNumber, 'An `o` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
@@ -72,7 +74,7 @@ class OStatementBuilder implements ObjStatementBuilder {
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 1) {
       _errors.add(new ObjReadingError(
-          lineNumber, 'An `o` statement only takes 1 argument.'));
+          sourceUri, lineNumber, 'An `o` statement only takes 1 argument.'));
 
       return false;
     } else {

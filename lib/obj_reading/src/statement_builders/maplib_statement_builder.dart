@@ -1,6 +1,8 @@
 part of obj_reading.statement_builders;
 
 class MaplibStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   int _argumentCount = 0;
@@ -9,7 +11,7 @@ class MaplibStatementBuilder implements ObjStatementBuilder {
 
   List<ObjReadingError> _errors = [];
 
-  MaplibStatementBuilder(this.lineNumber);
+  MaplibStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     _filenames.add(argument);
@@ -19,36 +21,36 @@ class MaplibStatementBuilder implements ObjStatementBuilder {
 
   void addIntArgument(int argument) {
     _errors.add(new ArgumentTypeError(
-        lineNumber, 'maplib', _argumentCount, 'int', ['String']));
+        sourceUri, lineNumber, 'maplib', _argumentCount, 'int', ['String']));
 
     _argumentCount++;
   }
 
   void addIntPairArgument(IntPair argument) {
-    _errors.add(new ArgumentTypeError(
-        lineNumber, 'maplib', _argumentCount, 'IntPair', ['String']));
+    _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'maplib',
+        _argumentCount, 'IntPair', ['String']));
 
     _argumentCount++;
   }
 
   void addIntTripleArgument(IntTriple argument) {
-    _errors.add(new ArgumentTypeError(
-        lineNumber, 'maplib', _argumentCount, 'IntTriple', ['String']));
+    _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'maplib',
+        _argumentCount, 'IntTriple', ['String']));
 
     _argumentCount++;
   }
 
   void addDoubleArgument(double argument) {
     _errors.add(new ArgumentTypeError(
-        lineNumber, 'maplib', _argumentCount, 'double', ['String']));
+        sourceUri, lineNumber, 'maplib', _argumentCount, 'double', ['String']));
 
     _argumentCount++;
   }
 
   ObjStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `maplib` statement requires at least 1 argument.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `maplib` statement requires at least 1 argument.'));
     }
 
     if (_errors.isEmpty) {

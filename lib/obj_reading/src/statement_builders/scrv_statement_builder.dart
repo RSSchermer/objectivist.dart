@@ -1,6 +1,8 @@
 part of obj_reading.statement_builders;
 
 class ScrvStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   int _argumentCount = 0;
@@ -13,15 +15,15 @@ class ScrvStatementBuilder implements ObjStatementBuilder {
 
   List<ObjReadingError> _errors = [];
 
-  ScrvStatementBuilder(this.lineNumber);
+  ScrvStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_argumentCount % 3 == 2) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'scrv', _argumentCount, 'String', ['int']));
+          sourceUri, lineNumber, 'scrv', _argumentCount, 'String', ['int']));
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'scrv', _argumentCount, 'String', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'scrv',
+          _argumentCount, 'String', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -42,10 +44,10 @@ class ScrvStatementBuilder implements ObjStatementBuilder {
   void addIntPairArgument(IntPair argument) {
     if (_argumentCount % 3 == 2) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'scrv', _argumentCount, 'IntPair', ['int']));
+          sourceUri, lineNumber, 'scrv', _argumentCount, 'IntPair', ['int']));
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'scrv', _argumentCount, 'IntPair', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'scrv',
+          _argumentCount, 'IntPair', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -54,10 +56,10 @@ class ScrvStatementBuilder implements ObjStatementBuilder {
   void addIntTripleArgument(IntTriple argument) {
     if (_argumentCount % 3 == 2) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'scrv', _argumentCount, 'IntTriple', ['int']));
+          sourceUri, lineNumber, 'scrv', _argumentCount, 'IntTriple', ['int']));
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'scrv', _argumentCount, 'IntTriple', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'scrv',
+          _argumentCount, 'IntTriple', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -70,7 +72,7 @@ class ScrvStatementBuilder implements ObjStatementBuilder {
       _ends.add(argument);
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'scrv', _argumentCount, 'double', ['int']));
+          sourceUri, lineNumber, 'scrv', _argumentCount, 'double', ['int']));
     }
 
     _argumentCount++;
@@ -78,10 +80,11 @@ class ScrvStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 3) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `scrv` statement requires at least 3 arguments.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `scrv` statement requires at least 3 arguments.'));
     } else if (_argumentCount % 3 != 0) {
       _errors.add(new ObjReadingError(
+          sourceUri,
           lineNumber,
           'The number of arguments supplied to a `scrv` statement must be '
           'multiple of 3.'));

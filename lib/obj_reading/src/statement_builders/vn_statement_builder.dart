@@ -1,6 +1,8 @@
 part of obj_reading.statement_builders;
 
 class VnStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   int _argumentCount = 0;
@@ -13,12 +15,12 @@ class VnStatementBuilder implements ObjStatementBuilder {
 
   List<ObjReadingError> _errors = [];
 
-  VnStatementBuilder(this.lineNumber);
+  VnStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'String', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'vn',
+          _argumentCount, 'String', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -40,8 +42,8 @@ class VnStatementBuilder implements ObjStatementBuilder {
 
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'IntPair', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'vn',
+          _argumentCount, 'IntPair', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -49,8 +51,8 @@ class VnStatementBuilder implements ObjStatementBuilder {
 
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'vn', _argumentCount, 'IntTriple', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'vn',
+          _argumentCount, 'IntTriple', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -73,7 +75,7 @@ class VnStatementBuilder implements ObjStatementBuilder {
   ObjStatementResult build() {
     if (_argumentCount < 1) {
       _errors.add(new ObjReadingError(
-          lineNumber, 'A `vn` statement requires 3 arguments.'));
+          sourceUri, lineNumber, 'A `vn` statement requires 3 arguments.'));
     }
 
     if (_errors.isEmpty) {
@@ -86,8 +88,8 @@ class VnStatementBuilder implements ObjStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 3) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `vn` statement does not take more than 3 arguments.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `vn` statement does not take more than 3 arguments.'));
 
       return false;
     } else {

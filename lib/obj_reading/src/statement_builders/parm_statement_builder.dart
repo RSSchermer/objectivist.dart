@@ -1,17 +1,19 @@
 part of obj_reading.statement_builders;
 
 class ParmStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
+  final int lineNumber;
+
   ParameterDirection _direction;
 
   List<double> _values = [];
 
   int _argumentCount = 0;
 
-  final int lineNumber;
-
   List<ObjReadingError> _errors = [];
 
-  ParmStatementBuilder(this.lineNumber);
+  ParmStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_argumentCount == 0) {
@@ -21,13 +23,14 @@ class ParmStatementBuilder implements ObjStatementBuilder {
         _direction = ParameterDirection.v;
       } else {
         _errors.add(new ObjReadingError(
+            sourceUri,
             lineNumber,
             'The first argument to a `parm` statement must be either `u` or '
             '`v`.'));
       }
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'parm', _argumentCount, 'String', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'parm',
+          _argumentCount, 'String', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -36,7 +39,7 @@ class ParmStatementBuilder implements ObjStatementBuilder {
   void addIntArgument(int argument) {
     if (_argumentCount == 0) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'parm', _argumentCount, 'int', ['String']));
+          sourceUri, lineNumber, 'parm', _argumentCount, 'int', ['String']));
     } else {
       _values.add(argument.toDouble());
     }
@@ -46,11 +49,11 @@ class ParmStatementBuilder implements ObjStatementBuilder {
 
   void addIntPairArgument(IntPair argument) {
     if (_argumentCount == 0) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'parm', _argumentCount, 'IntPair', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'parm',
+          _argumentCount, 'IntPair', ['String']));
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'parm', _argumentCount, 'IntPair', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'parm',
+          _argumentCount, 'IntPair', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -58,11 +61,11 @@ class ParmStatementBuilder implements ObjStatementBuilder {
 
   void addIntTripleArgument(IntTriple argument) {
     if (_argumentCount == 0) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'parm', _argumentCount, 'IntTriple', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'parm',
+          _argumentCount, 'IntTriple', ['String']));
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'parm', _argumentCount, 'IntTriple', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'parm',
+          _argumentCount, 'IntTriple', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -71,7 +74,7 @@ class ParmStatementBuilder implements ObjStatementBuilder {
   void addDoubleArgument(double argument) {
     if (_argumentCount == 0) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'parm', _argumentCount, 'double', ['String']));
+          sourceUri, lineNumber, 'parm', _argumentCount, 'double', ['String']));
     } else {
       _values.add(argument);
     }
@@ -81,8 +84,8 @@ class ParmStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 3) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `parm` statement requires at least 3 arguments.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `parm` statement requires at least 3 arguments.'));
     }
 
     if (_errors.isEmpty) {

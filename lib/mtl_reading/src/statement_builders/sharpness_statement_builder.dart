@@ -1,6 +1,8 @@
 part of mtl_reading.statement_builders;
 
 class SharpnessStatementBuilder implements MtlStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   num _sharpness;
@@ -9,12 +11,12 @@ class SharpnessStatementBuilder implements MtlStatementBuilder {
 
   List<MtlReadingError> _errors = [];
 
-  SharpnessStatementBuilder(this.lineNumber);
+  SharpnessStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(lineNumber, 'sharpness', _argumentCount,
-          'String', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'sharpness',
+          _argumentCount, 'String', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -38,8 +40,8 @@ class SharpnessStatementBuilder implements MtlStatementBuilder {
 
   MtlStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(new MtlReadingError(
-          lineNumber, 'A `sharpness` statement requires 1 argument.'));
+      _errors.add(new MtlReadingError(sourceUri, lineNumber,
+          'A `sharpness` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
@@ -52,8 +54,8 @@ class SharpnessStatementBuilder implements MtlStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 1) {
-      _errors.add(new MtlReadingError(
-          lineNumber, 'A `sharpness` statement only takes 1 argument.'));
+      _errors.add(new MtlReadingError(sourceUri, lineNumber,
+          'A `sharpness` statement only takes 1 argument.'));
 
       return false;
     } else {

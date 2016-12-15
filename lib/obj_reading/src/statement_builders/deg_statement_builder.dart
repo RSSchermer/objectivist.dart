@@ -1,22 +1,24 @@
 part of obj_reading.statement_builders;
 
 class DegStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
+  final int lineNumber;
+
   int _degreeU;
 
   int _degreeV;
 
   int _argumentCount = 0;
 
-  final int lineNumber;
-
   List<ObjReadingError> _errors = [];
 
-  DegStatementBuilder(this.lineNumber);
+  DegStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'deg', _argumentCount, 'String', ['int']));
+          sourceUri, lineNumber, 'deg', _argumentCount, 'String', ['int']));
     }
 
     _argumentCount++;
@@ -37,7 +39,7 @@ class DegStatementBuilder implements ObjStatementBuilder {
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'deg', _argumentCount, 'IntPair', ['int']));
+          sourceUri, lineNumber, 'deg', _argumentCount, 'IntPair', ['int']));
     }
 
     _argumentCount++;
@@ -46,7 +48,7 @@ class DegStatementBuilder implements ObjStatementBuilder {
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'deg', _argumentCount, 'IntTriple', ['int']));
+          sourceUri, lineNumber, 'deg', _argumentCount, 'IntTriple', ['int']));
     }
 
     _argumentCount++;
@@ -55,7 +57,7 @@ class DegStatementBuilder implements ObjStatementBuilder {
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'deg', _argumentCount, 'double', ['int']));
+          sourceUri, lineNumber, 'deg', _argumentCount, 'double', ['int']));
     }
 
     _argumentCount++;
@@ -63,8 +65,8 @@ class DegStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `deg` statement requires at least 1 argument.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `deg` statement requires at least 1 argument.'));
     }
 
     if (_errors.isEmpty) {
@@ -77,7 +79,7 @@ class DegStatementBuilder implements ObjStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 2) {
-      _errors.add(new ObjReadingError(lineNumber,
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
           'A `deg` statement does not take more than 2 arguments.'));
 
       return false;

@@ -1,6 +1,10 @@
 part of obj_reading.statement_builders;
 
 class ConStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
+  final int lineNumber;
+
   int _surfANum;
 
   double _startA;
@@ -19,11 +23,9 @@ class ConStatementBuilder implements ObjStatementBuilder {
 
   int _argumentCount = 0;
 
-  final int lineNumber;
-
   List<ObjReadingError> _errors = [];
 
-  ConStatementBuilder(this.lineNumber);
+  ConStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
@@ -32,10 +34,10 @@ class ConStatementBuilder implements ObjStatementBuilder {
           _argumentCount == 4 ||
           _argumentCount == 7) {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'con', _argumentCount, 'String', ['int']));
+            sourceUri, lineNumber, 'con', _argumentCount, 'String', ['int']));
       } else {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'con', _argumentCount, 'String', ['int', 'double']));
+        _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'con',
+            _argumentCount, 'String', ['int', 'double']));
       }
     }
 
@@ -73,10 +75,10 @@ class ConStatementBuilder implements ObjStatementBuilder {
           _argumentCount == 4 ||
           _argumentCount == 7) {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'con', _argumentCount, 'IntPair', ['int']));
+            sourceUri, lineNumber, 'con', _argumentCount, 'IntPair', ['int']));
       } else {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'con', _argumentCount, 'IntPair', ['int', 'double']));
+        _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'con',
+            _argumentCount, 'IntPair', ['int', 'double']));
       }
     }
 
@@ -89,11 +91,11 @@ class ConStatementBuilder implements ObjStatementBuilder {
           _argumentCount == 3 ||
           _argumentCount == 4 ||
           _argumentCount == 7) {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'con', _argumentCount, 'IntTriple', ['int']));
+        _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'con',
+            _argumentCount, 'IntTriple', ['int']));
       } else {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'con', _argumentCount, 'IntTriple', ['int', 'double']));
+        _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'con',
+            _argumentCount, 'IntTriple', ['int', 'double']));
       }
     }
 
@@ -112,7 +114,7 @@ class ConStatementBuilder implements ObjStatementBuilder {
         _endB = argument;
       } else {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'con', _argumentCount, 'double', ['int']));
+            sourceUri, lineNumber, 'con', _argumentCount, 'double', ['int']));
       }
     }
 
@@ -122,7 +124,7 @@ class ConStatementBuilder implements ObjStatementBuilder {
   ObjStatementResult build() {
     if (_argumentCount < 8) {
       _errors.add(new ObjReadingError(
-          lineNumber, 'A `con` statement requires 8 arguments.'));
+          sourceUri, lineNumber, 'A `con` statement requires 8 arguments.'));
     }
 
     if (_errors.isEmpty) {
@@ -139,7 +141,7 @@ class ConStatementBuilder implements ObjStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 8) {
-      _errors.add(new ObjReadingError(lineNumber,
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
           'A `con` statement does not take more than 8 arguments.'));
 
       return false;

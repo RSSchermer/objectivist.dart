@@ -1,15 +1,17 @@
 part of obj_reading.statement_builders;
 
 class SStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
+  final int lineNumber;
+
   int _smoothingGroup;
 
   int _argumentCount = 0;
 
-  final int lineNumber;
-
   List<ObjReadingError> _errors = [];
 
-  SStatementBuilder(this.lineNumber);
+  SStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
@@ -17,6 +19,7 @@ class SStatementBuilder implements ObjStatementBuilder {
         _smoothingGroup = 0;
       } else {
         _errors.add(new ObjReadingError(
+            sourceUri,
             lineNumber,
             'The argument of an `s` must be either an `int` or the value '
             '`off`.'));
@@ -36,8 +39,8 @@ class SStatementBuilder implements ObjStatementBuilder {
 
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 's', _argumentCount, 'IntPair', ['int', 'String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 's',
+          _argumentCount, 'IntPair', ['int', 'String']));
     }
 
     _argumentCount++;
@@ -45,8 +48,8 @@ class SStatementBuilder implements ObjStatementBuilder {
 
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 's', _argumentCount, 'IntTriple', ['int', 'String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 's',
+          _argumentCount, 'IntTriple', ['int', 'String']));
     }
 
     _argumentCount++;
@@ -54,8 +57,8 @@ class SStatementBuilder implements ObjStatementBuilder {
 
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 's', _argumentCount, 'double', ['int', 'String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 's',
+          _argumentCount, 'double', ['int', 'String']));
     }
 
     _argumentCount++;
@@ -64,7 +67,7 @@ class SStatementBuilder implements ObjStatementBuilder {
   ObjStatementResult build() {
     if (_argumentCount < 1) {
       _errors.add(new ObjReadingError(
-          lineNumber, 'An `s` statement requires 1 argument.'));
+          sourceUri, lineNumber, 'An `s` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
@@ -78,7 +81,7 @@ class SStatementBuilder implements ObjStatementBuilder {
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 1) {
       _errors.add(new ObjReadingError(
-          lineNumber, 'An `s` statement only takes 1 argument.'));
+          sourceUri, lineNumber, 'An `s` statement only takes 1 argument.'));
 
       return false;
     } else {

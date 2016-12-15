@@ -15,6 +15,8 @@ import 'statement_builders.dart';
 /// Statements will be buffered. See [flush] or [clean] for retrieving the
 /// contents of the statement buffer.
 class MtlStatementizer {
+  final Uri sourceUri;
+
   int _lineNumber = 1;
 
   MtlStatementBuilder _statementBuilder;
@@ -24,6 +26,9 @@ class MtlStatementizer {
   List<MtlStatement> _statements = [];
 
   List<MtlReadingError> _errors = [];
+
+  /// Instantiates a new [MtlStatementizer] for the given [sourceUri].
+  MtlStatementizer(this.sourceUri);
 
   /// Processes the next token.
   ///
@@ -44,70 +49,89 @@ class MtlStatementizer {
         case MtlTokenType.string:
           switch (token.value) {
             case 'bump':
-              _statementBuilder = new BumpStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new BumpStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'd':
-              _statementBuilder = new DStatementBuilder(_lineNumber);
+              _statementBuilder = new DStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'decal':
-              _statementBuilder = new DecalStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new DecalStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'disp':
-              _statementBuilder = new DispStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new DispStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'illum':
-              _statementBuilder = new IllumStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new IllumStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'Ka':
-              _statementBuilder = new KaStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new KaStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'Kd':
-              _statementBuilder = new KdStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new KdStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'Ks':
-              _statementBuilder = new KsStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new KsStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'map_aat':
-              _statementBuilder = new MapAatStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new MapAatStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'map_d':
-              _statementBuilder = new MapDStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new MapDStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'map_Ka':
-              _statementBuilder = new MapKaStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new MapKaStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'map_Kd':
-              _statementBuilder = new MapKdStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new MapKdStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'map_Ks':
-              _statementBuilder = new MapKsStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new MapKsStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'map_Ns':
-              _statementBuilder = new MapNsStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new MapNsStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'newmtl':
-              _statementBuilder = new NewmtlStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new NewmtlStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'Ni':
-              _statementBuilder = new NiStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new NiStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'Ns':
-              _statementBuilder = new NsStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new NsStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'refl':
-              _statementBuilder = new ReflStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new ReflStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'sharpness':
-              _statementBuilder = new SharpnessStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new SharpnessStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'Tf':
-              _statementBuilder = new TfStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new TfStatementBuilder(sourceUri, _lineNumber);
               break;
           }
 
           break;
         default:
-          _errors.add(new MtlReadingError(_lineNumber,
+          _errors.add(new MtlReadingError(sourceUri, _lineNumber,
               '${token.value} is not a valid way to start a new statement.'));
       }
     } else {
@@ -167,6 +191,7 @@ class MtlStatementizer {
 
     return results;
   }
+
   /// Returns all buffered statements, empties the statement buffer and discards
   /// any currently unfinished statement.
   ///

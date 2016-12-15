@@ -38,7 +38,7 @@ class MtlToken {
 
   bool operator ==(other) =>
       identical(other, this) ||
-          other is MtlToken && other.type == type && other.value == value;
+      other is MtlToken && other.type == type && other.value == value;
 }
 
 /// Buffering `mtl` lexer.
@@ -124,8 +124,8 @@ class MtlLexer {
         if (_tokenStringBuilder.isEmpty) {
           _tokenType = MtlTokenType.int;
         } else if (_tokenType == MtlTokenType.int &&
-            !(_lastCharCode == 101 /* e */ ||
-                _lastCharCode == 69 /* E */) ||
+                !(_lastCharCode == 101 /* e */ ||
+                    _lastCharCode == 69 /* E */) ||
             _tokenType == MtlTokenType.double &&
                 !(_lastCharCode == 101 /* e */ ||
                     _lastCharCode == 69 /* E */)) {

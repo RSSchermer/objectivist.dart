@@ -1,6 +1,8 @@
 part of mtl_reading.statement_builders;
 
 class MapAatStatementBuilder implements MtlStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   bool _antialiasingEnabled;
@@ -9,7 +11,7 @@ class MapAatStatementBuilder implements MtlStatementBuilder {
 
   List<MtlReadingError> _errors = [];
 
-  MapAatStatementBuilder(this.lineNumber);
+  MapAatStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
@@ -19,6 +21,7 @@ class MapAatStatementBuilder implements MtlStatementBuilder {
         _antialiasingEnabled = false;
       } else {
         _errors.add(new MtlReadingError(
+            sourceUri,
             lineNumber,
             'The argument of a `map_aat` statement should be either the string '
             '`on` or the string `off`.'));
@@ -31,7 +34,7 @@ class MapAatStatementBuilder implements MtlStatementBuilder {
   void addIntArgument(int argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'map_aat', _argumentCount, 'int', ['String']));
+          sourceUri, lineNumber, 'map_aat', _argumentCount, 'int', ['String']));
     }
 
     _argumentCount++;
@@ -39,8 +42,8 @@ class MapAatStatementBuilder implements MtlStatementBuilder {
 
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'map_aat', _argumentCount, 'double', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'map_aat',
+          _argumentCount, 'double', ['String']));
     }
 
     _argumentCount++;
@@ -49,7 +52,7 @@ class MapAatStatementBuilder implements MtlStatementBuilder {
   MtlStatementResult build() {
     if (_argumentCount < 1) {
       _errors.add(new MtlReadingError(
-          lineNumber, 'A `map_aat` statement requires 1 argument.'));
+          sourceUri, lineNumber, 'A `map_aat` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
@@ -62,8 +65,8 @@ class MapAatStatementBuilder implements MtlStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 1) {
-      _errors.add(new MtlReadingError(
-          lineNumber, 'A `map_aat` statement only takes 1 argument.'));
+      _errors.add(new MtlReadingError(sourceUri, lineNumber,
+          'A `map_aat` statement only takes 1 argument.'));
 
       return false;
     } else {

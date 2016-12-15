@@ -1,15 +1,17 @@
 part of obj_reading.statement_builders;
 
 class DInterpStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
+  final int lineNumber;
+
   bool _dissolveInterpolationEnabled;
 
   int _argumentCount = 0;
 
-  final int lineNumber;
-
   List<ObjReadingError> _errors = [];
 
-  DInterpStatementBuilder(this.lineNumber);
+  DInterpStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
@@ -19,6 +21,7 @@ class DInterpStatementBuilder implements ObjStatementBuilder {
         _dissolveInterpolationEnabled = false;
       } else {
         _errors.add(new ObjReadingError(
+            sourceUri,
             lineNumber,
             'The argument supplied to a `d_interp` statement must be `on` or '
             '`off`.'));
@@ -30,8 +33,8 @@ class DInterpStatementBuilder implements ObjStatementBuilder {
 
   void addIntArgument(int argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'd_interp', _argumentCount, 'int', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'd_interp',
+          _argumentCount, 'int', ['String']));
     }
 
     _argumentCount++;
@@ -39,8 +42,8 @@ class DInterpStatementBuilder implements ObjStatementBuilder {
 
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'd_interp', _argumentCount, 'IntPair', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'd_interp',
+          _argumentCount, 'IntPair', ['String']));
     }
 
     _argumentCount++;
@@ -48,8 +51,8 @@ class DInterpStatementBuilder implements ObjStatementBuilder {
 
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'd_interp', _argumentCount, 'IntTriple', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'd_interp',
+          _argumentCount, 'IntTriple', ['String']));
     }
 
     _argumentCount++;
@@ -57,8 +60,8 @@ class DInterpStatementBuilder implements ObjStatementBuilder {
 
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'd_interp', _argumentCount, 'double', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'd_interp',
+          _argumentCount, 'double', ['String']));
     }
 
     _argumentCount++;
@@ -66,8 +69,8 @@ class DInterpStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `d_interp` statement requires 1 argument.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `d_interp` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
@@ -81,8 +84,8 @@ class DInterpStatementBuilder implements ObjStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 1) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `d_interp` statement only takes 1 argument.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `d_interp` statement only takes 1 argument.'));
 
       return false;
     } else {

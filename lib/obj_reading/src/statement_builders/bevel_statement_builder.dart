@@ -1,15 +1,17 @@
 part of obj_reading.statement_builders;
 
 class BevelStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
+  final int lineNumber;
+
   bool _bevelEnabled;
 
   int _argumentCount = 0;
 
-  final int lineNumber;
-
   List<ObjReadingError> _errors = [];
 
-  BevelStatementBuilder(this.lineNumber);
+  BevelStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
@@ -19,6 +21,7 @@ class BevelStatementBuilder implements ObjStatementBuilder {
         _bevelEnabled = false;
       } else {
         _errors.add(new ObjReadingError(
+            sourceUri,
             lineNumber,
             'The argument supplied to a `bevel` statement must be `on` or '
             '`off`.'));
@@ -31,7 +34,7 @@ class BevelStatementBuilder implements ObjStatementBuilder {
   void addIntArgument(int argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'bevel', _argumentCount, 'int', ['String']));
+          sourceUri, lineNumber, 'bevel', _argumentCount, 'int', ['String']));
     }
 
     _argumentCount++;
@@ -39,8 +42,8 @@ class BevelStatementBuilder implements ObjStatementBuilder {
 
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'bevel', _argumentCount, 'IntPair', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'bevel',
+          _argumentCount, 'IntPair', ['String']));
     }
 
     _argumentCount++;
@@ -48,8 +51,8 @@ class BevelStatementBuilder implements ObjStatementBuilder {
 
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'bevel', _argumentCount, 'IntTriple', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'bevel',
+          _argumentCount, 'IntTriple', ['String']));
     }
 
     _argumentCount++;
@@ -57,8 +60,8 @@ class BevelStatementBuilder implements ObjStatementBuilder {
 
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'bevel', _argumentCount, 'double', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'bevel',
+          _argumentCount, 'double', ['String']));
     }
 
     _argumentCount++;
@@ -67,7 +70,7 @@ class BevelStatementBuilder implements ObjStatementBuilder {
   ObjStatementResult build() {
     if (_argumentCount < 1) {
       _errors.add(new ObjReadingError(
-          lineNumber, 'A `bevel` statement requires 1 argument.'));
+          sourceUri, lineNumber, 'A `bevel` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
@@ -81,7 +84,7 @@ class BevelStatementBuilder implements ObjStatementBuilder {
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 1) {
       _errors.add(new ObjReadingError(
-          lineNumber, 'A `bevel` statement only takes 1 argument.'));
+          sourceUri, lineNumber, 'A `bevel` statement only takes 1 argument.'));
 
       return false;
     } else {

@@ -5,7 +5,8 @@ class MapDStatementBuilder extends _ScalarMapStatementBuilder {
 
   final Channel defaultChannel = Channel.l;
 
-  MapDStatementBuilder(int lineNumber) : super(lineNumber);
+  MapDStatementBuilder(Uri sourceUri, int lineNumber)
+      : super(sourceUri, lineNumber);
 
   MapDStatement makeStatement(
           String filename,

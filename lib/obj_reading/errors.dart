@@ -1,25 +1,29 @@
 library obj_reading.errors;
 
+import 'package:objectivist/errors.dart';
+
 /// An error encountered while reading an `.obj` file.
-class ObjReadingError {
-  /// The lineNumber at which this [ObjReadingError] occurred.
+class ObjReadingError implements ReadingError {
+  final Uri sourceUri;
+
   final int lineNumber;
 
-  /// A description of the error.
   final String description;
 
   /// Instantiates a new [ObjReadingError].
-  ObjReadingError(this.lineNumber, this.description);
+  ObjReadingError(this.sourceUri, this.lineNumber, this.description);
 
   String toString() => 'Error on line $lineNumber: $description';
 }
 
-///
+/// An [ObjReading] error used to describe errors that occur when incorrect
+/// arguments are read for a statement.
 class ArgumentTypeError implements ObjReadingError {
-  /// The line at which the statement occurred.
+  final Uri sourceUri;
+
   final int lineNumber;
 
-  /// The statement type in which the argument
+  /// The statement type for which this [ArgumentTypeError] occurred.
   final String statementType;
 
   /// The position of the argument in the statement's argument list.
@@ -32,8 +36,8 @@ class ArgumentTypeError implements ObjReadingError {
   final Iterable<String> expectedTypes;
 
   /// Instantiates a new [ArgumentTypeError].
-  ArgumentTypeError(this.lineNumber, this.statementType, this.argumentPosition,
-      this.actualType, this.expectedTypes);
+  ArgumentTypeError(this.sourceUri, this.lineNumber, this.statementType,
+      this.argumentPosition, this.actualType, this.expectedTypes);
 
   String get description {
     final positionString = _positionToString(argumentPosition);

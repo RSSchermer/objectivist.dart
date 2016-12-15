@@ -3,6 +3,8 @@ part of mtl_reading.statement_builders;
 enum _ColorStatementBuilderMode { RGB, CIEXYZ, spectral }
 
 abstract class _ColorStatementBuilder implements MtlStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   String get statementName;
@@ -29,7 +31,7 @@ abstract class _ColorStatementBuilder implements MtlStatementBuilder {
 
   List<MtlReadingError> _errors = [];
 
-  _ColorStatementBuilder(this.lineNumber);
+  _ColorStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
@@ -40,6 +42,7 @@ abstract class _ColorStatementBuilder implements MtlStatementBuilder {
           _mode = _ColorStatementBuilderMode.spectral;
         } else {
           _errors.add(new MtlReadingError(
+              sourceUri,
               lineNumber,
               'The first argument to a `$statementName` statement must be a '
               '`double`, an `int`, the string `xyz` or the string `spectral`.'));
@@ -49,12 +52,13 @@ abstract class _ColorStatementBuilder implements MtlStatementBuilder {
           _spectralFilename = argument;
         } else {
           _errors.add(new MtlReadingError(
+              sourceUri,
               lineNumber,
               'The second argument to a `$statementName` statement that is not '
               'marked as `spectral` must be a `double` or an `int`.'));
         }
       } else {
-        _errors.add(new ArgumentTypeError(lineNumber, statementName,
+        _errors.add(new ArgumentTypeError(sourceUri, lineNumber, statementName,
             _argumentCount, 'String', ['int', 'double']));
       }
     }
@@ -78,6 +82,7 @@ abstract class _ColorStatementBuilder implements MtlStatementBuilder {
           _CIEXYZx = argument;
         } else {
           _errors.add(new MtlReadingError(
+              sourceUri,
               lineNumber,
               'The second argument to a `$statementName` statement that is '
               'marked as `spectral` must be a `String`.'));
@@ -103,17 +108,19 @@ abstract class _ColorStatementBuilder implements MtlStatementBuilder {
   MtlStatementResult build() {
     if (_mode == _ColorStatementBuilderMode.spectral && _argumentCount < 2) {
       _errors.add(new MtlReadingError(
+          sourceUri,
           lineNumber,
           'A `$statementName` statement marked as `spectral` requires at least '
           '2 arguments.'));
     } else if (_mode == _ColorStatementBuilderMode.CIEXYZ &&
         _argumentCount < 2) {
       _errors.add(new MtlReadingError(
+          sourceUri,
           lineNumber,
           'A `$statementName` statement marked as `xyz` requires at least 2 '
           'arguments.'));
     } else if (_argumentCount < 1) {
-      _errors.add(new MtlReadingError(lineNumber,
+      _errors.add(new MtlReadingError(sourceUri, lineNumber,
           'A `$statementName` statement requires at least 1 argument.'));
     }
 
@@ -138,7 +145,7 @@ abstract class _ColorStatementBuilder implements MtlStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 4) {
-      _errors.add(new MtlReadingError(lineNumber,
+      _errors.add(new MtlReadingError(sourceUri, lineNumber,
           'A `$statementName` statement does not take more than 4 arguments.'));
 
       return false;

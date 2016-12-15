@@ -1,13 +1,15 @@
 part of mtl_reading.statement_builders;
 
 class BumpStatementBuilder implements MtlStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   List<dynamic> _arguments = [];
 
   List<MtlReadingError> _errors = [];
 
-  BumpStatementBuilder(this.lineNumber);
+  BumpStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     _arguments.add(argument);
@@ -39,6 +41,7 @@ class BumpStatementBuilder implements MtlStatementBuilder {
       filename = _arguments.last;
     } else {
       _errors.add(new MtlReadingError(
+          sourceUri,
           lineNumber,
           'The last argument to a `bump` must be a `String` '
           'identifying the map file.'));
@@ -53,7 +56,7 @@ class BumpStatementBuilder implements MtlStatementBuilder {
             multiplier = a.toDouble();
             i += 1;
           } else {
-            _errors.add(new MtlReadingError(lineNumber,
+            _errors.add(new MtlReadingError(sourceUri, lineNumber,
                 'A `-bm` argument must be succeeded by an `int` or `double`.'));
           }
 
@@ -69,6 +72,7 @@ class BumpStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-blendu` option must be either '
                 'the string `on` or the string `off`.'));
@@ -86,6 +90,7 @@ class BumpStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-blendv` option must be either '
                 'the string `on` or the string `off`.'));
@@ -115,6 +120,7 @@ class BumpStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-imfchan` option must be the '
                 'string `r`, the string `g`, the string `b`, the string `m`, '
@@ -133,6 +139,7 @@ class BumpStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-clamp` option must be either '
                 'the string `on` or the string `off`.'));
@@ -153,6 +160,7 @@ class BumpStatementBuilder implements MtlStatementBuilder {
             }
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'A `-mm` argument must be succeeded by at least one `int` or '
                 '`double`.'));
@@ -185,6 +193,7 @@ class BumpStatementBuilder implements MtlStatementBuilder {
             originOffset = new DoubleTriple(x, y, z);
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'A `-o` argument must be succeeded by at least one `int` or '
                 '`double`.'));
@@ -217,6 +226,7 @@ class BumpStatementBuilder implements MtlStatementBuilder {
             scale = new DoubleTriple(x, y, z);
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'A `-s` argument must be succeeded by at least one `int` or '
                 '`double`.'));
@@ -249,6 +259,7 @@ class BumpStatementBuilder implements MtlStatementBuilder {
             turbulence = new DoubleTriple(x, y, z);
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'A `-t` argument must be succeeded by at least one `int` or '
                 '`double`.'));
@@ -262,13 +273,14 @@ class BumpStatementBuilder implements MtlStatementBuilder {
             textureResolution = a;
             i += 1;
           } else {
-            _errors.add(new MtlReadingError(lineNumber,
+            _errors.add(new MtlReadingError(sourceUri, lineNumber,
                 'A `-texres` argument must be succeeded by an `int`.'));
           }
 
           break;
         default:
           _errors.add(new MtlReadingError(
+              sourceUri,
               lineNumber,
               'Expected the ${_positionToString(i)} argument of a `bump` '
               'statement to be a valid option string, `${_arguments[i]} given. '

@@ -1,15 +1,17 @@
 part of obj_reading.statement_builders;
 
 class UsemtlStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
+  final int lineNumber;
+
   String _materialName;
 
   int _argumentCount = 0;
 
-  final int lineNumber;
-
   List<ObjReadingError> _errors = [];
 
-  UsemtlStatementBuilder(this.lineNumber);
+  UsemtlStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
@@ -22,7 +24,7 @@ class UsemtlStatementBuilder implements ObjStatementBuilder {
   void addIntArgument(int argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'usemtl', _argumentCount, 'int', ['String']));
+          sourceUri, lineNumber, 'usemtl', _argumentCount, 'int', ['String']));
     }
 
     _argumentCount++;
@@ -30,8 +32,8 @@ class UsemtlStatementBuilder implements ObjStatementBuilder {
 
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'usemtl', _argumentCount, 'IntPair', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'usemtl',
+          _argumentCount, 'IntPair', ['String']));
     }
 
     _argumentCount++;
@@ -39,8 +41,8 @@ class UsemtlStatementBuilder implements ObjStatementBuilder {
 
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'usemtl', _argumentCount, 'IntTriple', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'usemtl',
+          _argumentCount, 'IntTriple', ['String']));
     }
 
     _argumentCount++;
@@ -48,8 +50,8 @@ class UsemtlStatementBuilder implements ObjStatementBuilder {
 
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'usemtl', _argumentCount, 'double', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'usemtl',
+          _argumentCount, 'double', ['String']));
     }
 
     _argumentCount++;
@@ -58,7 +60,7 @@ class UsemtlStatementBuilder implements ObjStatementBuilder {
   ObjStatementResult build() {
     if (_argumentCount < 1) {
       _errors.add(new ObjReadingError(
-          lineNumber, 'A `usemtl` statement requires 1 argument.'));
+          sourceUri, lineNumber, 'A `usemtl` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
@@ -71,8 +73,8 @@ class UsemtlStatementBuilder implements ObjStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 1) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `usemtl` statement only takes 1 argument.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `usemtl` statement only takes 1 argument.'));
 
       return false;
     } else {

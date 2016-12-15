@@ -15,6 +15,8 @@ import 'statement_builders.dart';
 /// Statements will be buffered. See [flush] or [clean] for retrieving the
 /// contents of the statement buffer.
 class ObjStatementizer {
+  final Uri sourceUri;
+
   int _lineNumber = 1;
 
   ObjStatementBuilder _statementBuilder;
@@ -24,6 +26,9 @@ class ObjStatementizer {
   List<ObjStatement> _statements = [];
 
   List<ObjReadingError> _errors = [];
+
+  /// Instantiates a new [ObjStatementizer] for the given [sourceUri].
+  ObjStatementizer(this.sourceUri);
 
   /// Processes the next token.
   ///
@@ -44,121 +49,151 @@ class ObjStatementizer {
         case ObjTokenType.string:
           switch (token.value) {
             case 'v':
-              _statementBuilder = new VStatementBuilder(_lineNumber);
+              _statementBuilder = new VStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'vt':
-              _statementBuilder = new VtStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new VtStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'vn':
-              _statementBuilder = new VnStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new VnStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'vp':
-              _statementBuilder = new VpStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new VpStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'cstype':
-              _statementBuilder = new CstypeStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new CstypeStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'deg':
-              _statementBuilder = new DegStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new DegStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'bmat':
-              _statementBuilder = new BmatStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new BmatStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'step':
-              _statementBuilder = new StepStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new StepStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'p':
-              _statementBuilder = new PStatementBuilder(_lineNumber);
+              _statementBuilder = new PStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'l':
-              _statementBuilder = new LStatementBuilder(_lineNumber);
+              _statementBuilder = new LStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'f':
-              _statementBuilder = new FStatementBuilder(_lineNumber);
+              _statementBuilder = new FStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'curv':
-              _statementBuilder = new CurvStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new CurvStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'curv2':
-              _statementBuilder = new Curv2StatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new Curv2StatementBuilder(sourceUri, _lineNumber);
               break;
             case 'surf':
-              _statementBuilder = new SurfStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new SurfStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'parm':
-              _statementBuilder = new ParmStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new ParmStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'trim':
-              _statementBuilder = new TrimStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new TrimStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'hole':
-              _statementBuilder = new HoleStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new HoleStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'scrv':
-              _statementBuilder = new ScrvStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new ScrvStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'sp':
-              _statementBuilder = new SpStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new SpStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'end':
-              _statementBuilder = new EndStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new EndStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'con':
-              _statementBuilder = new ConStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new ConStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'g':
-              _statementBuilder = new GStatementBuilder(_lineNumber);
+              _statementBuilder = new GStatementBuilder(sourceUri, _lineNumber);
               break;
             case 's':
-              _statementBuilder = new SStatementBuilder(_lineNumber);
+              _statementBuilder = new SStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'mg':
-              _statementBuilder = new MgStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new MgStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'o':
-              _statementBuilder = new OStatementBuilder(_lineNumber);
+              _statementBuilder = new OStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'bevel':
-              _statementBuilder = new BevelStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new BevelStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'c_interp':
-              _statementBuilder = new CInterpStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new CInterpStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'd_interp':
-              _statementBuilder = new DInterpStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new DInterpStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'lod':
-              _statementBuilder = new LodStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new LodStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'maplib':
-              _statementBuilder = new MaplibStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new MaplibStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'usemap':
-              _statementBuilder = new UsemapStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new UsemapStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'usemtl':
-              _statementBuilder = new UsemtlStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new UsemtlStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'mtllib':
-              _statementBuilder = new MtllibStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new MtllibStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'shadow_obj':
-              _statementBuilder = new ShadowObjStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new ShadowObjStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'trace_obj':
-              _statementBuilder = new TraceObjStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new TraceObjStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'ctech':
-              _statementBuilder = new CtechStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new CtechStatementBuilder(sourceUri, _lineNumber);
               break;
             case 'stech':
-              _statementBuilder = new StechStatementBuilder(_lineNumber);
+              _statementBuilder =
+                  new StechStatementBuilder(sourceUri, _lineNumber);
               break;
           }
 
           break;
         default:
-          _errors.add(new ObjReadingError(_lineNumber,
+          _errors.add(new ObjReadingError(sourceUri, _lineNumber,
               '${token.value} is not a valid way to start a new statement.'));
       }
     } else {

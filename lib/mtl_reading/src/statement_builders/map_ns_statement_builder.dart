@@ -5,7 +5,8 @@ class MapNsStatementBuilder extends _ScalarMapStatementBuilder {
 
   final Channel defaultChannel = Channel.l;
 
-  MapNsStatementBuilder(int lineNumber) : super(lineNumber);
+  MapNsStatementBuilder(Uri sourceUri, int lineNumber)
+      : super(sourceUri, lineNumber);
 
   MapNsStatement makeStatement(
           String filename,

@@ -3,6 +3,10 @@ part of obj_reading.statement_builders;
 enum _CtechStatementBuilderMode { cparm, cspace, curv }
 
 class CtechStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
+  final int lineNumber;
+
   _CtechStatementBuilderMode _mode;
 
   double _cparmResolution;
@@ -15,11 +19,9 @@ class CtechStatementBuilder implements ObjStatementBuilder {
 
   int _argumentCount = 0;
 
-  final int lineNumber;
-
   List<ObjReadingError> _errors = [];
 
-  CtechStatementBuilder(this.lineNumber);
+  CtechStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
@@ -36,13 +38,14 @@ class CtechStatementBuilder implements ObjStatementBuilder {
             break;
           default:
             _errors.add(new ObjReadingError(
+                sourceUri,
                 lineNumber,
                 'The first argument to a `ctech` statement must be either '
                 '`cparm`, `cspace` or `curv`.'));
         }
       } else {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'ctech', _argumentCount, 'String', ['int', 'double']));
+        _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'ctech',
+            _argumentCount, 'String', ['int', 'double']));
       }
     }
 
@@ -53,7 +56,7 @@ class CtechStatementBuilder implements ObjStatementBuilder {
     if (_enforceMaxArgumentCount()) {
       if (_argumentCount == 0) {
         _errors.add(new ArgumentTypeError(
-            lineNumber, 'ctech', _argumentCount, 'int', ['String']));
+            sourceUri, lineNumber, 'ctech', _argumentCount, 'int', ['String']));
       } else if (_argumentCount == 1) {
         if (_mode == _CtechStatementBuilderMode.cparm) {
           _cparmResolution = argument.toDouble();
@@ -73,11 +76,11 @@ class CtechStatementBuilder implements ObjStatementBuilder {
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
       if (_argumentCount == 0) {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'ctech', _argumentCount, 'IntPair', ['String']));
+        _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'ctech',
+            _argumentCount, 'IntPair', ['String']));
       } else {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'ctech', _argumentCount, 'IntPair', ['int', 'double']));
+        _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'ctech',
+            _argumentCount, 'IntPair', ['int', 'double']));
       }
     }
 
@@ -87,11 +90,11 @@ class CtechStatementBuilder implements ObjStatementBuilder {
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
       if (_argumentCount == 0) {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'ctech', _argumentCount, 'IntTriple', ['String']));
+        _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'ctech',
+            _argumentCount, 'IntTriple', ['String']));
       } else {
-        _errors.add(new ArgumentTypeError(lineNumber, 'ctech', _argumentCount,
-            'IntTriple', ['int', 'double']));
+        _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'ctech',
+            _argumentCount, 'IntTriple', ['int', 'double']));
       }
     }
 
@@ -101,8 +104,8 @@ class CtechStatementBuilder implements ObjStatementBuilder {
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
       if (_argumentCount == 0) {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'ctech', _argumentCount, 'double', ['String']));
+        _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'ctech',
+            _argumentCount, 'double', ['String']));
       } else if (_argumentCount == 1) {
         if (_mode == _CtechStatementBuilderMode.cparm) {
           _cparmResolution = argument;
@@ -122,6 +125,7 @@ class CtechStatementBuilder implements ObjStatementBuilder {
   ObjStatementResult build() {
     if (_mode == _CtechStatementBuilderMode.curv && _argumentCount < 3) {
       _errors.add(new ObjReadingError(
+          sourceUri,
           lineNumber,
           'A `ctech` statement declared as `curv` requires 2 additional '
           'arguments.'));
@@ -129,8 +133,8 @@ class CtechStatementBuilder implements ObjStatementBuilder {
             _mode == _CtechStatementBuilderMode.cspace ||
             _mode == null) &&
         _argumentCount < 2) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `ctech` statement requires at least 2 arguments.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `ctech` statement requires at least 2 arguments.'));
     }
 
     if (_errors.isEmpty) {
@@ -154,6 +158,7 @@ class CtechStatementBuilder implements ObjStatementBuilder {
       } else {
         return new ObjStatementResult._failure(_errors
           ..add(new ObjReadingError(
+              sourceUri,
               lineNumber,
               'Invalid mode for a `ctech` statement; mode must be `cparm`, '
               '`cspace` or `curv`.')));
@@ -165,7 +170,7 @@ class CtechStatementBuilder implements ObjStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 3) {
-      _errors.add(new ObjReadingError(lineNumber,
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
           'A `ctech` statement does not take more than 3 arguments.'));
 
       return false;

@@ -5,7 +5,8 @@ class DispStatementBuilder extends _ScalarMapStatementBuilder {
 
   final Channel defaultChannel = Channel.l;
 
-  DispStatementBuilder(int lineNumber) : super(lineNumber);
+  DispStatementBuilder(Uri sourceUri, int lineNumber)
+      : super(sourceUri, lineNumber);
 
   DispStatement makeStatement(
           String filename,

@@ -3,6 +3,8 @@ part of obj_reading.statement_builders;
 enum _LStatementBuilderMode { int, intPair }
 
 class LStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   int _argumentCount = 0;
@@ -13,11 +15,11 @@ class LStatementBuilder implements ObjStatementBuilder {
 
   List<ObjReadingError> _errors = [];
 
-  LStatementBuilder(this.lineNumber);
+  LStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
-    _errors.add(new ArgumentTypeError(
-        lineNumber, 'l', _argumentCount, 'String', ['int', 'IntPair']));
+    _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'l',
+        _argumentCount, 'String', ['int', 'IntPair']));
 
     _argumentCount++;
   }
@@ -31,6 +33,7 @@ class LStatementBuilder implements ObjStatementBuilder {
         _vNumPairs.add(new VertexNumPair(argument));
       } else {
         _errors.add(new ObjReadingError(
+            sourceUri,
             lineNumber,
             'One `l` statement cannot intermix `int` and `IntPair` arguments; '
             'all arguments must be of the same type.'));
@@ -49,6 +52,7 @@ class LStatementBuilder implements ObjStatementBuilder {
         _vNumPairs.add(new VertexNumPair(argument.value1, argument.value2));
       } else {
         _errors.add(new ObjReadingError(
+            sourceUri,
             lineNumber,
             'One `l` statement cannot intermix `int` and `IntPair` arguments; '
             'all arguments must be of the same type.'));
@@ -59,23 +63,23 @@ class LStatementBuilder implements ObjStatementBuilder {
   }
 
   void addIntTripleArgument(IntTriple argument) {
-    _errors.add(new ArgumentTypeError(
-        lineNumber, 'l', _argumentCount, 'IntTriple', ['int', 'IntPair']));
+    _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'l',
+        _argumentCount, 'IntTriple', ['int', 'IntPair']));
 
     _argumentCount++;
   }
 
   void addDoubleArgument(double argument) {
-    _errors.add(new ArgumentTypeError(
-        lineNumber, 'l', _argumentCount, 'double', ['int', 'IntPair']));
+    _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'l',
+        _argumentCount, 'double', ['int', 'IntPair']));
 
     _argumentCount++;
   }
 
   ObjStatementResult build() {
     if (_argumentCount < 2) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `l` statement requires at least 2 arguments.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `l` statement requires at least 2 arguments.'));
     }
 
     if (_errors.isEmpty) {

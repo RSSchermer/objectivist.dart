@@ -7,9 +7,9 @@ import 'package:resource/resource.dart';
 import 'mtl_reading/lexing.dart';
 import 'mtl_reading/statementizing.dart';
 
-MtlStatementizerResults statementizeMtl(String source) {
+MtlStatementizerResults statementizeMtl(String source, Uri sourceUri) {
   final lexer = new MtlLexer();
-  final statementizer = new MtlStatementizer();
+  final statementizer = new MtlStatementizer(sourceUri);
 
   for (var i = 0; i < source.length; i++) {
     lexer.process(source.codeUnitAt(i));
@@ -25,13 +25,15 @@ MtlStatementizerResults statementizeMtl(String source) {
 }
 
 Future<MtlStatementizerResults> statementizeMtlResource(Resource resource) {
-  return resource.readAsString().then((source) => statementizeMtl(source));
+  return resource
+      .readAsString()
+      .then((source) => statementizeMtl(source, resource.uri));
 }
 
 Stream<MtlStatementizerResults> statementizeMtlResourceStreamed(
     Resource resource) {
   final lexer = new MtlLexer();
-  final statementizer = new MtlStatementizer();
+  final statementizer = new MtlStatementizer(resource.uri);
   final outStreamController = new StreamController<MtlStatementizerResults>();
 
   resource.openRead().forEach((chunk) {

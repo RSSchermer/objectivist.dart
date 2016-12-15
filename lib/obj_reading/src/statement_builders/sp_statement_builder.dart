@@ -1,6 +1,8 @@
 part of obj_reading.statement_builders;
 
 class SpStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   int _argumentCount = 0;
@@ -9,11 +11,11 @@ class SpStatementBuilder implements ObjStatementBuilder {
 
   List<ObjReadingError> _errors = [];
 
-  SpStatementBuilder(this.lineNumber);
+  SpStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     _errors.add(new ArgumentTypeError(
-        lineNumber, 'sp', _argumentCount, 'String', ['int']));
+        sourceUri, lineNumber, 'sp', _argumentCount, 'String', ['int']));
 
     _argumentCount++;
   }
@@ -26,29 +28,29 @@ class SpStatementBuilder implements ObjStatementBuilder {
 
   void addIntPairArgument(IntPair argument) {
     _errors.add(new ArgumentTypeError(
-        lineNumber, 'sp', _argumentCount, 'IntPair', ['int']));
+        sourceUri, lineNumber, 'sp', _argumentCount, 'IntPair', ['int']));
 
     _argumentCount++;
   }
 
   void addIntTripleArgument(IntTriple argument) {
     _errors.add(new ArgumentTypeError(
-        lineNumber, 'sp', _argumentCount, 'IntTriple', ['int']));
+        sourceUri, lineNumber, 'sp', _argumentCount, 'IntTriple', ['int']));
 
     _argumentCount++;
   }
 
   void addDoubleArgument(double argument) {
     _errors.add(new ArgumentTypeError(
-        lineNumber, 'sp', _argumentCount, 'double', ['int']));
+        sourceUri, lineNumber, 'sp', _argumentCount, 'double', ['int']));
 
     _argumentCount++;
   }
 
   ObjStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'An `sp` statement requires at least 1 argument.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'An `sp` statement requires at least 1 argument.'));
     }
 
     if (_errors.isEmpty) {

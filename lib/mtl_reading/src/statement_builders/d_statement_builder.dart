@@ -1,6 +1,8 @@
 part of mtl_reading.statement_builders;
 
 class DStatementBuilder implements MtlStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   bool _halo = false;
@@ -11,7 +13,7 @@ class DStatementBuilder implements MtlStatementBuilder {
 
   List<MtlReadingError> _errors = [];
 
-  DStatementBuilder(this.lineNumber);
+  DStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
@@ -20,13 +22,14 @@ class DStatementBuilder implements MtlStatementBuilder {
           _halo = true;
         } else {
           _errors.add(new MtlReadingError(
+              sourceUri,
               lineNumber,
               'The first argument to a `d` statement must be a `double`, an '
               '`int` or the string `-halo`.'));
         }
       } else {
-        _errors.add(new ArgumentTypeError(
-            lineNumber, 'd', _argumentCount, 'String', ['double', 'int']));
+        _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'd',
+            _argumentCount, 'String', ['double', 'int']));
       }
     }
 
@@ -48,12 +51,13 @@ class DStatementBuilder implements MtlStatementBuilder {
   MtlStatementResult build() {
     if (_halo && _argumentCount < 2) {
       _errors.add(new MtlReadingError(
+          sourceUri,
           lineNumber,
           'A `d` statement with the `-halo` option requires 1 additional '
           'argument.'));
     } else if (_argumentCount < 1) {
-      _errors.add(new MtlReadingError(
-          lineNumber, 'A `d` statement requires at least 1 argument.'));
+      _errors.add(new MtlReadingError(sourceUri, lineNumber,
+          'A `d` statement requires at least 1 argument.'));
     }
 
     if (_errors.isEmpty) {
@@ -66,8 +70,8 @@ class DStatementBuilder implements MtlStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 2) {
-      _errors.add(new MtlReadingError(
-          lineNumber, 'A `d` statement does not take more than 2 arguments.'));
+      _errors.add(new MtlReadingError(sourceUri, lineNumber,
+          'A `d` statement does not take more than 2 arguments.'));
 
       return false;
     } else {

@@ -3,7 +3,8 @@ part of mtl_reading.statement_builders;
 class MapKdStatementBuilder extends _ColorMapStatementBuilder {
   final String statementName = 'map_Kd';
 
-  MapKdStatementBuilder(int lineNumber) : super(lineNumber);
+  MapKdStatementBuilder(Uri sourceUri, int lineNumber)
+      : super(sourceUri, lineNumber);
 
   MapKdStatement makeStatement(
           String filename,

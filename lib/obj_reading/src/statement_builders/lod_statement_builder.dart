@@ -1,20 +1,22 @@
 part of obj_reading.statement_builders;
 
 class LodStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
+  final int lineNumber;
+
   int _level;
 
   int _argumentCount = 0;
 
-  final int lineNumber;
-
   List<ObjReadingError> _errors = [];
 
-  LodStatementBuilder(this.lineNumber);
+  LodStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'lod', _argumentCount, 'String', ['int']));
+          sourceUri, lineNumber, 'lod', _argumentCount, 'String', ['int']));
     }
 
     _argumentCount++;
@@ -31,7 +33,7 @@ class LodStatementBuilder implements ObjStatementBuilder {
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'lod', _argumentCount, 'IntPair', ['int']));
+          sourceUri, lineNumber, 'lod', _argumentCount, 'IntPair', ['int']));
     }
 
     _argumentCount++;
@@ -40,7 +42,7 @@ class LodStatementBuilder implements ObjStatementBuilder {
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'lod', _argumentCount, 'IntTriple', ['int']));
+          sourceUri, lineNumber, 'lod', _argumentCount, 'IntTriple', ['int']));
     }
 
     _argumentCount++;
@@ -49,7 +51,7 @@ class LodStatementBuilder implements ObjStatementBuilder {
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'lod', _argumentCount, 'double', ['int']));
+          sourceUri, lineNumber, 'lod', _argumentCount, 'double', ['int']));
     }
 
     _argumentCount++;
@@ -58,7 +60,7 @@ class LodStatementBuilder implements ObjStatementBuilder {
   ObjStatementResult build() {
     if (_argumentCount < 1) {
       _errors.add(new ObjReadingError(
-          lineNumber, 'An `lod` statement requires 1 argument.'));
+          sourceUri, lineNumber, 'An `lod` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
@@ -72,7 +74,7 @@ class LodStatementBuilder implements ObjStatementBuilder {
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 1) {
       _errors.add(new ObjReadingError(
-          lineNumber, 'An `lod` statement only takes 1 argument.'));
+          sourceUri, lineNumber, 'An `lod` statement only takes 1 argument.'));
 
       return false;
     } else {

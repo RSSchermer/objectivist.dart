@@ -1,6 +1,8 @@
 part of mtl_reading.statement_builders;
 
 abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   String get statementName;
@@ -9,7 +11,7 @@ abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
 
   List<MtlReadingError> _errors = [];
 
-  _ColorMapStatementBuilder(this.lineNumber);
+  _ColorMapStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     _arguments.add(argument);
@@ -40,6 +42,7 @@ abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
       filename = _arguments.last;
     } else {
       _errors.add(new MtlReadingError(
+          sourceUri,
           lineNumber,
           'The last argument to a `$statementName` must be a `String` '
           'identifying the map file.'));
@@ -58,6 +61,7 @@ abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-blendu` option must be either '
                 'the string `on` or the string `off`.'));
@@ -75,6 +79,7 @@ abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-blendv` option must be either '
                 'the string `on` or the string `off`.'));
@@ -92,6 +97,7 @@ abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-cc` option must be either '
                 'the string `on` or the string `off`.'));
@@ -109,6 +115,7 @@ abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-clamp` option must be either '
                 'the string `on` or the string `off`.'));
@@ -129,6 +136,7 @@ abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
             }
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'A `-mm` argument must be succeeded by at least one `int` or '
                 '`double`.'));
@@ -161,6 +169,7 @@ abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
             originOffset = new DoubleTriple(x, y, z);
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'A `-o` argument must be succeeded by at least one `int` or '
                 '`double`.'));
@@ -193,6 +202,7 @@ abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
             scale = new DoubleTriple(x, y, z);
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'A `-s` argument must be succeeded by at least one `int` or '
                 '`double`.'));
@@ -225,6 +235,7 @@ abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
             turbulence = new DoubleTriple(x, y, z);
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'A `-t` argument must be succeeded by at least one `int` or '
                 '`double`.'));
@@ -238,13 +249,14 @@ abstract class _ColorMapStatementBuilder implements MtlStatementBuilder {
             textureResolution = a;
             i += 1;
           } else {
-            _errors.add(new MtlReadingError(lineNumber,
+            _errors.add(new MtlReadingError(sourceUri, lineNumber,
                 'A `-texres` argument must be succeeded by an `int`.'));
           }
 
           break;
         default:
           _errors.add(new MtlReadingError(
+              sourceUri,
               lineNumber,
               'Expected the ${_positionToString(i)} argument of a '
               '`$statementName` statement to be a valid option string, '

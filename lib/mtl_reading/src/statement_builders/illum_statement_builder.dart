@@ -15,6 +15,8 @@ const _intIlluminationModelMap = const {
 };
 
 class IllumStatementBuilder implements MtlStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   IlluminationModel _model;
@@ -23,12 +25,12 @@ class IllumStatementBuilder implements MtlStatementBuilder {
 
   List<MtlReadingError> _errors = [];
 
-  IllumStatementBuilder(this.lineNumber);
+  IllumStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'illum', _argumentCount, 'String', ['int']));
+          sourceUri, lineNumber, 'illum', _argumentCount, 'String', ['int']));
     }
 
     _argumentCount++;
@@ -39,7 +41,7 @@ class IllumStatementBuilder implements MtlStatementBuilder {
       _model = _intIlluminationModelMap[argument];
 
       if (_model == null) {
-        _errors.add(new MtlReadingError(lineNumber,
+        _errors.add(new MtlReadingError(sourceUri, lineNumber,
             '`$argument` is not a valid illumination model identifier.'));
       }
     }
@@ -50,7 +52,7 @@ class IllumStatementBuilder implements MtlStatementBuilder {
   void addDoubleArgument(double argument) {
     if (_enforceMaxArgumentCount()) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'illum', _argumentCount, 'double', ['int']));
+          sourceUri, lineNumber, 'illum', _argumentCount, 'double', ['int']));
     }
 
     _argumentCount++;
@@ -59,7 +61,7 @@ class IllumStatementBuilder implements MtlStatementBuilder {
   MtlStatementResult build() {
     if (_argumentCount < 1) {
       _errors.add(new MtlReadingError(
-          lineNumber, 'An `illum` statement requires 1 argument.'));
+          sourceUri, lineNumber, 'An `illum` statement requires 1 argument.'));
     }
 
     if (_errors.isEmpty) {
@@ -72,8 +74,8 @@ class IllumStatementBuilder implements MtlStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 1) {
-      _errors.add(new MtlReadingError(
-          lineNumber, 'An `illum` statement only takes 1 argument.'));
+      _errors.add(new MtlReadingError(sourceUri, lineNumber,
+          'An `illum` statement only takes 1 argument.'));
 
       return false;
     } else {

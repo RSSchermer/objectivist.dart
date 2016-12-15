@@ -1,6 +1,8 @@
 part of obj_reading.statement_builders;
 
 class CurvStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   int _argumentCount = 0;
@@ -13,15 +15,15 @@ class CurvStatementBuilder implements ObjStatementBuilder {
 
   List<ObjReadingError> _errors = [];
 
-  CurvStatementBuilder(this.lineNumber);
+  CurvStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_argumentCount < 2) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'curv', _argumentCount, 'String', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'curv',
+          _argumentCount, 'String', ['int', 'double']));
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'curv', _argumentCount, 'String', ['int']));
+          sourceUri, lineNumber, 'curv', _argumentCount, 'String', ['int']));
     }
 
     _argumentCount++;
@@ -41,11 +43,11 @@ class CurvStatementBuilder implements ObjStatementBuilder {
 
   void addIntPairArgument(IntPair argument) {
     if (_argumentCount < 2) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'curv', _argumentCount, 'IntPair', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'curv',
+          _argumentCount, 'IntPair', ['int', 'double']));
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'curv', _argumentCount, 'IntPair', ['int']));
+          sourceUri, lineNumber, 'curv', _argumentCount, 'IntPair', ['int']));
     }
 
     _argumentCount++;
@@ -53,11 +55,11 @@ class CurvStatementBuilder implements ObjStatementBuilder {
 
   void addIntTripleArgument(IntTriple argument) {
     if (_argumentCount < 2) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'curv', _argumentCount, 'IntTriple', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'curv',
+          _argumentCount, 'IntTriple', ['int', 'double']));
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'curv', _argumentCount, 'IntTriple', ['int']));
+          sourceUri, lineNumber, 'curv', _argumentCount, 'IntTriple', ['int']));
     }
 
     _argumentCount++;
@@ -70,7 +72,7 @@ class CurvStatementBuilder implements ObjStatementBuilder {
       _end = argument;
     } else {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'curv', _argumentCount, 'double', ['int']));
+          sourceUri, lineNumber, 'curv', _argumentCount, 'double', ['int']));
     }
 
     _argumentCount++;
@@ -78,8 +80,8 @@ class CurvStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 4) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `curv` statement requires at least 4 arguments.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `curv` statement requires at least 4 arguments.'));
     }
 
     if (_errors.isEmpty) {

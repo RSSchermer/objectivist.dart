@@ -3,6 +3,8 @@ part of obj_reading.statement_builders;
 enum _FStatementBuilderMode { int, intPair, intTriple }
 
 class FStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   int _argumentCount = 0;
@@ -13,11 +15,11 @@ class FStatementBuilder implements ObjStatementBuilder {
 
   List<ObjReadingError> _errors = [];
 
-  FStatementBuilder(this.lineNumber);
+  FStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
-    _errors.add(new ArgumentTypeError(lineNumber, 'f', _argumentCount, 'String',
-        ['int', 'IntPair', 'IntTriple']));
+    _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'f',
+        _argumentCount, 'String', ['int', 'IntPair', 'IntTriple']));
 
     _argumentCount++;
   }
@@ -31,6 +33,7 @@ class FStatementBuilder implements ObjStatementBuilder {
         _vNumTriples.add(new VertexNumTriple(argument));
       } else {
         _errors.add(new ObjReadingError(
+            sourceUri,
             lineNumber,
             'One `f` statement cannot intermix `int`, `IntPair` and '
             '`IntTriple` arguments; all arguments must be of the same type.'));
@@ -49,6 +52,7 @@ class FStatementBuilder implements ObjStatementBuilder {
         _vNumTriples.add(new VertexNumTriple(argument.value1, argument.value2));
       } else {
         _errors.add(new ObjReadingError(
+            sourceUri,
             lineNumber,
             'One `f` statement cannot intermix `int`, `IntPair` and '
             '`IntTriple` arguments; all arguments must be of the same type.'));
@@ -69,6 +73,7 @@ class FStatementBuilder implements ObjStatementBuilder {
             argument.value1, argument.value2, argument.value3));
       } else {
         _errors.add(new ObjReadingError(
+            sourceUri,
             lineNumber,
             'One `f` statement cannot intermix `int`, `IntPair` and '
             '`IntTriple` arguments; all arguments must be of the same type.'));
@@ -79,16 +84,16 @@ class FStatementBuilder implements ObjStatementBuilder {
   }
 
   void addDoubleArgument(double argument) {
-    _errors.add(new ArgumentTypeError(lineNumber, 'f', _argumentCount, 'double',
-        ['int', 'IntPair', 'IntTriple']));
+    _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'f',
+        _argumentCount, 'double', ['int', 'IntPair', 'IntTriple']));
 
     _argumentCount++;
   }
 
   ObjStatementResult build() {
     if (_argumentCount < 3) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `f` statement requires at least 3 arguments.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `f` statement requires at least 3 arguments.'));
     }
 
     if (_errors.isEmpty) {

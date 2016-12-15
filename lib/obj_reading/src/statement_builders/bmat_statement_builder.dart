@@ -1,17 +1,19 @@
 part of obj_reading.statement_builders;
 
 class BmatStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
+  final int lineNumber;
+
   ParameterDirection _direction;
 
   List<double> _values = [];
 
   int _argumentCount = 0;
 
-  final int lineNumber;
-
   List<ObjReadingError> _errors = [];
 
-  BmatStatementBuilder(this.lineNumber);
+  BmatStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_argumentCount == 0) {
@@ -21,13 +23,14 @@ class BmatStatementBuilder implements ObjStatementBuilder {
         _direction = ParameterDirection.v;
       } else {
         _errors.add(new ObjReadingError(
+            sourceUri,
             lineNumber,
             'The first argument to a `bmat` statement must be either `u` or '
             '`v`.'));
       }
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'bmat', _argumentCount, 'String', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'bmat',
+          _argumentCount, 'String', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -36,7 +39,7 @@ class BmatStatementBuilder implements ObjStatementBuilder {
   void addIntArgument(int argument) {
     if (_argumentCount == 0) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'bmat', _argumentCount, 'int', ['String']));
+          sourceUri, lineNumber, 'bmat', _argumentCount, 'int', ['String']));
     } else {
       _values.add(argument.toDouble());
     }
@@ -46,11 +49,11 @@ class BmatStatementBuilder implements ObjStatementBuilder {
 
   void addIntPairArgument(IntPair argument) {
     if (_argumentCount == 0) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'bmat', _argumentCount, 'IntPair', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'bmat',
+          _argumentCount, 'IntPair', ['String']));
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'bmat', _argumentCount, 'IntPair', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'bmat',
+          _argumentCount, 'IntPair', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -58,11 +61,11 @@ class BmatStatementBuilder implements ObjStatementBuilder {
 
   void addIntTripleArgument(IntTriple argument) {
     if (_argumentCount == 0) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'bmat', _argumentCount, 'IntTriple', ['String']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'bmat',
+          _argumentCount, 'IntTriple', ['String']));
     } else {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'bmat', _argumentCount, 'IntTriple', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'bmat',
+          _argumentCount, 'IntTriple', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -71,7 +74,7 @@ class BmatStatementBuilder implements ObjStatementBuilder {
   void addDoubleArgument(double argument) {
     if (_argumentCount == 0) {
       _errors.add(new ArgumentTypeError(
-          lineNumber, 'bmat', _argumentCount, 'double', ['String']));
+          sourceUri, lineNumber, 'bmat', _argumentCount, 'double', ['String']));
     } else {
       _values.add(argument);
     }
@@ -81,8 +84,8 @@ class BmatStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 2) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `bmat` statement requires at least 2 arguments.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `bmat` statement requires at least 2 arguments.'));
     }
 
     if (_errors.isEmpty) {

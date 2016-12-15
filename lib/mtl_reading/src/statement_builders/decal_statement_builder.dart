@@ -5,7 +5,8 @@ class DecalStatementBuilder extends _ScalarMapStatementBuilder {
 
   final Channel defaultChannel = Channel.m;
 
-  DecalStatementBuilder(int lineNumber) : super(lineNumber);
+  DecalStatementBuilder(Uri sourceUri, int lineNumber)
+      : super(sourceUri, lineNumber);
 
   DecalStatement makeStatement(
           String filename,

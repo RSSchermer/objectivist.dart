@@ -1,6 +1,8 @@
 part of obj_reading.statement_builders;
 
 class VpStatementBuilder implements ObjStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   int _argumentCount = 0;
@@ -13,12 +15,12 @@ class VpStatementBuilder implements ObjStatementBuilder {
 
   List<ObjReadingError> _errors = [];
 
-  VpStatementBuilder(this.lineNumber);
+  VpStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'vp', _argumentCount, 'String', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'vp',
+          _argumentCount, 'String', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -40,8 +42,8 @@ class VpStatementBuilder implements ObjStatementBuilder {
 
   void addIntPairArgument(IntPair argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'vp', _argumentCount, 'IntPair', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'vp',
+          _argumentCount, 'IntPair', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -49,8 +51,8 @@ class VpStatementBuilder implements ObjStatementBuilder {
 
   void addIntTripleArgument(IntTriple argument) {
     if (_enforceMaxArgumentCount()) {
-      _errors.add(new ArgumentTypeError(
-          lineNumber, 'vp', _argumentCount, 'IntTriple', ['int', 'double']));
+      _errors.add(new ArgumentTypeError(sourceUri, lineNumber, 'vp',
+          _argumentCount, 'IntTriple', ['int', 'double']));
     }
 
     _argumentCount++;
@@ -72,8 +74,8 @@ class VpStatementBuilder implements ObjStatementBuilder {
 
   ObjStatementResult build() {
     if (_argumentCount < 1) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `vp` statement requires at least 1 argument.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `vp` statement requires at least 1 argument.'));
     }
 
     if (_errors.isEmpty) {
@@ -86,8 +88,8 @@ class VpStatementBuilder implements ObjStatementBuilder {
 
   bool _enforceMaxArgumentCount() {
     if (_argumentCount >= 3) {
-      _errors.add(new ObjReadingError(
-          lineNumber, 'A `vp` statement does not take more than 3 arguments.'));
+      _errors.add(new ObjReadingError(sourceUri, lineNumber,
+          'A `vp` statement does not take more than 3 arguments.'));
 
       return false;
     } else {

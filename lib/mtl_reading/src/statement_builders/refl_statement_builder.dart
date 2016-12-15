@@ -1,13 +1,15 @@
 part of mtl_reading.statement_builders;
 
 class ReflStatementBuilder implements MtlStatementBuilder {
+  final Uri sourceUri;
+
   final int lineNumber;
 
   List<dynamic> _arguments = [];
 
   List<MtlReadingError> _errors = [];
 
-  ReflStatementBuilder(this.lineNumber);
+  ReflStatementBuilder(this.sourceUri, this.lineNumber);
 
   void addStringArgument(String argument) {
     _arguments.add(argument);
@@ -39,6 +41,7 @@ class ReflStatementBuilder implements MtlStatementBuilder {
       filename = _arguments.last;
     } else {
       _errors.add(new MtlReadingError(
+          sourceUri,
           lineNumber,
           'The last argument to a `refl` must be a `String` '
           'identifying the map file.'));
@@ -72,6 +75,7 @@ class ReflStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-type` option must be the string '
                 '`sphere`, the string `cube_top`, the string `cube_bottom`, '
@@ -91,6 +95,7 @@ class ReflStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-blendu` option must be either '
                 'the string `on` or the string `off`.'));
@@ -108,6 +113,7 @@ class ReflStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-blendv` option must be either '
                 'the string `on` or the string `off`.'));
@@ -125,6 +131,7 @@ class ReflStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-cc` option must be either '
                 'the string `on` or the string `off`.'));
@@ -142,6 +149,7 @@ class ReflStatementBuilder implements MtlStatementBuilder {
             i += 1;
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'The argument succeeding the `-clamp` option must be either '
                 'the string `on` or the string `off`.'));
@@ -162,6 +170,7 @@ class ReflStatementBuilder implements MtlStatementBuilder {
             }
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'A `-mm` argument must be succeeded by at least one `int` or '
                 '`double`.'));
@@ -194,6 +203,7 @@ class ReflStatementBuilder implements MtlStatementBuilder {
             originOffset = new DoubleTriple(x, y, z);
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'A `-o` argument must be succeeded by at least one `int` or '
                 '`double`.'));
@@ -226,6 +236,7 @@ class ReflStatementBuilder implements MtlStatementBuilder {
             scale = new DoubleTriple(x, y, z);
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'A `-s` argument must be succeeded by at least one `int` or '
                 '`double`.'));
@@ -258,6 +269,7 @@ class ReflStatementBuilder implements MtlStatementBuilder {
             turbulence = new DoubleTriple(x, y, z);
           } else {
             _errors.add(new MtlReadingError(
+                sourceUri,
                 lineNumber,
                 'A `-t` argument must be succeeded by at least one `int` or '
                 '`double`.'));
@@ -271,13 +283,14 @@ class ReflStatementBuilder implements MtlStatementBuilder {
             textureResolution = a;
             i += 1;
           } else {
-            _errors.add(new MtlReadingError(lineNumber,
+            _errors.add(new MtlReadingError(sourceUri, lineNumber,
                 'A `-texres` argument must be succeeded by an `int`.'));
           }
 
           break;
         default:
           _errors.add(new MtlReadingError(
+              sourceUri,
               lineNumber,
               'Expected the ${_positionToString(i)} argument of a `refl` '
               'statement to be a valid option string, `${_arguments[i]} given. '
@@ -287,7 +300,7 @@ class ReflStatementBuilder implements MtlStatementBuilder {
     }
 
     if (type == null) {
-      _errors.add(new MtlReadingError(lineNumber,
+      _errors.add(new MtlReadingError(sourceUri, lineNumber,
           'The `-type` option must be specified for a `refl` statement.'));
     }
 
